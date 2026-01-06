@@ -186,13 +186,28 @@ async function loadData(date) {
     if (!res.ok) throw new Error("Data file not found");
     const json = await res.json();
 
-    // Convert UTC time to Tehran time (+3:30)
     const labels = json.map(e => {
       const [hour, min, sec] = e.time.split(':').map(Number);
-      let d = new Date(Date.UTC(1970,0,1,hour,min,sec)); // UTC date
-      d.setHours(d.getHours() + 3); // +3 hours
-      d.setMinutes(d.getMinutes() + 30); // +30 minutes
-      return d.toTimeString().slice(0,8); // HH:MM:SS
+    
+      // Tehran offset: +3:30
+      let tehranHour = hour + 3;
+      let tehranMin = min + 30;
+    
+      if (tehranMin >= 60) {
+        tehranMin -= 60;
+        tehranHour += 1;
+      }
+    
+      if (tehranHour >= 24) {
+        tehranHour -= 24;
+      }
+    
+      // format HH:MM:SS with leading zeros
+      const hh = tehranHour.toString().padStart(2, '0');
+      const mm = tehranMin.toString().padStart(2, '0');
+      const ss = sec.toString().padStart(2, '0');
+    
+      return `${hh}:${mm}:${ss}`;
     });
 
     ASSETS.forEach(asset => {
