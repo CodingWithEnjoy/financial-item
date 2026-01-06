@@ -1,8 +1,8 @@
-name: Hourly Financial Data Save
+name: Financial Data Save (Every 30 Min Tehran)
 
 on:
   schedule:
-    - cron: "0 * * * *"   # every hour (UTC)
+    - cron: "0,30 * * * *"   # every 30 minutes UTC (Tehran +3:30)
   workflow_dispatch:
 
 jobs:
@@ -19,8 +19,9 @@ jobs:
         run: |
           set -e
 
-          DATE=$(date -u +"%Y-%m-%d")
-          TIME=$(date -u +"%H:%M:%S")
+          # Tehran time (UTC+3:30)
+          DATE=$(date -u -d "+3 hours 30 minutes" +"%Y-%m-%d")
+          TIME=$(date -u -d "+3 hours 30 minutes" +"%H:%M:%S")
           FILE="data/$DATE.json"
 
           API_URL="https://api.dastyar.io/express/financial-item"
@@ -35,7 +36,7 @@ jobs:
             echo "[]" > "$FILE"
           fi
 
-          # Append hourly snapshot
+          # Append snapshot
           jq --arg time "$TIME" \
              --argjson data "$RESPONSE" \
              '. += [{"time": $time, "data": $data}]' \
@@ -48,6 +49,6 @@ jobs:
 
           git add data/
 
-          git commit -m "Hourly financial snapshot $(date -u +"%Y-%m-%d %H:%M")" || echo "No changes to commit"
+          git commit -m "Financial snapshot $(date -u -d '+3 hours 30 minutes' +"%Y-%m-%d %H:%M")" || echo "No changes to commit"
 
           git push
