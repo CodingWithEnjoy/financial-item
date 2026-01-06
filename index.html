@@ -48,7 +48,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 24px;
     }
 
@@ -78,21 +78,21 @@
       color: var(--muted);
       font-size: 0.9rem;
     }
+
+    @media(max-width:600px){
+      .grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>📈 Financial Dashboard (Hourly)</h1>
+  <h1>📈 Financial Dashboard</h1>
   <input type="date" id="datePicker">
 </header>
 
-<section class="grid">
-  <div class="card"><h2>💵 USD (Toman)</h2><canvas id="usd"></canvas></div>
-  <div class="card"><h2>💶 EUR (Toman)</h2><canvas id="eur"></canvas></div>
-  <div class="card"><h2>🪙 Sekkeh Emami</h2><canvas id="sekkeh"></canvas></div>
-  <div class="card"><h2>🥇 Gold 18k (Tala)</h2><canvas id="gold"></canvas></div>
-  <div class="card"><h2>₿ Bitcoin (USD)</h2><canvas id="btc"></canvas></div>
+<section class="grid" id="chartGrid">
+  <!-- Charts will be injected here -->
 </section>
 
 <footer>
@@ -105,12 +105,24 @@ const ASSETS = [
   { id: "eur", key: "eur", label: "EUR", color: "#a78bfa" },
   { id: "sekkeh", key: "sekkeh", label: "Sekkeh", color: "#fbbf24" },
   { id: "gold", key: "18ayar", label: "Gold 18k", color: "#f59e0b" },
-  { id: "btc", key: "usd_btc", label: "Bitcoin", color: "#f97316" }
+  { id: "btc", key: "usd_btc", label: "Bitcoin", color: "#f97316" },
+  { id: "usdt", key: "usd_usdt", label: "Tether (USDT)", color: "#22c55e" },
+  { id: "gbp", key: "gbp", label: "Pound (GBP)", color: "#8b5cf6" },
+  { id: "rob", key: "rob", label: "Roub", color: "#f472b6" },
+  { id: "try", key: "try", label: "TRY", color: "#f87171" },
+  { id: "aed", key: "aed", label: "AED", color: "#34d399" }
 ];
 
 const charts = {};
+const grid = document.getElementById("chartGrid");
 
-// Create or update chart
+function createCard(asset) {
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `<h2>${asset.label}</h2><canvas id="${asset.id}"></canvas>`;
+  grid.appendChild(div);
+}
+
 function createChart(canvasId, labels, data, label, color) {
   if (charts[canvasId]) charts[canvasId].destroy();
 
@@ -154,15 +166,17 @@ async function loadData(date) {
     if (!res.ok) throw new Error("Data file not found");
     const json = await res.json();
 
-    // Labels are already in Tehran time (HH:MM:SS)
+    // Clear grid & recreate cards
+    grid.innerHTML = "";
+    ASSETS.forEach(createCard);
+
     const labels = json.map(e => e.time);
 
     ASSETS.forEach(asset => {
       const values = json.map(entry => {
         const item = entry.data.find(i => i.key === asset.key);
-        return item ? Number(item.priceFloat || 0) : 0; // Handle missing or string values
+        return item ? Number(item.priceFloat || 0) : 0;
       });
-
       createChart(asset.id, labels, values, asset.label, asset.color);
     });
   } catch (err) {
