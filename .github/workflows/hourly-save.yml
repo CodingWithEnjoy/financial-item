@@ -2,7 +2,7 @@ name: Financial Data Save (Every 5 Min Tehran)
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # every 5 minutes UTC (will save in Tehran time)
+    - cron: "* * * * *"   # every 1 minute UTC
   workflow_dispatch:
 
 jobs:
