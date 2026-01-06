@@ -151,8 +151,8 @@ function createChart(canvasId, labels, data, label, color) {
           borderColor: color,
           backgroundColor: color + "33",
           borderWidth: 3,
-          pointRadius: 4,
-          pointHoverRadius: 6,
+          pointRadius: 3,
+          pointHoverRadius: 5,
           pointBackgroundColor: color,
           pointBorderColor: color,
           tension: 0.35
@@ -191,7 +191,7 @@ async function loadData(date) {
     ASSETS.forEach(asset => {
       const values = json.map(entry => {
         const item = entry.data.find(i => i.key === asset.key);
-        return item ? Number(item.priceFloat) : null;
+        return item ? Number(item.priceFloat) : null; // fallback to null
       });
 
       createChart(asset.id, labels, values, asset.label, asset.color);
