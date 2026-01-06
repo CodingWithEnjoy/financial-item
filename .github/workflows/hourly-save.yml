@@ -17,20 +17,25 @@ jobs:
 
       - name: Fetch and store data
         run: |
+          set -e
+
           DATE=$(date -u +"%Y-%m-%d")
           TIME=$(date -u +"%H:%M:%S")
           FILE="data/$DATE.json"
 
-          API_URL="https://corsproxy.io/?url=https://api.dastyar.io/express/financial-item
+          API_URL="https://api.dastyar.io/express/financial-item"
 
           RESPONSE=$(curl -s "$API_URL")
 
-          # Create file if not exists
+          # Validate JSON response
+          echo "$RESPONSE" | jq empty
+
+          # Create daily file if it doesn't exist
           if [ ! -f "$FILE" ]; then
             echo "[]" > "$FILE"
           fi
 
-          # Append new hourly entry
+          # Append hourly snapshot
           jq --arg time "$TIME" \
              --argjson data "$RESPONSE" \
              '. += [{"time": $time, "data": $data}]' \
@@ -40,6 +45,9 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+
           git add data/
-          git commit -m "Hourly financial snapshot $(date -u +"%Y-%m-%d %H:%M")" || exit 0
+
+          git commit -m "Hourly financial snapshot $(date -u +"%Y-%m-%d %H:%M")" || echo "No changes to commit"
+
           git push
