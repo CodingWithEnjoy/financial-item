@@ -63,17 +63,20 @@
       border-radius: 16px;
       padding: 20px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      height: 500px; /* Fixed height */
+      display: flex;
+      flex-direction: column;
     }
 
     .card h2 {
       margin: 0 0 14px;
       font-size: 1.2rem;
       color: var(--text);
+      flex-shrink: 0;
     }
 
     canvas {
-      width: 100%;
-      height: 360px;
+      flex: 1; /* Fill remaining height of card */
     }
 
     footer {
@@ -154,7 +157,7 @@ function createChart(canvasId, labels, data, label, color) {
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: false, // Fill parent card
         interaction: { intersect: false, mode: "index" },
         plugins: {
           legend: { display: false }
@@ -175,19 +178,24 @@ function createChart(canvasId, labels, data, label, color) {
 }
 
 async function loadData(date) {
-  const res = await fetch(`data/${date}.json`);
-  const json = await res.json();
+  try {
+    const res = await fetch(`data/${date}.json`);
+    if (!res.ok) throw new Error("Data file not found");
+    const json = await res.json();
 
-  const labels = json.map(e => e.time);
+    const labels = json.map(e => e.time);
 
-  ASSETS.forEach(asset => {
-    const values = json.map(entry => {
-      const item = entry.data.find(i => i.key === asset.key);
-      return item ? Number(item.priceFloat) : null;
+    ASSETS.forEach(asset => {
+      const values = json.map(entry => {
+        const item = entry.data.find(i => i.key === asset.key);
+        return item ? Number(item.priceFloat) : null;
+      });
+
+      createChart(asset.id, labels, values, asset.label, asset.color);
     });
-
-    createChart(asset.id, labels, values, asset.label, asset.color);
-  });
+  } catch (err) {
+    console.error("Failed to load data:", err);
+  }
 }
 
 // Init
