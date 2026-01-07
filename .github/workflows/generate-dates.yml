@@ -1,6 +1,7 @@
 name: Generate dates index
 
 on:
+  workflow_dispatch: 
   push:
     paths:
       - "data/*.json"
