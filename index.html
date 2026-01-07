@@ -299,20 +299,24 @@ async function fileExists(date) {
 
 async function loadAvailableDates() {
   dateMenu.innerHTML = "";
-  const dates = [];
   const today = new Date();
+  const checks = [];
 
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 45; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().slice(0, 10);
+    const date = d.toISOString().slice(0, 10);
 
-    if (await fileExists(dateStr)) {
-      dates.push(dateStr);
-    }
+    checks.push(
+      fetch(`data/${date}.json`, { cache: "no-store" })
+        .then(r => r.ok ? date : null)
+        .catch(() => null)
+    );
   }
 
-  dates.forEach(date => {
+  const results = (await Promise.all(checks)).filter(Boolean);
+
+  results.forEach(date => {
     const item = document.createElement("div");
     item.textContent = date;
     item.onclick = () => {
@@ -323,9 +327,9 @@ async function loadAvailableDates() {
     dateMenu.appendChild(item);
   });
 
-  if (dates.length) {
-    dateBtn.textContent = `📅 ${dates[0]}`;
-    loadData(dates[0]);
+  if (results.length) {
+    dateBtn.textContent = `📅 ${results[0]}`;
+    loadData(results[0]);
   }
 }
 
