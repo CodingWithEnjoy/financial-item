@@ -164,6 +164,34 @@
       70% { box-shadow: 0 0 0 10px rgba(56,189,248,0); }
       100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); }
     }
+
+    .price-range {
+      margin-top: 6px;
+      display: flex;
+      gap: 8px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      justify-content: flex-end;
+    }
+    
+    .price-range span {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.08);
+      border: 1px solid rgba(148,163,184,0.15);
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+    
+    .price-range .low {
+      color: #60a5fa;
+      border-color: rgba(96,165,250,0.35);
+    }
+    
+    .price-range .high {
+      color: #fbbf24;
+      border-color: rgba(251,191,36,0.35);
+    }
   </style>
 </head>
 <body>
@@ -213,7 +241,7 @@ function createCard(asset) {
       
       <div style="text-align:right">
         <span class="price-badge" id="badge-${asset.id}">—</span>
-        <div id="range-${asset.id}" style="font-size:0.75rem;color:#94a3b8;margin-top:4px"></div>
+        <div id="range-${asset.id}" class="price-range"></div>
       </div>
     </div>
     <canvas id="${asset.id}"></canvas>
@@ -298,7 +326,10 @@ async function loadData(date) {
       badge.classList.remove("price-up", "price-down");
       badge.classList.add(last >= first ? "price-up" : "price-down");
     
-      range.textContent = `L ${min.toLocaleString()} · H ${max.toLocaleString()}`;
+      range.innerHTML = `
+        <span class="low">L ${min.toLocaleString()}</span>
+        <span class="high">H ${max.toLocaleString()}</span>
+      `;
     }
   });
 }
