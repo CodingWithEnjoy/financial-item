@@ -1,16 +1,18 @@
 name: Generate dates index
 
 on:
-  workflow_dispatch: 
   push:
     paths:
       - "data/*.json"
+  workflow_dispatch:
   schedule:
     - cron: "*/30 * * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -31,4 +33,4 @@ jobs:
           git config user.email "actions@github.com"
           git add data/dates.json
           git commit -m "Update dates.json" || exit 0
-          git push
+          git push https://x-access-token:${{ secrets.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 }}@github.com/${{ github.repository }}.git
