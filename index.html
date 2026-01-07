@@ -242,7 +242,7 @@ async function loadData(date) {
     ASSETS.forEach(asset => {
       const values = json.map(entry => {
         const item = entry.data.find(i => i.key === asset.key);
-        return item ? Number(item.priceFloat || 0) : 0;
+        return item ? Number(item.price || 0) : 0;
       });
       createChart(asset.id, labels, values, asset.label, asset.color);
       
