@@ -210,7 +210,11 @@ function createCard(asset) {
   div.innerHTML = `
     <div class="card-header">
       <h2>${asset.label}</h2>
-      <span class="price-badge" id="badge-${asset.id}">—</span>
+      
+      <div style="text-align:right">
+        <span class="price-badge" id="badge-${asset.id}">—</span>
+        <div id="range-${asset.id}" style="font-size:0.75rem;color:#94a3b8;margin-top:4px"></div>
+      </div>
     </div>
     <canvas id="${asset.id}"></canvas>
   `;
@@ -280,14 +284,21 @@ async function loadData(date) {
 
     createChart(asset.id, labels, values, asset.label, asset.color);
 
-    const first = values.find(v => v > 0);
-    const last = values[values.length - 1];
+    const clean = values.filter(v => v > 0);
+    const first = clean[0];
+    const last = clean[clean.length - 1];
+    const min = Math.min(...clean);
+    const max = Math.max(...clean);
+    
     const badge = document.getElementById(`badge-${asset.id}`);
-
+    const range = document.getElementById(`range-${asset.id}`);
+    
     if (first !== undefined && last !== undefined) {
       badge.textContent = last.toLocaleString();
       badge.classList.remove("price-up", "price-down");
       badge.classList.add(last >= first ? "price-up" : "price-down");
+    
+      range.textContent = `L ${min.toLocaleString()} · H ${max.toLocaleString()}`;
     }
   });
 }
