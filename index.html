@@ -195,7 +195,7 @@ function createChart(canvasId, labels, data, label, color) {
           borderWidth: 3,
           pointRadius: ctx => ctx.dataIndex === data.length - 1 ? 4 : 0,
           pointHoverRadius: 6,
-          pointBackgroundColor: color,
+          pointBackgroundColor: ctx => ctx.dataIndex === data.length - 1 ? color : "transparent",
           tension: 0.35
         }]
       },
@@ -250,9 +250,10 @@ async function loadData(date) {
       const last = values[values.length - 1];
       
       const badge = document.getElementById(`badge-${asset.id}`);
-      if (first && last) {
+      if (first !== undefined && last !== undefined) {
         const up = last >= first;
         badge.textContent = last.toLocaleString();
+        badge.classList.remove("price-up", "price-down");
         badge.classList.add(up ? "price-up" : "price-down");
       }
     });
