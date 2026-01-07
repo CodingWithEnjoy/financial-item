@@ -143,12 +143,10 @@ function createChart(canvasId, labels, data, label, color) {
           label,
           data,
           borderColor: color,
-          backgroundColor: color + "33",
+          backgroundColor: color + "22",
           borderWidth: 3,
-          pointRadius: 3,
-          pointHoverRadius: 6,
-          pointBackgroundColor: color,
-          pointBorderColor: color,
+          pointRadius: 2,
+          pointHoverRadius: 5,
           tension: 0.35
         }]
       },
@@ -156,10 +154,23 @@ function createChart(canvasId, labels, data, label, color) {
         responsive: true,
         maintainAspectRatio: false,
         interaction: { intersect: false, mode: "index" },
-        plugins: { legend: { display: false } },
+        plugins: {
+          legend: { display: false }
+        },
         scales: {
-          x: { ticks: { color: "#94a3b8" }, grid: { color: "#1e293b" } },
-          y: { ticks: { color: "#94a3b8" }, grid: { color: "#1e293b" } }
+          x: {
+            ticks: { color: "#94a3b8" },
+            grid: { color: "#1e293b" }
+          },
+          y: {
+            beginAtZero: false,      // IMPORTANT
+            grace: "8%",             // 👈 makes movements calmer
+            ticks: {
+              color: "#94a3b8",
+              callback: v => v.toLocaleString()
+            },
+            grid: { color: "#1e293b" }
+          }
         }
       }
     }
