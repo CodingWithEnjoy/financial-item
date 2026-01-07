@@ -38,13 +38,50 @@
 
     h1 { font-size: 1.6rem; margin: 0; }
 
-    input[type="date"] {
+    .date-dropdown {
+      position: relative;
+    }
+    
+    #dateBtn {
       background: #020617;
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 1rem;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    
+    .date-menu {
+      position: absolute;
+      top: 110%;
+      right: 0;
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      min-width: 180px;
+      max-height: 260px;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: 0.25s ease;
+      z-index: 20;
+    }
+    
+    .date-menu.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    
+    .date-menu div {
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .date-menu div:hover {
+      background: #1e293b;
     }
 
     .grid {
@@ -133,7 +170,11 @@
 
 <header>
   <h1>📈 Financial Dashboard</h1>
-  <input type="date" id="datePicker">
+  
+  <div class="date-dropdown">
+    <button id="dateBtn">📅 Select date</button>
+    <div id="dateMenu" class="date-menu"></div>
+  </div>
 </header>
 
 <section class="grid" id="chartGrid">
@@ -160,6 +201,8 @@ const ASSETS = [
 
 const charts = {};
 const grid = document.getElementById("chartGrid");
+const dateBtn = document.getElementById("dateBtn");
+const dateMenu = document.getElementById("dateMenu");
 
 function createCard(asset) {
   const div = document.createElement("div");
@@ -204,21 +247,13 @@ function createChart(canvasId, labels, data, label, color) {
         responsive: true,
         maintainAspectRatio: false,
         interaction: { intersect: false, mode: "index" },
-        plugins: {
-          legend: { display: false }
-        },
+        plugins: { legend: { display: false } },
         scales: {
-          x: {
-            ticks: { color: "#94a3b8" },
-            grid: { color: "#1e293b" }
-          },
+          x: { ticks: { color: "#94a3b8" }, grid: { color: "#1e293b" } },
           y: {
-            beginAtZero: false,      // IMPORTANT
-            grace: "15%",             // 👈 makes movements calmer
-            ticks: {
-              color: "#94a3b8",
-              callback: v => v.toLocaleString()
-            },
+            beginAtZero: false,
+            grace: "15%",
+            ticks: { color: "#94a3b8", callback: v => v.toLocaleString() },
             grid: { color: "#1e293b" }
           }
         }
@@ -227,49 +262,80 @@ function createChart(canvasId, labels, data, label, color) {
   );
 }
 
-// Load JSON data for a given date
 async function loadData(date) {
-  try {
-    const res = await fetch(`data/${date}.json`);
-    if (!res.ok) throw new Error("Data file not found");
-    const json = await res.json();
+  const res = await fetch(`data/${date}.json`);
+  if (!res.ok) return;
 
-    // Clear grid & recreate cards
-    grid.innerHTML = "";
-    ASSETS.forEach(createCard);
+  const json = await res.json();
+  grid.innerHTML = "";
+  ASSETS.forEach(createCard);
 
-    const labels = json.map(e => e.time);
+  const labels = json.map(e => e.time);
 
-    ASSETS.forEach(asset => {
-      const values = json.map(entry => {
-        const item = entry.data.find(i => i.key === asset.key);
-        return item ? Number(item.price || 0) : 0;
-      });
-      createChart(asset.id, labels, values, asset.label, asset.color);
-      
-      const first = values.find(v => v > 0);
-      const last = values[values.length - 1];
-      
-      const badge = document.getElementById(`badge-${asset.id}`);
-      if (first !== undefined && last !== undefined) {
-        const up = last >= first;
-        badge.textContent = last.toLocaleString();
-        badge.classList.remove("price-up", "price-down");
-        badge.classList.add(up ? "price-up" : "price-down");
-      }
+  ASSETS.forEach(asset => {
+    const values = json.map(entry => {
+      const item = entry.data.find(i => i.key === asset.key);
+      return item ? Number(item.price || 0) : 0;
     });
-  } catch (err) {
-    console.error("Failed to load data:", err);
+
+    createChart(asset.id, labels, values, asset.label, asset.color);
+
+    const first = values.find(v => v > 0);
+    const last = values[values.length - 1];
+    const badge = document.getElementById(`badge-${asset.id}`);
+
+    if (first !== undefined && last !== undefined) {
+      badge.textContent = last.toLocaleString();
+      badge.classList.remove("price-up", "price-down");
+      badge.classList.add(last >= first ? "price-up" : "price-down");
+    }
+  });
+}
+
+async function fileExists(date) {
+  const res = await fetch(`data/${date}.json`, { method: "HEAD" });
+  return res.ok;
+}
+
+async function loadAvailableDates() {
+  dateMenu.innerHTML = "";
+  const dates = [];
+  const today = new Date();
+
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const dateStr = d.toISOString().slice(0, 10);
+
+    if (await fileExists(dateStr)) {
+      dates.push(dateStr);
+    }
+  }
+
+  dates.forEach(date => {
+    const item = document.createElement("div");
+    item.textContent = date;
+    item.onclick = () => {
+      dateBtn.textContent = `📅 ${date}`;
+      dateMenu.classList.remove("show");
+      loadData(date);
+    };
+    dateMenu.appendChild(item);
+  });
+
+  if (dates.length) {
+    dateBtn.textContent = `📅 ${dates[0]}`;
+    loadData(dates[0]);
   }
 }
 
-// Init
-const picker = document.getElementById("datePicker");
-const today = new Date().toISOString().slice(0, 10);
-picker.value = today;
+dateBtn.onclick = () => dateMenu.classList.toggle("show");
 
-picker.addEventListener("change", e => loadData(e.target.value));
-loadData(today);
+document.addEventListener("click", e => {
+  if (!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show");
+});
+
+loadAvailableDates();
 </script>
 
 </body>
