@@ -139,7 +139,6 @@ function createChart(canvasId, labels, data, label, color) {
 async function loadData(date) {
   const res = await fetch(`data/${date}.json`);
   if (!res.ok) return;
-
   const json = await res.json();
 
   grid.innerHTML = "";
@@ -149,12 +148,21 @@ async function loadData(date) {
 
   ASSETS.forEach(asset => {
     const values = json.map(entry => {
-      // Check financial first
-      const finItem = entry.financial?.find(i => i.key === asset.key);
-      if (finItem) return Number(finItem.price || 0);
-      // Check PAMP
-      const pampItem = entry.pamp?.items?.find(i => i.weightGram === asset.key);
-      if (pampItem) return Number(pampItem.price || 0);
+      // Handle old-style "data" field
+      if(entry.data){
+        const item = entry.data.find(i=>i.key===asset.key);
+        if(item) return Number(item.price || 0);
+      }
+      // Handle new-style "financial"
+      if(entry.financial){
+        const item = entry.financial.find(i=>i.key===asset.key);
+        if(item) return Number(item.price || 0);
+      }
+      // Handle PAMP items
+      if(entry.pamp && entry.pamp.items){
+        const pampItem = entry.pamp.items.find(i=>i.weightGram===asset.key);
+        if(pampItem) return Number(pampItem.price || 0);
+      }
       return 0;
     });
 
