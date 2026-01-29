@@ -25,35 +25,29 @@ jobs:
 
           mkdir -p data
 
+          FILE="data/${DATE}.json"
+
           #### Financial API ####
-          FIN_FILE="data/${DATE}_financial.json"
           FIN_API="https://api.dastyar.io/express/financial-item"
           FIN_RESPONSE=$(curl -s "$FIN_API")
           echo "$FIN_RESPONSE" | jq empty
 
-          if [ ! -f "$FIN_FILE" ]; then
-            echo "[]" > "$FIN_FILE"
-          fi
-
-          jq --arg time "$TIME" \
-             --argjson data "$FIN_RESPONSE" \
-             '. += [{"time": $time, "data": $data}]' \
-             "$FIN_FILE" > tmp.json && mv tmp.json "$FIN_FILE"
-
           #### PAMP API ####
-          PAMP_FILE="data/${DATE}_pamp.json"
           PAMP_API="https://amirmasoud.netlify.app/api/v1/pamp"
           PAMP_RESPONSE=$(curl -s "$PAMP_API")
           echo "$PAMP_RESPONSE" | jq empty
 
-          if [ ! -f "$PAMP_FILE" ]; then
-            echo "[]" > "$PAMP_FILE"
+          # Create daily file if it doesn't exist
+          if [ ! -f "$FILE" ]; then
+            echo "[]" > "$FILE"
           fi
 
+          # Append combined snapshot
           jq --arg time "$TIME" \
-             --argjson data "$PAMP_RESPONSE" \
-             '. += [{"time": $time, "data": $data}]' \
-             "$PAMP_FILE" > tmp.json && mv tmp.json "$PAMP_FILE"
+             --argjson financial "$FIN_RESPONSE" \
+             --argjson pamp "$PAMP_RESPONSE" \
+             '. += [{"time": $time, "financial": $financial, "pamp": $pamp}]' \
+             "$FILE" > tmp.json && mv tmp.json "$FILE"
 
       - name: Commit and push
         run: |
