@@ -1,4 +1,4 @@
-name: Financial Data Save (Every 5 Min Tehran)
+name: Financial & PAMP Data Save (Every 5 Min Tehran)
 
 on:
   schedule:
@@ -22,25 +22,38 @@ jobs:
           # Tehran time (UTC+3:30)
           DATE=$(date -u -d "+3 hours 30 minutes" +"%Y-%m-%d")
           TIME=$(date -u -d "+3 hours 30 minutes" +"%H:%M:%S")
-          FILE="data/$DATE.json"
 
-          API_URL="https://api.dastyar.io/express/financial-item"
+          mkdir -p data
 
-          RESPONSE=$(curl -s "$API_URL")
+          #### Financial API ####
+          FIN_FILE="data/${DATE}_financial.json"
+          FIN_API="https://api.dastyar.io/express/financial-item"
+          FIN_RESPONSE=$(curl -s "$FIN_API")
+          echo "$FIN_RESPONSE" | jq empty
 
-          # Validate JSON response
-          echo "$RESPONSE" | jq empty
-
-          # Create daily file if it doesn't exist
-          if [ ! -f "$FILE" ]; then
-            echo "[]" > "$FILE"
+          if [ ! -f "$FIN_FILE" ]; then
+            echo "[]" > "$FIN_FILE"
           fi
 
-          # Append snapshot
           jq --arg time "$TIME" \
-             --argjson data "$RESPONSE" \
+             --argjson data "$FIN_RESPONSE" \
              '. += [{"time": $time, "data": $data}]' \
-             "$FILE" > tmp.json && mv tmp.json "$FILE"
+             "$FIN_FILE" > tmp.json && mv tmp.json "$FIN_FILE"
+
+          #### PAMP API ####
+          PAMP_FILE="data/${DATE}_pamp.json"
+          PAMP_API="https://amirmasoud.netlify.app/api/v1/pamp"
+          PAMP_RESPONSE=$(curl -s "$PAMP_API")
+          echo "$PAMP_RESPONSE" | jq empty
+
+          if [ ! -f "$PAMP_FILE" ]; then
+            echo "[]" > "$PAMP_FILE"
+          fi
+
+          jq --arg time "$TIME" \
+             --argjson data "$PAMP_RESPONSE" \
+             '. += [{"time": $time, "data": $data}]' \
+             "$PAMP_FILE" > tmp.json && mv tmp.json "$PAMP_FILE"
 
       - name: Commit and push
         run: |
@@ -49,6 +62,6 @@ jobs:
 
           git add data/
 
-          git commit -m "Financial snapshot $(date -u -d '+3 hours 30 minutes' +"%Y-%m-%d %H:%M")" || echo "No changes to commit"
+          git commit -m "Snapshot $(date -u -d '+3 hours 30 minutes' +"%Y-%m-%d %H:%M")" || echo "No changes to commit"
 
           git push
