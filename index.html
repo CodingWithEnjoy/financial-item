@@ -16,9 +16,7 @@
       --muted: #94a3b8;
       --accent: #38bdf8;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       background: radial-gradient(circle at top, #020617, #020617);
@@ -26,31 +24,10 @@
       color: var(--text);
       padding: 24px;
     }
-
-    header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      gap: 12px;
-    }
-
+    header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 12px; }
     h1 { font-size: 1.6rem; margin: 0; }
-
-    .date-dropdown {
-      position: relative;
-    }
-    
-    #dateBtn {
-      background: #020617;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    
+    .date-dropdown { position: relative; }
+    #dateBtn { background: #020617; border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 10px; cursor: pointer; }
     .date-menu {
       position: absolute;
       top: 110%;
@@ -67,151 +44,41 @@
       transition: 0.25s ease;
       z-index: 20;
     }
-    
-    .date-menu.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    
-    .date-menu div {
-      padding: 10px 14px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    
-    .date-menu div:hover {
-      background: #1e293b;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: 24px;
-      row-gap: 60px;
-    }
-    
-    @media(max-width: 768px){
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .card {
-      background: linear-gradient(180deg, #020617, #020617);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      height: 500px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card h2 {
-      margin: 0 0 14px;
-      font-size: 1.2rem;
-      color: var(--text);
-      flex-shrink: 0;
-    }
-
+    .date-menu.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .date-menu div { padding: 10px 14px; cursor: pointer; transition: background 0.2s; }
+    .date-menu div:hover { background: #1e293b; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 24px; row-gap: 60px; }
+    @media(max-width: 768px){ .grid { grid-template-columns: 1fr; } }
+    .card { background: linear-gradient(180deg, #020617, #020617); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); height: 500px; display: flex; flex-direction: column; }
+    .card h2 { margin: 0 0 14px; font-size: 1.2rem; color: var(--text); flex-shrink: 0; }
     canvas { flex: 1; }
-
-    footer {
-      margin-top: 80px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    @media(max-width:600px){
-      .grid { grid-template-columns: 1fr; }
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
-    }
-    
-    .price-badge {
-      font-size: 0.9rem;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      background: #020617;
-      border: 1px solid var(--border);
-    }
-    
-    .price-up {
-      color: #22c55e;
-      border-color: rgba(34,197,94,0.4);
-    }
-    
-    .price-down {
-      color: #ef4444;
-      border-color: rgba(239,68,68,0.4);
-    }
-    
-    .last-dot {
-      animation: pulse 1.8s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.6); }
-      70% { box-shadow: 0 0 0 10px rgba(56,189,248,0); }
-      100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); }
-    }
-
-    .price-range {
-      margin-top: 15px;
-      display: flex;
-      gap: 8px;
-      font-size: 0.72rem;
-      color: var(--muted);
-      justify-content: flex-end;
-    }
-    
-    .price-range span {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(148,163,184,0.08);
-      border: 1px solid rgba(148,163,184,0.15);
-      font-weight: 500;
-      letter-spacing: 0.2px;
-    }
-    
-    .price-range .low {
-      color: #60a5fa;
-      border-color: rgba(96,165,250,0.35);
-    }
-    
-    .price-range .high {
-      color: #fbbf24;
-      border-color: rgba(251,191,36,0.35);
-    }
+    footer { margin-top: 80px; text-align: center; color: var(--muted); font-size: 0.9rem; }
+    @media(max-width:600px){ .grid { grid-template-columns: 1fr; } }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .price-badge { font-size: 0.9rem; padding: 6px 10px; border-radius: 999px; font-weight: 600; letter-spacing: 0.3px; background: #020617; border: 1px solid var(--border); }
+    .price-up { color: #22c55e; border-color: rgba(34,197,94,0.4); }
+    .price-down { color: #ef4444; border-color: rgba(239,68,68,0.4); }
+    .last-dot { animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.6); } 70% { box-shadow: 0 0 0 10px rgba(56,189,248,0); } 100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); } }
+    .price-range { margin-top: 15px; display: flex; gap: 8px; font-size: 0.72rem; color: var(--muted); justify-content: flex-end; }
+    .price-range span { padding: 2px 8px; border-radius: 999px; background: rgba(148,163,184,0.08); border: 1px solid rgba(148,163,184,0.15); font-weight: 500; letter-spacing: 0.2px; }
+    .price-range .low { color: #60a5fa; border-color: rgba(96,165,250,0.35); }
+    .price-range .high { color: #fbbf24; border-color: rgba(251,191,36,0.35); }
   </style>
 </head>
 <body>
 
 <header>
   <h1>📈 Financial Dashboard</h1>
-  
   <div class="date-dropdown">
     <button id="dateBtn">📅 Select date</button>
     <div id="dateMenu" class="date-menu"></div>
   </div>
 </header>
 
-<section class="grid" id="chartGrid">
-  <!-- Charts will be injected here -->
-</section>
+<section class="grid" id="chartGrid"></section>
 
-<footer>
-  Data updated every 30 mins via GitHub Actions
-</footer>
+<footer>Data updated every 30 mins via GitHub Actions</footer>
 
 <script>
 const ASSETS = [
@@ -227,7 +94,7 @@ const ASSETS = [
   { id: "try", key: "try", label: "TRY", color: "#f87171" },
   { id: "aed", key: "aed", label: "AED", color: "#34d399" },
 
-  // PAMP gold bars (weights in grams)
+  // PAMP gold bars
   { id: "pamp1", key: 1, label: "PAMP 1g", color: "#fbbf24" },
   { id: "pamp2_5", key: 2.5, label: "PAMP 2.5g", color: "#fbbf24" },
   { id: "pamp5", key: 5, label: "PAMP 5g", color: "#f97316" },
@@ -262,130 +129,65 @@ function createCard(asset) {
 
 function createChart(canvasId, labels, data, label, color) {
   if (charts[canvasId]) charts[canvasId].destroy();
-
-  charts[canvasId] = new Chart(
-    document.getElementById(canvasId).getContext("2d"),
-    {
-      type: "line",
-      data: {
-        labels,
-        datasets: [{
-          label,
-          data,
-          borderColor: color,
-          backgroundColor: ctx => {
-            const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 400);
-            g.addColorStop(0, color + "44");
-            g.addColorStop(1, "transparent");
-            return g;
-          },
-          borderWidth: 3,
-          pointRadius: ctx => ctx.dataIndex === data.length - 1 ? 4 : 0,
-          pointHoverRadius: 6,
-          pointBackgroundColor: ctx => ctx.dataIndex === data.length - 1 ? color : "transparent",
-          tension: 0.35
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: { intersect: false, mode: "index" },
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: "#94a3b8" }, grid: { color: "#1e293b" } },
-          y: {
-            beginAtZero: false,
-            grace: "15%",
-            ticks: { color: "#94a3b8", callback: v => v.toLocaleString() },
-            grid: { color: "#1e293b" }
-          }
-        }
-      }
-    }
-  );
+  charts[canvasId] = new Chart(document.getElementById(canvasId).getContext("2d"), {
+    type: "line",
+    data: { labels, datasets: [{ label, data, borderColor: color, backgroundColor: ctx => { const g = ctx.chart.ctx.createLinearGradient(0,0,0,400); g.addColorStop(0,color+"44"); g.addColorStop(1,"transparent"); return g; }, borderWidth: 3, pointRadius: ctx => ctx.dataIndex === data.length-1 ? 4:0, pointHoverRadius:6, pointBackgroundColor: ctx => ctx.dataIndex===data.length-1?color:"transparent", tension:0.35 }] },
+    options: { responsive:true, maintainAspectRatio:false, interaction:{intersect:false,mode:"index"}, plugins:{legend:{display:false}}, scales:{x:{ticks:{color:"#94a3b8"},grid:{color:"#1e293b"}},y:{beginAtZero:false,grace:"15%",ticks:{color:"#94a3b8",callback:v=>v.toLocaleString()},grid:{color:"#1e293b"}}}}
+  });
 }
 
 async function loadData(date) {
-  // Fetch financial data
-  const resFin = await fetch(`data/${date}_financial.json`);
-  const jsonFin = resFin.ok ? await resFin.json() : [];
+  const res = await fetch(`data/${date}.json`);
+  if (!res.ok) return;
 
-  // Fetch PAMP data
-  const resPamp = await fetch(`data/${date}_pamp.json`);
-  const jsonPamp = resPamp.ok ? await resPamp.json() : [];
+  const json = await res.json();
 
   grid.innerHTML = "";
   ASSETS.forEach(createCard);
 
-  const labels = [...jsonFin, ...jsonPamp].map(e => e.time);
+  const labels = json.map(e => e.time);
 
   ASSETS.forEach(asset => {
-    const values = labels.map(time => {
-      // Check financial data
-      const finEntry = jsonFin.find(e => e.time === time);
-      const finItem = finEntry?.data.find(i => i.key === asset.key);
+    const values = json.map(entry => {
+      // Check financial first
+      const finItem = entry.financial?.find(i => i.key === asset.key);
       if (finItem) return Number(finItem.price || 0);
-
-      // Check PAMP data
-      const pampEntry = jsonPamp.find(e => e.time === time);
-      const pampItem = pampEntry?.data.items?.find(i => i.weightGram === asset.key);
+      // Check PAMP
+      const pampItem = entry.pamp?.items?.find(i => i.weightGram === asset.key);
       if (pampItem) return Number(pampItem.price || 0);
-
       return 0;
     });
 
     createChart(asset.id, labels, values, asset.label, asset.color);
 
-    const clean = values.filter(v => v > 0);
+    const clean = values.filter(v => v>0);
     if (!clean.length) return;
 
-    const first = clean[0];
-    const last = clean[clean.length - 1];
-    const min = Math.min(...clean);
-    const max = Math.max(...clean);
-
+    const first = clean[0], last = clean[clean.length-1], min = Math.min(...clean), max = Math.max(...clean);
     const badge = document.getElementById(`badge-${asset.id}`);
     const range = document.getElementById(`range-${asset.id}`);
-
     badge.textContent = last.toLocaleString();
-    badge.classList.remove("price-up", "price-down");
-    badge.classList.add(last >= first ? "price-up" : "price-down");
-
-    range.innerHTML = `
-      <span class="low">L ${min.toLocaleString()}</span>
-      <span class="high">H ${max.toLocaleString()}</span>
-    `;
+    badge.classList.remove("price-up","price-down");
+    badge.classList.add(last>=first?"price-up":"price-down");
+    range.innerHTML = `<span class="low">L ${min.toLocaleString()}</span><span class="high">H ${max.toLocaleString()}</span>`;
   });
 }
 
 async function loadAvailableDates() {
-  const res = await fetch("data/dates.json", { cache: "no-store" });
-  const dates = await res.ok ? await res.json() : [];
-
-  dateMenu.innerHTML = "";
-
-  dates.forEach(date => {
-    const item = document.createElement("div");
-    item.textContent = date;
-    item.onclick = () => {
-      dateBtn.textContent = `📅 ${date}`;
-      dateMenu.classList.remove("show");
-      loadData(date);
-    };
+  const res = await fetch("data/dates.json",{cache:"no-store"});
+  const dates = res.ok ? await res.json() : [];
+  dateMenu.innerHTML="";
+  dates.forEach(date=>{
+    const item=document.createElement("div");
+    item.textContent=date;
+    item.onclick=()=>{ dateBtn.textContent=`📅 ${date}`; dateMenu.classList.remove("show"); loadData(date); };
     dateMenu.appendChild(item);
   });
-
-  if (dates.length) {
-    dateBtn.textContent = `📅 ${dates[0]}`;
-    loadData(dates[0]);
-  }
+  if(dates.length){ dateBtn.textContent=`📅 ${dates[0]}`; loadData(dates[0]); }
 }
 
-dateBtn.onclick = () => dateMenu.classList.toggle("show");
-document.addEventListener("click", e => {
-  if (!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show");
-});
-
+dateBtn.onclick=()=>dateMenu.classList.toggle("show");
+document.addEventListener("click",e=>{if(!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show");});
 loadAvailableDates();
 </script>
 
