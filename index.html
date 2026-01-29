@@ -215,6 +215,7 @@
 
 <script>
 const ASSETS = [
+  // Financial items
   { id: "usd", key: "usd", label: "USD", color: "#38bdf8" },
   { id: "eur", key: "eur", label: "EUR", color: "#a78bfa" },
   { id: "sekkeh", key: "sekkeh", label: "Sekkeh", color: "#fbbf24" },
@@ -224,7 +225,18 @@ const ASSETS = [
   { id: "gbp", key: "gbp", label: "Pound (GBP)", color: "#8b5cf6" },
   { id: "rob", key: "rob", label: "Roub", color: "#f472b6" },
   { id: "try", key: "try", label: "TRY", color: "#f87171" },
-  { id: "aed", key: "aed", label: "AED", color: "#34d399" }
+  { id: "aed", key: "aed", label: "AED", color: "#34d399" },
+
+  // PAMP gold bars (weights in grams)
+  { id: "pamp1", key: 1, label: "PAMP 1g", color: "#fbbf24" },
+  { id: "pamp2_5", key: 2.5, label: "PAMP 2.5g", color: "#fbbf24" },
+  { id: "pamp5", key: 5, label: "PAMP 5g", color: "#f97316" },
+  { id: "pamp10", key: 10, label: "PAMP 10g", color: "#f97316" },
+  { id: "pamp15", key: 15.55175, label: "PAMP 15.55g", color: "#f87171" },
+  { id: "pamp20", key: 20, label: "PAMP 20g", color: "#f87171" },
+  { id: "pamp31_1", key: 31.1035, label: "PAMP 1oz", color: "#f472b6" },
+  { id: "pamp50", key: 50, label: "PAMP 50g", color: "#8b5cf6" },
+  { id: "pamp100", key: 100, label: "PAMP 100g", color: "#a78bfa" }
 ];
 
 const charts = {};
@@ -238,7 +250,6 @@ function createCard(asset) {
   div.innerHTML = `
     <div class="card-header">
       <h2>${asset.label}</h2>
-      
       <div style="text-align:right">
         <span class="price-badge" id="badge-${asset.id}">—</span>
         <div id="range-${asset.id}" class="price-range"></div>
@@ -295,53 +306,61 @@ function createChart(canvasId, labels, data, label, color) {
 }
 
 async function loadData(date) {
-  const res = await fetch(`data/${date}.json`);
-  if (!res.ok) return;
+  // Fetch financial data
+  const resFin = await fetch(`data/${date}_financial.json`);
+  const jsonFin = resFin.ok ? await resFin.json() : [];
 
-  const json = await res.json();
+  // Fetch PAMP data
+  const resPamp = await fetch(`data/${date}_pamp.json`);
+  const jsonPamp = resPamp.ok ? await resPamp.json() : [];
+
   grid.innerHTML = "";
   ASSETS.forEach(createCard);
 
-  const labels = json.map(e => e.time);
+  const labels = [...jsonFin, ...jsonPamp].map(e => e.time);
 
   ASSETS.forEach(asset => {
-    const values = json.map(entry => {
-      const item = entry.data.find(i => i.key === asset.key);
-      return item ? Number(item.price || 0) : 0;
+    const values = labels.map(time => {
+      // Check financial data
+      const finEntry = jsonFin.find(e => e.time === time);
+      const finItem = finEntry?.data.find(i => i.key === asset.key);
+      if (finItem) return Number(finItem.price || 0);
+
+      // Check PAMP data
+      const pampEntry = jsonPamp.find(e => e.time === time);
+      const pampItem = pampEntry?.data.items?.find(i => i.weightGram === asset.key);
+      if (pampItem) return Number(pampItem.price || 0);
+
+      return 0;
     });
 
     createChart(asset.id, labels, values, asset.label, asset.color);
 
     const clean = values.filter(v => v > 0);
+    if (!clean.length) return;
+
     const first = clean[0];
     const last = clean[clean.length - 1];
     const min = Math.min(...clean);
     const max = Math.max(...clean);
-    
+
     const badge = document.getElementById(`badge-${asset.id}`);
     const range = document.getElementById(`range-${asset.id}`);
-    
-    if (first !== undefined && last !== undefined) {
-      badge.textContent = last.toLocaleString();
-      badge.classList.remove("price-up", "price-down");
-      badge.classList.add(last >= first ? "price-up" : "price-down");
-    
-      range.innerHTML = `
-        <span class="low">L ${min.toLocaleString()}</span>
-        <span class="high">H ${max.toLocaleString()}</span>
-      `;
-    }
-  });
-}
 
-async function fileExists(date) {
-  const res = await fetch(`data/${date}.json`, { method: "HEAD" });
-  return res.ok;
+    badge.textContent = last.toLocaleString();
+    badge.classList.remove("price-up", "price-down");
+    badge.classList.add(last >= first ? "price-up" : "price-down");
+
+    range.innerHTML = `
+      <span class="low">L ${min.toLocaleString()}</span>
+      <span class="high">H ${max.toLocaleString()}</span>
+    `;
+  });
 }
 
 async function loadAvailableDates() {
   const res = await fetch("data/dates.json", { cache: "no-store" });
-  const dates = await res.json();
+  const dates = await res.ok ? await res.json() : [];
 
   dateMenu.innerHTML = "";
 
@@ -363,7 +382,6 @@ async function loadAvailableDates() {
 }
 
 dateBtn.onclick = () => dateMenu.classList.toggle("show");
-
 document.addEventListener("click", e => {
   if (!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show");
 });
