@@ -2707,5 +2707,306 @@
         }
       ]
     }
+  },
+  {
+    "time": "12:24:14",
+    "financial": [
+      {
+        "key": "usd_btc",
+        "price": "78847",
+        "priceFloat": "78847",
+        "change": "0",
+        "title": "بیت کوین",
+        "enTitle": "Bitcoin",
+        "category": "crypto",
+        "currency": "$",
+        "image": "btc.svg",
+        "link": "https://link.dastyar.io/widget-wallex-btc",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/btc.svg",
+        "sort_order": 1,
+        "convert": "devideUSDT"
+      },
+      {
+        "key": "usd_eth",
+        "price": "2323",
+        "priceFloat": "2323",
+        "change": "0",
+        "title": "اتریوم",
+        "enTitle": "Ethereum",
+        "category": "crypto",
+        "currency": "$",
+        "image": "eth.svg",
+        "link": "https://link.dastyar.io/widget-wallex-eth",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/eth.svg",
+        "sort_order": 2,
+        "convert": "devideUSDT"
+      },
+      {
+        "key": "usd_usdt",
+        "price": "157400",
+        "priceFloat": "157400",
+        "change": "0.16",
+        "title": "تتر",
+        "enTitle": "Tether (USDT)",
+        "category": "crypto",
+        "currency": "تومان",
+        "image": "usdt.svg",
+        "link": "https://link.dastyar.io/widget-wallex-usdt",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/usdt.svg",
+        "sort_order": 3
+      },
+      {
+        "key": "usd_ton",
+        "price": "1",
+        "priceFloat": "1.38",
+        "change": "0.55",
+        "title": "تون",
+        "enTitle": "TON",
+        "category": "crypto",
+        "currency": "$",
+        "image": "ton.webp",
+        "link": "https://link.dastyar.io/widget-wallex-ton",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/ton.webp",
+        "sort_order": 3,
+        "convert": "devideUSDT"
+      },
+      {
+        "key": "usd_xrp",
+        "price": "2",
+        "priceFloat": "1.62",
+        "change": "-1.01",
+        "title": "ریپل",
+        "enTitle": "Ripple (XRP)",
+        "category": "crypto",
+        "currency": "$",
+        "image": "xrp.webp",
+        "link": "https://link.dastyar.io/widget-wallex-xrp",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/xrp.webp",
+        "sort_order": 3,
+        "convert": "devideUSDT"
+      },
+      {
+        "key": "usd_sol",
+        "price": "105",
+        "priceFloat": "105",
+        "change": "0",
+        "title": "سولانا",
+        "enTitle": "Solana",
+        "category": "crypto",
+        "currency": "$",
+        "image": "sol.webp",
+        "link": "https://link.dastyar.io/widget-wallex-sol",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/sol.webp",
+        "sort_order": 3,
+        "convert": "devideUSDT"
+      },
+      {
+        "key": "18ayar",
+        "price": "18675840",
+        "priceFloat": "18675840",
+        "change": "0",
+        "title": "طلا 18 عیار",
+        "enTitle": "18k Gold",
+        "category": "gold",
+        "currency": "تومان",
+        "image": "gold18.svg",
+        "link": "https://link.hooshang.ai/sr-zarpay-price",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/gold18.svg",
+        "sort_order": 4
+      },
+      {
+        "key": "sekkeh",
+        "price": "189800000",
+        "priceFloat": "189800",
+        "change": "6.22",
+        "title": "سکه امامی",
+        "enTitle": "Emami Coin",
+        "category": "gold",
+        "currency": "تومان",
+        "image": "emami.svg",
+        "link": "https://link.dastyar.io/tgju-sekee",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/emami.svg",
+        "sort_order": 5,
+        "convert": "multiply1000"
+      },
+      {
+        "key": "rob",
+        "price": "53500000",
+        "priceFloat": "53500",
+        "change": "3.74",
+        "title": "ربع سکه",
+        "enTitle": "Quarter Coin",
+        "category": "gold",
+        "currency": "تومان",
+        "image": "robe.svg",
+        "link": "https://link.dastyar.io/tgju-rob",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/robe.svg",
+        "sort_order": 6,
+        "convert": "multiply1000"
+      },
+      {
+        "key": "usd",
+        "price": "154000",
+        "priceFloat": "154000",
+        "change": "-0.32",
+        "title": "دلار",
+        "enTitle": "USD",
+        "category": "currency",
+        "currency": "تومان",
+        "image": "dollar.svg",
+        "link": "https://link.dastyar.io/tgju-dollar",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/dollar.svg",
+        "sort_order": 7
+      },
+      {
+        "key": "eur",
+        "price": "181900",
+        "priceFloat": "181900",
+        "change": "-0.27",
+        "title": "یورو",
+        "enTitle": "EUR",
+        "category": "currency",
+        "currency": "تومان",
+        "image": "euro.svg",
+        "link": "https://link.dastyar.io/tgju-eur",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/euro.svg",
+        "sort_order": 8
+      },
+      {
+        "key": "gbp",
+        "price": "210820",
+        "priceFloat": "210820",
+        "change": "-0.05",
+        "title": "پوند",
+        "enTitle": "GBP",
+        "category": "currency",
+        "currency": "تومان",
+        "image": "pound.svg",
+        "link": "https://link.dastyar.io/tgju-gbp",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/pound.svg",
+        "sort_order": 9
+      },
+      {
+        "key": "aed",
+        "price": "42220",
+        "priceFloat": "42220",
+        "change": "-0.59",
+        "title": "درهم امارات",
+        "enTitle": "AED",
+        "category": "currency",
+        "currency": "تومان",
+        "image": "aed.svg",
+        "link": "https://link.dastyar.io/tgju-aed",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/aed.svg",
+        "sort_order": 10
+      },
+      {
+        "key": "try",
+        "price": "3540",
+        "priceFloat": "3540",
+        "change": "-0.42",
+        "title": "لیر",
+        "enTitle": "TRY",
+        "category": "currency",
+        "currency": "تومان",
+        "image": "tl.svg",
+        "link": "https://link.dastyar.io/tgju-try",
+        "icon": "https://liara-s3.dastyar.io/Img/icons/finance/tl.svg",
+        "sort_order": 11
+      }
+    ],
+    "pamp": {
+      "meta": {
+        "source": "zcoinn.com",
+        "category": "gold-bar",
+        "brand": "PAMP",
+        "fetchedAt": "2026-02-03T08:54:22.512Z",
+        "count": 9,
+        "type": "scraped"
+      },
+      "items": [
+        {
+          "name": "شمش طلا 1 گرمی سوئیسی پمپ",
+          "weightGram": 1,
+          "price": 30300000,
+          "currency": "IRR_TOMAN",
+          "priceText": "30,300,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/1g-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 2.5 گرمی سوئیسی پمپ",
+          "weightGram": 2.5,
+          "price": 72010000,
+          "currency": "IRR_TOMAN",
+          "priceText": "72,010,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/2.5-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 5 گرمی سوئیسی پمپ",
+          "weightGram": 5,
+          "price": 137710000,
+          "currency": "IRR_TOMAN",
+          "priceText": "137,710,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/5g-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 10 گرمی سوئیسی پمپ",
+          "weightGram": 10,
+          "price": 272880000,
+          "currency": "IRR_TOMAN",
+          "priceText": "272,880,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/1.2oz-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا نیم اونسی سوئیسی پمپ",
+          "weightGram": 15.55175,
+          "price": 420400000,
+          "currency": "IRR_TOMAN",
+          "priceText": "420,400,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/10g-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 20 گرمی سوئیسی پمپ",
+          "weightGram": 20,
+          "price": 538190000,
+          "currency": "IRR_TOMAN",
+          "priceText": "538,190,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/20g-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 1 اونسی سوئیسی پمپ (1oz)",
+          "weightGram": 31.1035,
+          "price": 848670000,
+          "currency": "IRR_TOMAN",
+          "priceText": "848,670,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/12/1oz-blue-copy.webp"
+        },
+        {
+          "name": "شمش 50 گرمی سوئیسی PAMP",
+          "weightGram": 50,
+          "price": 1326520000,
+          "currency": "IRR_TOMAN",
+          "priceText": "1,326,520,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/50blue.png"
+        },
+        {
+          "name": "شمش 100 گرمی سوئیسی pamp",
+          "weightGram": 100,
+          "price": 2627770000,
+          "currency": "IRR_TOMAN",
+          "priceText": "2,627,770,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/50blue.png"
+        }
+      ]
+    }
   }
 ]
