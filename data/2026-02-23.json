@@ -3392,5 +3392,20 @@
       },
       "items": []
     }
+  },
+  {
+    "time": "12:36:03",
+    "financial": null,
+    "pamp": {
+      "meta": {
+        "source": "zcoinn.com",
+        "category": "gold-bar",
+        "brand": "PAMP",
+        "fetchedAt": "2026-02-23T09:06:08.595Z",
+        "count": 0,
+        "type": "scraped"
+      },
+      "items": []
+    }
   }
 ]
