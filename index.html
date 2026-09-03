@@ -1,88 +1,211 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Financial Dashboard</title>
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root {
       --bg: #020617;
-      --card: #020617;
+      --card: rgba(15, 23, 42, 0.6);
       --border: #1e293b;
       --text: #e5e7eb;
       --muted: #94a3b8;
       --accent: #38bdf8;
+      --hover: #1e293b;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --card: rgba(255, 255, 255, 0.8);
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #0284c7;
+      --hover: #f1f5f9;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: radial-gradient(circle at top, #020617, #020617);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--text);
       padding: 24px;
+      transition: background 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
     }
-    header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 12px; }
-    h1 { font-size: 1.6rem; margin: 0; }
+
+    [data-theme="dark"] body {
+      background: radial-gradient(circle at top left, #1e293b, transparent 40%),
+                  radial-gradient(circle at bottom right, #0f172a, transparent 40%),
+                  var(--bg);
+    }
+
+    header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 32px; gap: 16px; }
+    h1 { font-size: 1.6rem; margin: 0; font-weight: 700; }
+    
+    .header-right { display: flex; gap: 12px; align-items: center; }
+
+    .view-toggle {
+      display: flex;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+      backdrop-filter: blur(10px);
+    }
+    .view-toggle button {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .view-toggle button.active {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 2px 4px rgba(56, 189, 248, 0.3);
+    }
+
     .date-dropdown { position: relative; }
-    #dateBtn { background: #020617; border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 10px; cursor: pointer; }
+    #dateBtn, #themeBtn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #themeBtn { padding: 10px; font-size: 1.1rem; }
+    #dateBtn:hover, #themeBtn:hover { border-color: var(--accent); transform: translateY(-1px); }
+
     .date-menu {
       position: absolute;
       top: 110%;
       right: 0;
-      background: #020617;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      min-width: 180px;
-      max-height: 260px;
+      min-width: 200px;
+      max-height: 300px;
       overflow-y: auto;
       opacity: 0;
       transform: translateY(-8px);
       pointer-events: none;
       transition: 0.25s ease;
       z-index: 20;
+      backdrop-filter: blur(15px);
+      box-shadow: var(--shadow);
     }
     .date-menu.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .date-menu div { padding: 10px 14px; cursor: pointer; transition: background 0.2s; }
-    .date-menu div:hover { background: #1e293b; }
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 24px; row-gap: 60px; }
+    .date-menu div { padding: 12px 16px; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border); }
+    .date-menu div:last-child { border-bottom: none; }
+    .date-menu div:hover { background: var(--hover); }
+
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 24px; row-gap: 24px; }
     @media(max-width: 768px){ .grid { grid-template-columns: 1fr; } }
-    .card { background: linear-gradient(180deg, #020617, #020617); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); height: 500px; display: flex; flex-direction: column; }
-    .card h2 { margin: 0 0 14px; font-size: 1.2rem; color: var(--text); flex-shrink: 0; }
-    canvas { flex: 1; }
-    footer { margin-top: 80px; text-align: center; color: var(--muted); font-size: 0.9rem; }
-    @media(max-width:600px){ .grid { grid-template-columns: 1fr; } }
-    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-    .price-badge { font-size: 0.9rem; padding: 6px 10px; border-radius: 999px; font-weight: 600; letter-spacing: 0.3px; background: #020617; border: 1px solid var(--border); }
-    .price-up { color: #22c55e; border-color: rgba(34,197,94,0.4); }
-    .price-down { color: #ef4444; border-color: rgba(239,68,68,0.4); }
-    .last-dot { animation: pulse 1.8s infinite; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.6); } 70% { box-shadow: 0 0 0 10px rgba(56,189,248,0); } 100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); } }
-    .price-range { margin-top: 15px; display: flex; gap: 8px; font-size: 0.72rem; color: var(--muted); justify-content: flex-end; }
-    .price-range span { padding: 2px 8px; border-radius: 999px; background: rgba(148,163,184,0.08); border: 1px solid rgba(148,163,184,0.15); font-weight: 500; letter-spacing: 0.2px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      height: 450px;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .card h2 { margin: 0; font-size: 1.1rem; color: var(--text); font-weight: 600; flex-shrink: 0; }
+    
+    .price-badge {
+      font-size: 1rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+    }
+    .price-up { color: #22c55e; border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.1); }
+    .price-down { color: #ef4444; border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.1); }
+    
+    .price-range { margin-top: 8px; display: flex; gap: 8px; font-size: 0.75rem; color: var(--muted); justify-content: flex-end; }
+    .price-range span { padding: 4px 8px; border-radius: 999px; background: rgba(148,163,184,0.08); border: 1px solid rgba(148,163,184,0.15); font-weight: 500; }
     .price-range .low { color: #60a5fa; border-color: rgba(96,165,250,0.35); }
     .price-range .high { color: #fbbf24; border-color: rgba(251,191,36,0.35); }
+    
+    canvas { flex: 1; }
+    footer { margin-top: 60px; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+    /* Loading State */
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      backdrop-filter: blur(4px);
+    }
+    .loading-overlay.show { display: flex; }
+    .spinner {
+      width: 50px; height: 50px;
+      border: 4px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
 <header>
   <h1>📈 Financial Dashboard</h1>
-  <div class="date-dropdown">
-    <button id="dateBtn">📅 Select date</button>
-    <div id="dateMenu" class="date-menu"></div>
+  <div class="header-right">
+    <div class="view-toggle" id="viewToggle">
+      <button data-view="daily" class="active">Daily</button>
+      <button data-view="monthly">Monthly</button>
+    </div>
+    <div class="date-dropdown">
+      <button id="dateBtn">📅 Select date</button>
+      <div id="dateMenu" class="date-menu"></div>
+    </div>
+    <button id="themeBtn">🌙</button>
   </div>
 </header>
 
 <section class="grid" id="chartGrid"></section>
-
 <footer>Data updated every 30 mins via GitHub Actions</footer>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+</div>
 
 <script>
 const ASSETS = [
-  // Financial items
   { id: "usd", key: "usd", label: "USD", color: "#38bdf8" },
   { id: "eur", key: "eur", label: "EUR", color: "#a78bfa" },
   { id: "sekkeh", key: "sekkeh", label: "Sekkeh", color: "#fbbf24" },
@@ -93,8 +216,6 @@ const ASSETS = [
   { id: "rob", key: "rob", label: "Roub", color: "#f472b6" },
   { id: "try", key: "try", label: "TRY", color: "#f87171" },
   { id: "aed", key: "aed", label: "AED", color: "#34d399" },
-
-  // PAMP gold bars
   { id: "pamp1", key: 1, label: "PAMP 1g", color: "#fbbf24" },
   { id: "pamp2_5", key: 2.5, label: "PAMP 2.5g", color: "#fbbf24" },
   { id: "pamp5", key: 5, label: "PAMP 5g", color: "#f97316" },
@@ -110,6 +231,81 @@ const charts = {};
 const grid = document.getElementById("chartGrid");
 const dateBtn = document.getElementById("dateBtn");
 const dateMenu = document.getElementById("dateMenu");
+const loadingOverlay = document.getElementById("loadingOverlay");
+
+let currentView = 'daily';
+let allDates = [];
+let allMonths = [];
+
+// --- Jalali Date Helpers ---
+const jalaliFullFormatter = new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn', { year: 'numeric', month: 'long', day: 'numeric' });
+const jalaliShortFormatter = new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn', { year: 'numeric', month: '2-digit', day: '2-digit' });
+const jalaliMonthFormatter = new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn', { year: 'numeric', month: 'long' });
+
+const toJalali = (dateStr) => jalaliFullFormatter.format(new Date(dateStr + 'T00:00:00'));
+const toJalaliShort = (dateStr) => jalaliShortFormatter.format(new Date(dateStr + 'T00:00:00'));
+const getJalaliMonthLabel = (dateStr) => jalaliMonthFormatter.format(new Date(dateStr + 'T00:00:00'));
+
+const getJalaliMonthKey = (dateStr) => {
+  const parts = new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn', { year: 'numeric', month: 'numeric' }).formatToParts(new Date(dateStr + 'T00:00:00'));
+  const year = parts.find(p => p.type === 'year').value;
+  const month = parts.find(p => p.type === 'month').value;
+  return `${year}-${month.padStart(2, '0')}`;
+};
+
+// --- Theme Management ---
+const themes = ['light', 'dark', 'system'];
+let currentTheme = localStorage.getItem('theme') || 'system';
+
+function getChartColors() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  return {
+    text: isDark ? '#94a3b8' : '#64748b',
+    grid: isDark ? '#1e293b' : '#e2e8f0',
+    tooltipBg: isDark ? '#0f172a' : '#ffffff',
+    tooltipText: isDark ? '#e5e7eb' : '#0f172a',
+    tooltipBorder: isDark ? '#1e293b' : '#e2e8f0'
+  };
+}
+
+function updateChartsTheme() {
+  const colors = getChartColors();
+  Object.values(charts).forEach(chart => {
+    chart.options.scales.x.ticks.color = colors.text;
+    chart.options.scales.x.grid.color = colors.grid;
+    chart.options.scales.y.ticks.color = colors.text;
+    chart.options.scales.y.grid.color = colors.grid;
+    if(chart.options.plugins.tooltip) {
+      chart.options.plugins.tooltip.backgroundColor = colors.tooltipBg;
+      chart.options.plugins.tooltip.titleColor = colors.tooltipText;
+      chart.options.plugins.tooltip.bodyColor = colors.tooltipText;
+      chart.options.plugins.tooltip.borderColor = colors.tooltipBorder;
+    }
+    chart.update('none');
+  });
+}
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('theme', theme);
+  const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+  updateChartsTheme();
+}
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  applyTheme(themes[(themes.indexOf(currentTheme) + 1) % themes.length]);
+});
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  if(currentTheme === 'system') applyTheme('system');
+});
+applyTheme(currentTheme);
+
+// --- UI Helpers ---
+function showLoading(show) {
+  loadingOverlay.classList.toggle('show', show);
+}
 
 function createCard(asset) {
   const div = document.createElement("div");
@@ -129,45 +325,61 @@ function createCard(asset) {
 
 function createChart(canvasId, labels, data, label, color) {
   if (charts[canvasId]) charts[canvasId].destroy();
+  const colors = getChartColors();
+  
   charts[canvasId] = new Chart(document.getElementById(canvasId).getContext("2d"), {
     type: "line",
-    data: { labels, datasets: [{ label, data, borderColor: color, backgroundColor: ctx => { const g = ctx.chart.ctx.createLinearGradient(0,0,0,400); g.addColorStop(0,color+"44"); g.addColorStop(1,"transparent"); return g; }, borderWidth: 3, pointRadius: ctx => ctx.dataIndex === data.length-1 ? 4:0, pointHoverRadius:6, pointBackgroundColor: ctx => ctx.dataIndex===data.length-1?color:"transparent", tension:0.35 }] },
-    options: { responsive:true, maintainAspectRatio:false, interaction:{intersect:false,mode:"index"}, plugins:{legend:{display:false}}, scales:{x:{ticks:{color:"#94a3b8"},grid:{color:"#1e293b"}},y:{beginAtZero:false,grace:"15%",ticks:{color:"#94a3b8",callback:v=>v.toLocaleString()},grid:{color:"#1e293b"}}}}
+    data: { 
+      labels, 
+      datasets: [{ 
+        label, data, borderColor: color, 
+        backgroundColor: ctx => { 
+          const g = ctx.chart.ctx.createLinearGradient(0,0,0,400); 
+          g.addColorStop(0,color+"44"); g.addColorStop(1,"transparent"); return g; 
+        }, 
+        borderWidth: 3, fill: true, tension:0.35,
+        pointRadius: ctx => ctx.dataIndex === data.length-1 ? 5:0, 
+        pointHoverRadius:6, 
+        pointBackgroundColor: ctx => ctx.dataIndex===data.length-1?color:"transparent"
+      }] 
+    },
+    options: { 
+      responsive:true, maintainAspectRatio:false, interaction:{intersect:false,mode:"index"}, 
+      plugins:{
+        legend:{display:false},
+        tooltip: {
+          backgroundColor: colors.tooltipBg, titleColor: colors.tooltipText, bodyColor: colors.tooltipText,
+          borderColor: colors.tooltipBorder, borderWidth: 1, padding: 12, displayColors: false,
+          callbacks: { label: (ctx) => ctx.parsed.y.toLocaleString() }
+        }
+      }, 
+      scales:{
+        x:{ticks:{color: colors.text}, grid:{color: colors.grid}},
+        y:{beginAtZero:false, grace:"15%", ticks:{color: colors.text, callback:v=>v.toLocaleString()}, grid:{color: colors.grid}}
+      }
+    }
   });
 }
 
+// --- Data Logic ---
 async function loadData(date) {
+  showLoading(true);
   const res = await fetch(`data/${date}.json`);
-  if (!res.ok) return;
+  if (!res.ok) { showLoading(false); return; }
   const json = await res.json();
 
   grid.innerHTML = "";
   ASSETS.forEach(createCard);
-
   const labels = json.map(e => e.time);
 
   ASSETS.forEach(asset => {
     const values = json.map(entry => {
-      // Handle old-style "data" field
-      if(entry.data){
-        const item = entry.data.find(i=>i.key===asset.key);
-        if(item) return Number(item.price || 0);
-      }
-      // Handle new-style "financial"
-      if(entry.financial){
-        const item = entry.financial.find(i=>i.key===asset.key);
-        if(item) return Number(item.price || 0);
-      }
-      // Handle PAMP items
-      if(entry.pamp && entry.pamp.items){
-        const pampItem = entry.pamp.items.find(i=>i.weightGram===asset.key);
-        if(pampItem) return Number(pampItem.price || 0);
-      }
+      if(entry.financial){ const item = entry.financial.find(i=>i.key===asset.key); if(item) return Number(item.price || 0); }
+      if(entry.pamp && entry.pamp.items){ const pampItem = entry.pamp.items.find(i=>i.weightGram===asset.key); if(pampItem) return Number(pampItem.price || 0); }
       return 0;
     });
 
     createChart(asset.id, labels, values, asset.label, asset.color);
-
     const clean = values.filter(v => v>0);
     if (!clean.length) return;
 
@@ -179,23 +391,130 @@ async function loadData(date) {
     badge.classList.add(last>=first?"price-up":"price-down");
     range.innerHTML = `<span class="low">L ${min.toLocaleString()}</span><span class="high">H ${max.toLocaleString()}</span>`;
   });
+  
+  const lastEntry = json[json.length-1];
+  document.querySelector('footer').textContent = `Last updated: ${toJalali(date)} at ${lastEntry.time}`;
+  showLoading(false);
 }
 
+async function loadMonthlyData(dates) {
+  showLoading(true);
+  grid.innerHTML = "";
+  ASSETS.forEach(createCard);
+
+  const promises = dates.map(d => fetch(`data/${d}.json`).then(r => r.ok ? r.json() : null));
+  const allData = await Promise.all(promises);
+
+  const labels = [];
+  const dailySnapshots = [];
+
+  // Dates are descending, we reverse to make chart chronological
+  for(let i = dates.length - 1; i >= 0; i--) {
+    const dayData = allData[i];
+    if(dayData && dayData.length > 0) {
+      const lastEntry = dayData[dayData.length - 1];
+      labels.push(toJalaliShort(dates[i]));
+      dailySnapshots.push(lastEntry);
+    }
+  }
+
+  ASSETS.forEach(asset => {
+    const values = dailySnapshots.map(entry => {
+      if(entry.financial){ const item = entry.financial.find(i=>i.key===asset.key); if(item) return Number(item.price || 0); }
+      if(entry.pamp && entry.pamp.items){ const pampItem = entry.pamp.items.find(i=>i.weightGram===asset.key); if(pampItem) return Number(pampItem.price || 0); }
+      return 0;
+    });
+
+    createChart(asset.id, labels, values, asset.label, asset.color);
+    const clean = values.filter(v => v>0);
+    if (!clean.length) return;
+
+    const first = clean[0], last = clean[clean.length-1], min = Math.min(...clean), max = Math.max(...clean);
+    const badge = document.getElementById(`badge-${asset.id}`);
+    const range = document.getElementById(`range-${asset.id}`);
+    badge.textContent = last.toLocaleString();
+    badge.classList.remove("price-up","price-down");
+    badge.classList.add(last>=first?"price-up":"price-down");
+    range.innerHTML = `<span class="low">L ${min.toLocaleString()}</span><span class="high">H ${max.toLocaleString()}</span>`;
+  });
+
+  const lastEntry = dailySnapshots[dailySnapshots.length-1];
+  document.querySelector('footer').textContent = `Monthly view: Ending ${toJalali(dates[0])} at ${lastEntry.time}`;
+  showLoading(false);
+}
+
+// --- Navigation Logic ---
 async function loadAvailableDates() {
   const res = await fetch("data/dates.json",{cache:"no-store"});
-  const dates = res.ok ? await res.json() : [];
-  dateMenu.innerHTML="";
-  dates.forEach(date=>{
-    const item=document.createElement("div");
-    item.textContent=date;
-    item.onclick=()=>{ dateBtn.textContent=`📅 ${date}`; dateMenu.classList.remove("show"); loadData(date); };
-    dateMenu.appendChild(item);
+  allDates = res.ok ? await res.json() : [];
+  
+  const monthMap = {};
+  allDates.forEach(d => {
+    const key = getJalaliMonthKey(d);
+    if(!monthMap[key]) monthMap[key] = { key, label: getJalaliMonthLabel(d), dates: [] };
+    monthMap[key].dates.push(d);
   });
-  if(dates.length){ dateBtn.textContent=`📅 ${dates[0]}`; loadData(dates[0]); }
+  allMonths = Object.values(monthMap).sort((a,b) => b.key.localeCompare(a.key));
+  
+  renderDateMenu();
+  
+  if(allDates.length) {
+    if(currentView === 'daily') {
+      dateBtn.textContent = `📅 ${toJalali(allDates[0])}`;
+      loadData(allDates[0]);
+    } else {
+      dateBtn.textContent = `📅 ${allMonths[0].label}`;
+      loadMonthlyData(allMonths[0].dates);
+    }
+  }
 }
 
-dateBtn.onclick=()=>dateMenu.classList.toggle("show");
-document.addEventListener("click",e=>{if(!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show");});
+function renderDateMenu() {
+  dateMenu.innerHTML = "";
+  const items = currentView === 'daily' ? allDates : allMonths;
+  
+  items.forEach(item => {
+    const div = document.createElement("div");
+    if(currentView === 'daily') {
+      div.textContent = toJalali(item);
+      div.onclick = () => { 
+        dateBtn.textContent = `📅 ${toJalali(item)}`; 
+        dateMenu.classList.remove("show"); 
+        loadData(item); 
+      };
+    } else {
+      div.textContent = item.label;
+      div.onclick = () => {
+        dateBtn.textContent = `📅 ${item.label}`;
+        dateMenu.classList.remove("show");
+        loadMonthlyData(item.dates);
+      };
+    }
+    dateMenu.appendChild(div);
+  });
+}
+
+document.getElementById('viewToggle').addEventListener('click', e => {
+  if(e.target.tagName === 'BUTTON') {
+    document.querySelector('.view-toggle .active').classList.remove('active');
+    e.target.classList.add('active');
+    currentView = e.target.dataset.view;
+    renderDateMenu();
+    
+    // Auto-select latest item when switching views
+    if(currentView === 'daily' && allDates.length) {
+      dateBtn.textContent = `📅 ${toJalali(allDates[0])}`;
+      loadData(allDates[0]);
+    } else if(currentView === 'monthly' && allMonths.length) {
+      dateBtn.textContent = `📅 ${allMonths[0].label}`;
+      loadMonthlyData(allMonths[0].dates);
+    }
+  }
+});
+
+dateBtn.onclick = () => dateMenu.classList.toggle("show");
+document.addEventListener("click", e => { if(!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show"); });
+
 loadAvailableDates();
 </script>
 
