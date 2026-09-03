@@ -5,233 +5,324 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Financial Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg: #020617;
-      --card: rgba(15, 23, 42, 0.6);
-      --border: #1e293b;
-      --text: #e5e7eb;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
-      --hover: #1e293b;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --bg: #09090b;
+      --card: #18181b;
+      --border: #27272a;
+      --text: #fafafa;
+      --muted: #a1a1aa;
+      --accent: #3b82f6;
+      --green: #22c55e;
+      --red: #ef4444;
+      --radius: 16px;
+      --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     }
 
     [data-theme="light"] {
-      --bg: #f8fafc;
-      --card: rgba(255, 255, 255, 0.8);
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #64748b;
-      --accent: #0284c7;
-      --hover: #f1f5f9;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --bg: #ffffff;
+      --card: #f4f4f5;
+      --border: #e4e4e7;
+      --text: #18181b;
+      --muted: #71717a;
+      --accent: #2563eb;
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      margin: 0;
-      background: var(--bg);
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
       color: var(--text);
-      padding: 24px;
-      transition: background 0.3s ease, color 0.3s ease;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+      padding: 48px 32px;
+      transition: background-color 0.3s ease, color 0.3s ease;
       min-height: 100vh;
     }
 
-    [data-theme="dark"] body {
-      background: radial-gradient(circle at top left, #1e293b, transparent 40%),
-                  radial-gradient(circle at bottom right, #0f172a, transparent 40%),
-                  var(--bg);
+    /* Layout */
+    header {
+      max-width: 1440px;
+      margin: 0 auto 80px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
     }
 
-    header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 32px; gap: 16px; }
-    h1 { font-size: 1.6rem; margin: 0; font-weight: 700; }
-    
-    .header-right { display: flex; gap: 12px; align-items: center; }
+    .title-section h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 4px;
+    }
+    .title-section p {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* Components */
+    .btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow);
+    }
+    .btn:hover {
+      background: var(--border);
+      border-color: var(--muted);
+    }
 
     .view-toggle {
       display: flex;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 4px;
-      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      padding: 2px;
     }
     .view-toggle button {
       background: transparent;
       border: none;
       color: var(--muted);
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 6px 14px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.8125rem;
       font-weight: 500;
       transition: all 0.2s;
     }
     .view-toggle button.active {
-      background: var(--accent);
-      color: white;
-      box-shadow: 0 2px 4px rgba(56, 189, 248, 0.3);
+      background: var(--text);
+      color: var(--bg);
+      box-shadow: var(--shadow);
     }
 
     .date-dropdown { position: relative; }
-    #dateBtn, #themeBtn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      transition: all 0.2s;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    #themeBtn { padding: 10px; font-size: 1.1rem; }
-    #dateBtn:hover, #themeBtn:hover { border-color: var(--accent); transform: translateY(-1px); }
-
     .date-menu {
       position: absolute;
-      top: 110%;
+      top: calc(100% + 8px);
       right: 0;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      min-width: 200px;
-      max-height: 300px;
+      min-width: 220px;
+      max-height: 320px;
       overflow-y: auto;
       opacity: 0;
-      transform: translateY(-8px);
+      transform: translateY(-10px);
       pointer-events: none;
-      transition: 0.25s ease;
-      z-index: 20;
-      backdrop-filter: blur(15px);
-      box-shadow: var(--shadow);
+      transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 50;
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     }
     .date-menu.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .date-menu div { padding: 12px 16px; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border); }
-    .date-menu div:last-child { border-bottom: none; }
-    .date-menu div:hover { background: var(--hover); }
+    .date-menu div { 
+      padding: 12px 16px; 
+      cursor: pointer; 
+      font-size: 0.875rem; 
+      transition: background 0.1s;
+      color: var(--text);
+    }
+    .date-menu div:hover { background: var(--border); }
+    .date-menu div:not(:last-child) { border-bottom: 1px solid var(--border); }
 
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 24px; row-gap: 24px; }
-    @media(max-width: 768px){ .grid { grid-template-columns: 1fr; } }
+    /* Grid & Cards */
+    .grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); 
+      column-gap: 24px;
+      row-gap: 64px; /* Increased row gap for breathing room */
+      max-width: 1440px;
+      margin: 0 auto;
+    }
 
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: var(--radius);
       padding: 24px;
-      box-shadow: var(--shadow);
-      height: 450px;
       display: flex;
       flex-direction: column;
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(10px);
     }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-    
-    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-    .card h2 { margin: 0; font-size: 1.1rem; color: var(--text); font-weight: 600; flex-shrink: 0; }
-    
-    .price-badge {
-      font-size: 1rem;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    .price-up { color: #22c55e; border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.1); }
-    .price-down { color: #ef4444; border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.1); }
-    
-    .price-range { margin-top: 8px; display: flex; gap: 8px; font-size: 0.75rem; color: var(--muted); justify-content: flex-end; }
-    .price-range span { padding: 4px 8px; border-radius: 999px; background: rgba(148,163,184,0.08); border: 1px solid rgba(148,163,184,0.15); font-weight: 500; }
-    .price-range .low { color: #60a5fa; border-color: rgba(96,165,250,0.35); }
-    .price-range .high { color: #fbbf24; border-color: rgba(251,191,36,0.35); }
-    
-    canvas { flex: 1; }
-    footer { margin-top: 60px; text-align: center; color: var(--muted); font-size: 0.9rem; }
+    .card:hover {
+      border-color: var(--muted);
+      transform: translateY(-2px);
+    }
 
-    /* Loading State */
-    .loading-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.3);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      backdrop-filter: blur(4px);
+    /* Card Header & Badges */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
     }
-    .loading-overlay.show { display: flex; }
-    .spinner {
-      width: 50px; height: 50px;
-      border: 4px solid var(--border);
+    .asset-info h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .asset-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .asset-meta span strong {
+      color: var(--text);
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .price-info {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .price-current {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 8px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    .price-change {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .price-change.up {
+      color: var(--green);
+      background: rgba(34, 197, 94, 0.12);
+    }
+    .price-change.down {
+      color: var(--red);
+      background: rgba(239, 68, 68, 0.12);
+    }
+
+    canvas { 
+      flex: 1; 
+      min-height: 260px; 
+    }
+
+    /* Loading */
+    .loader {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 1s linear infinite;
+      display: none;
+      z-index: 100;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader.show { display: block; }
+    @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      body { padding: 24px 16px; }
+      header { margin-bottom: 40px; }
+      .grid { 
+        grid-template-columns: 1fr; 
+        column-gap: 0;
+        row-gap: 40px;
+      }
+      .price-current { font-size: 1.5rem; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>📈 Financial Dashboard</h1>
-  <div class="header-right">
+  <div class="title-section">
+    <h1>📈 Markets</h1>
+    <p>Real-time financial dashboard</p>
+  </div>
+  <div class="controls">
     <div class="view-toggle" id="viewToggle">
       <button data-view="daily" class="active">Daily</button>
       <button data-view="monthly">Monthly</button>
     </div>
     <div class="date-dropdown">
-      <button id="dateBtn">📅 Select date</button>
+      <button class="btn" id="dateBtn">📅 Select Date</button>
       <div id="dateMenu" class="date-menu"></div>
     </div>
-    <button id="themeBtn">🌙</button>
+    <button class="btn" id="themeBtn">🌙</button>
   </div>
 </header>
 
 <section class="grid" id="chartGrid"></section>
-<footer>Data updated every 30 mins via GitHub Actions</footer>
 
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="spinner"></div>
-</div>
+<div class="loader" id="loader"></div>
 
 <script>
 const ASSETS = [
-  { id: "usd", key: "usd", label: "USD", color: "#38bdf8" },
-  { id: "eur", key: "eur", label: "EUR", color: "#a78bfa" },
-  { id: "sekkeh", key: "sekkeh", label: "Sekkeh", color: "#fbbf24" },
+  { id: "usd", key: "usd", label: "USD", color: "#3b82f6" },
+  { id: "eur", key: "eur", label: "EUR", color: "#a855f7" },
+  { id: "sekkeh", key: "sekkeh", label: "Sekkeh", color: "#eab308" },
   { id: "gold", key: "18ayar", label: "Gold 18k", color: "#f59e0b" },
   { id: "btc", key: "usd_btc", label: "Bitcoin", color: "#f97316" },
-  { id: "usdt", key: "usd_usdt", label: "Tether (USDT)", color: "#22c55e" },
-  { id: "gbp", key: "gbp", label: "Pound (GBP)", color: "#8b5cf6" },
-  { id: "rob", key: "rob", label: "Roub", color: "#f472b6" },
-  { id: "try", key: "try", label: "TRY", color: "#f87171" },
-  { id: "aed", key: "aed", label: "AED", color: "#34d399" },
-  { id: "pamp1", key: 1, label: "PAMP 1g", color: "#fbbf24" },
-  { id: "pamp2_5", key: 2.5, label: "PAMP 2.5g", color: "#fbbf24" },
+  { id: "usdt", key: "usd_usdt", label: "Tether", color: "#22c55e" },
+  { id: "gbp", key: "gbp", label: "GBP", color: "#8b5cf6" },
+  { id: "rob", key: "rob", label: "Roub", color: "#ec4899" },
+  { id: "try", key: "try", label: "TRY", color: "#ef4444" },
+  { id: "aed", key: "aed", label: "AED", color: "#10b981" },
+  { id: "pamp1", key: 1, label: "PAMP 1g", color: "#eab308" },
+  { id: "pamp2_5", key: 2.5, label: "PAMP 2.5g", color: "#eab308" },
   { id: "pamp5", key: 5, label: "PAMP 5g", color: "#f97316" },
   { id: "pamp10", key: 10, label: "PAMP 10g", color: "#f97316" },
-  { id: "pamp15", key: 15.55175, label: "PAMP 15.55g", color: "#f87171" },
-  { id: "pamp20", key: 20, label: "PAMP 20g", color: "#f87171" },
-  { id: "pamp31_1", key: 31.1035, label: "PAMP 1oz", color: "#f472b6" },
+  { id: "pamp15", key: 15.55175, label: "PAMP 15.55g", color: "#ef4444" },
+  { id: "pamp20", key: 20, label: "PAMP 20g", color: "#ef4444" },
+  { id: "pamp31_1", key: 31.1035, label: "PAMP 1oz", color: "#ec4899" },
   { id: "pamp50", key: 50, label: "PAMP 50g", color: "#8b5cf6" },
-  { id: "pamp100", key: 100, label: "PAMP 100g", color: "#a78bfa" }
+  { id: "pamp100", key: 100, label: "PAMP 100g", color: "#a855f7" }
 ];
 
 const charts = {};
 const grid = document.getElementById("chartGrid");
 const dateBtn = document.getElementById("dateBtn");
 const dateMenu = document.getElementById("dateMenu");
-const loadingOverlay = document.getElementById("loadingOverlay");
+const loader = document.getElementById("loader");
 
 let currentView = 'daily';
 let allDates = [];
@@ -260,11 +351,11 @@ let currentTheme = localStorage.getItem('theme') || 'system';
 function getChartColors() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   return {
-    text: isDark ? '#94a3b8' : '#64748b',
-    grid: isDark ? '#1e293b' : '#e2e8f0',
-    tooltipBg: isDark ? '#0f172a' : '#ffffff',
-    tooltipText: isDark ? '#e5e7eb' : '#0f172a',
-    tooltipBorder: isDark ? '#1e293b' : '#e2e8f0'
+    text: isDark ? '#a1a1aa' : '#71717a',
+    grid: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+    tooltipBg: isDark ? '#18181b' : '#ffffff',
+    tooltipText: isDark ? '#fafafa' : '#18181b',
+    tooltipBorder: isDark ? '#27272a' : '#e4e4e7'
   };
 }
 
@@ -304,7 +395,7 @@ applyTheme(currentTheme);
 
 // --- UI Helpers ---
 function showLoading(show) {
-  loadingOverlay.classList.toggle('show', show);
+  loader.classList.toggle('show', show);
 }
 
 function createCard(asset) {
@@ -312,15 +403,22 @@ function createCard(asset) {
   div.className = "card";
   div.innerHTML = `
     <div class="card-header">
-      <h2>${asset.label}</h2>
-      <div style="text-align:right">
-        <span class="price-badge" id="badge-${asset.id}">—</span>
-        <div id="range-${asset.id}" class="price-range"></div>
+      <div class="asset-info">
+        <h2>${asset.label}</h2>
+        <div class="asset-meta">
+          <span>L <strong id="low-${asset.id}">—</strong></span>
+          <span>H <strong id="high-${asset.id}">—</strong></span>
+        </div>
+      </div>
+      <div class="price-info">
+        <div class="price-current" id="price-${asset.id}">—</div>
+        <div class="price-change" id="change-${asset.id}">—</div>
       </div>
     </div>
     <canvas id="${asset.id}"></canvas>
   `;
   grid.appendChild(div);
+  setTimeout(() => div.classList.add('visible'), 50);
 }
 
 function createChart(canvasId, labels, data, label, color) {
@@ -334,28 +432,36 @@ function createChart(canvasId, labels, data, label, color) {
       datasets: [{ 
         label, data, borderColor: color, 
         backgroundColor: ctx => { 
-          const g = ctx.chart.ctx.createLinearGradient(0,0,0,400); 
-          g.addColorStop(0,color+"44"); g.addColorStop(1,"transparent"); return g; 
+          const g = ctx.chart.ctx.createLinearGradient(0,0,0,300); 
+          g.addColorStop(0, color + "33"); 
+          g.addColorStop(1, "transparent"); 
+          return g; 
         }, 
-        borderWidth: 3, fill: true, tension:0.35,
-        pointRadius: ctx => ctx.dataIndex === data.length-1 ? 5:0, 
-        pointHoverRadius:6, 
-        pointBackgroundColor: ctx => ctx.dataIndex===data.length-1?color:"transparent"
+        borderWidth: 2, fill: true, tension: 0.4,
+        pointRadius: ctx => ctx.dataIndex === data.length-1 ? 4 : 0, 
+        pointHoverRadius: 6, 
+        pointBackgroundColor: color
       }] 
     },
     options: { 
-      responsive:true, maintainAspectRatio:false, interaction:{intersect:false,mode:"index"}, 
-      plugins:{
-        legend:{display:false},
+      responsive: true, maintainAspectRatio: false, 
+      animation: { duration: 600, easing: 'easeOutQuart' },
+      interaction: { intersect: false, mode: "index" }, 
+      plugins: {
+        legend: { display: false },
         tooltip: {
           backgroundColor: colors.tooltipBg, titleColor: colors.tooltipText, bodyColor: colors.tooltipText,
           borderColor: colors.tooltipBorder, borderWidth: 1, padding: 12, displayColors: false,
           callbacks: { label: (ctx) => ctx.parsed.y.toLocaleString() }
         }
       }, 
-      scales:{
-        x:{ticks:{color: colors.text}, grid:{color: colors.grid}},
-        y:{beginAtZero:false, grace:"15%", ticks:{color: colors.text, callback:v=>v.toLocaleString()}, grid:{color: colors.grid}}
+      scales: {
+        x: { ticks: { color: colors.text, maxRotation: 0 }, grid: { color: colors.grid } },
+        y: { 
+          beginAtZero: false, grace: "10%", 
+          ticks: { color: colors.text, callback: v => v.toLocaleString() }, 
+          grid: { color: colors.grid } 
+        }
       }
     }
   });
@@ -384,16 +490,23 @@ async function loadData(date) {
     if (!clean.length) return;
 
     const first = clean[0], last = clean[clean.length-1], min = Math.min(...clean), max = Math.max(...clean);
-    const badge = document.getElementById(`badge-${asset.id}`);
-    const range = document.getElementById(`range-${asset.id}`);
-    badge.textContent = last.toLocaleString();
-    badge.classList.remove("price-up","price-down");
-    badge.classList.add(last>=first?"price-up":"price-down");
-    range.innerHTML = `<span class="low">L ${min.toLocaleString()}</span><span class="high">H ${max.toLocaleString()}</span>`;
+    
+    const priceEl = document.getElementById(`price-${asset.id}`);
+    const changeEl = document.getElementById(`change-${asset.id}`);
+    const lowEl = document.getElementById(`low-${asset.id}`);
+    const highEl = document.getElementById(`high-${asset.id}`);
+
+    if(priceEl) priceEl.textContent = last.toLocaleString();
+    if(lowEl) lowEl.textContent = min.toLocaleString();
+    if(highEl) highEl.textContent = max.toLocaleString();
+
+    const change = first > 0 ? ((last - first) / first) * 100 : 0;
+    if(changeEl) {
+      changeEl.textContent = `${change >= 0 ? '▲' : '▼'} ${Math.abs(change).toFixed(2)}%`;
+      changeEl.className = `price-change ${change >= 0 ? 'up' : 'down'}`;
+    }
   });
   
-  const lastEntry = json[json.length-1];
-  document.querySelector('footer').textContent = `Last updated: ${toJalali(date)} at ${lastEntry.time}`;
   showLoading(false);
 }
 
@@ -408,7 +521,6 @@ async function loadMonthlyData(dates) {
   const labels = [];
   const dailySnapshots = [];
 
-  // Dates are descending, we reverse to make chart chronological
   for(let i = dates.length - 1; i >= 0; i--) {
     const dayData = allData[i];
     if(dayData && dayData.length > 0) {
@@ -430,16 +542,23 @@ async function loadMonthlyData(dates) {
     if (!clean.length) return;
 
     const first = clean[0], last = clean[clean.length-1], min = Math.min(...clean), max = Math.max(...clean);
-    const badge = document.getElementById(`badge-${asset.id}`);
-    const range = document.getElementById(`range-${asset.id}`);
-    badge.textContent = last.toLocaleString();
-    badge.classList.remove("price-up","price-down");
-    badge.classList.add(last>=first?"price-up":"price-down");
-    range.innerHTML = `<span class="low">L ${min.toLocaleString()}</span><span class="high">H ${max.toLocaleString()}</span>`;
+    
+    const priceEl = document.getElementById(`price-${asset.id}`);
+    const changeEl = document.getElementById(`change-${asset.id}`);
+    const lowEl = document.getElementById(`low-${asset.id}`);
+    const highEl = document.getElementById(`high-${asset.id}`);
+
+    if(priceEl) priceEl.textContent = last.toLocaleString();
+    if(lowEl) lowEl.textContent = min.toLocaleString();
+    if(highEl) highEl.textContent = max.toLocaleString();
+
+    const change = first > 0 ? ((last - first) / first) * 100 : 0;
+    if(changeEl) {
+      changeEl.textContent = `${change >= 0 ? '▲' : '▼'} ${Math.abs(change).toFixed(2)}%`;
+      changeEl.className = `price-change ${change >= 0 ? 'up' : 'down'}`;
+    }
   });
 
-  const lastEntry = dailySnapshots[dailySnapshots.length-1];
-  document.querySelector('footer').textContent = `Monthly view: Ending ${toJalali(dates[0])} at ${lastEntry.time}`;
   showLoading(false);
 }
 
@@ -501,7 +620,6 @@ document.getElementById('viewToggle').addEventListener('click', e => {
     currentView = e.target.dataset.view;
     renderDateMenu();
     
-    // Auto-select latest item when switching views
     if(currentView === 'daily' && allDates.length) {
       dateBtn.textContent = `📅 ${toJalali(allDates[0])}`;
       loadData(allDates[0]);
