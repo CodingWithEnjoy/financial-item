@@ -38,6 +38,9 @@
 
     [dir="rtl"] { --font: 'Vazirmatn', 'Inter', system-ui, sans-serif; }
 
+    /* Persian typography: no letter-spacing between digits/letters */
+    html[dir="rtl"] * { letter-spacing: 0 !important; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -638,6 +641,15 @@
     html[data-style="brutal"] .range-fill { background: rgba(20, 20, 20, 0.35); }
     html[data-style="brutal"] .range-dot { background: #141414; }
 
+    /* Favorite star: solid black on colored cards (cream in dark) */
+    html[data-style="brutal"] .fav-btn,
+    html[data-style="brutal"] .fav-btn:hover,
+    html[data-style="brutal"] .fav-btn.active { color: #141414; }
+
+    html[data-style="brutal"][data-theme="dark"] .fav-btn,
+    html[data-style="brutal"][data-theme="dark"] .fav-btn:hover,
+    html[data-style="brutal"][data-theme="dark"] .fav-btn.active { color: #F3E9D2; }
+
     html[data-style="brutal"][data-theme="dark"] .asset-meta { color: rgba(243, 233, 210, 0.66); }
     html[data-style="brutal"][data-theme="dark"] .asset-meta strong { color: #F3E9D2; }
     html[data-style="brutal"][data-theme="dark"] .price-change { background: #241E17; border-color: #EFE3C8; }
@@ -1195,15 +1207,21 @@ function getAssetValues(asset, entries) {
   });
 }
 
+// Change % = latest vs PREVIOUS point
+// (daily: latest snapshot vs previous snapshot,
+//  monthly: latest day's close vs previous day's close)
 function calculateStats(values) {
   const clean = values.filter(v => v != null && v > 0);
   if (!clean.length) return null;
+
   const open = clean[0];
   const close = clean[clean.length - 1];
+  const prev = clean.length > 1 ? clean[clean.length - 2] : open;
   const low = Math.min(...clean);
   const high = Math.max(...clean);
-  const change = open > 0 ? ((close - open) / open) * 100 : 0;
-  return { open, close, low, high, change };
+  const change = prev > 0 ? ((close - prev) / prev) * 100 : 0;
+
+  return { open, prev, close, low, high, change };
 }
 
 async function loadData(date) {
