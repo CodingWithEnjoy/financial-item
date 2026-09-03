@@ -37,8 +37,6 @@
     }
 
     [dir="rtl"] { --font: 'Vazirmatn', 'Inter', system-ui, sans-serif; }
-
-    /* Persian typography: no letter-spacing between digits/letters */
     html[dir="rtl"] * { letter-spacing: 0 !important; }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,7 +63,6 @@
     }
 
     .title-section { display: flex; align-items: center; gap: 12px; }
-
     .title-section h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; }
 
     .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
@@ -237,21 +234,8 @@
     .mode-toggle button.active { background: var(--text); color: var(--bg); }
 
     /* ---------- Icons ---------- */
-    .asset-icon {
-      width: 22px;
-      height: 22px;
-      object-fit: contain;
-      border-radius: 6px;
-      flex-shrink: 0;
-    }
-
-    .asset-icon-fallback {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      display: inline-block;
-    }
+    .asset-icon { width: 22px; height: 22px; object-fit: contain; border-radius: 6px; flex-shrink: 0; }
+    .asset-icon-fallback { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
 
     /* ---------- Charts Grid ---------- */
     .grid {
@@ -291,6 +275,7 @@
 
     .asset-info { min-width: 0; }
 
+    /* Star sits directly AFTER the name */
     .asset-title { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
 
     .asset-title h2 {
@@ -311,7 +296,7 @@
       transition: color 0.2s ease;
       display: flex;
       align-items: center;
-      margin-inline-start: auto;
+      flex-shrink: 0;
     }
 
     .fav-btn svg { width: 16px; height: 16px; }
@@ -443,12 +428,7 @@
       min-width: 0;
     }
 
-    .heatmap-label .hl-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
+    .heatmap-label .hl-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .heatmap-label .asset-icon { width: 20px; height: 20px; }
 
     .heatmap-price { font-size: 0.95rem; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
@@ -535,160 +515,340 @@
     }
 
     .loader.show { display: block; }
-
     @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
     /* ============================================================
-       NEO-BRUTALISM STYLE
+       STYLE: NEO-BRUTALISM (playful, colored, thick borders)
        ============================================================ */
-    html[data-style="brutal"] {
-      --bg: #F3E9D2;
-      --card: #FBF3E0;
-      --border: #141414;
-      --text: #141414;
-      --muted: #6E6552;
-      --accent: #F07818;
-      --accent-soft: rgba(240, 120, 24, 0.3);
-      --green: #178A44;
-      --red: #D23B2E;
-      --radius: 14px;
+    html[data-style="neo"] {
+      --bg: #F3E9D2; --card: #FBF3E0; --border: #141414;
+      --text: #141414; --muted: #6E6552;
+      --accent: #F07818; --accent-soft: rgba(240, 120, 24, 0.3);
+      --green: #178A44; --red: #D23B2E; --radius: 14px;
+    }
+    html[data-style="neo"][data-theme="dark"] {
+      --bg: #171310; --card: #241E17; --border: #EFE3C8;
+      --text: #F3E9D2; --muted: #A99C82;
+      --accent: #F5C33B; --accent-soft: rgba(245, 195, 59, 0.3);
+      --green: #4CC57A; --red: #F26D5E;
     }
 
+    html[data-style="neo"] body { font-family: 'Space Grotesk', 'Vazirmatn', system-ui, sans-serif; }
+    html[data-style="neo"][dir="rtl"] body { font-family: 'Vazirmatn', 'Space Grotesk', system-ui, sans-serif; }
+
+    html[data-style="neo"] h1, html[data-style="neo"] .card h2,
+    html[data-style="neo"] .price-current, html[data-style="neo"] .heatmap-label {
+      font-family: 'Archivo Black', 'Vazirmatn', sans-serif; letter-spacing: 0;
+    }
+
+    html[data-style="neo"] .btn, html[data-style="neo"] .view-toggle, html[data-style="neo"] .mode-toggle,
+    html[data-style="neo"] .tab, html[data-style="neo"] .card, html[data-style="neo"] .date-menu,
+    html[data-style="neo"] .search-input, html[data-style="neo"] .table-container,
+    html[data-style="neo"] .heatmap-tile, html[data-style="neo"] .empty-state { border: 3px solid var(--border); }
+
+    html[data-style="neo"] .btn, html[data-style="neo"] .tab,
+    html[data-style="neo"] .view-toggle button, html[data-style="neo"] .mode-toggle button { font-weight: 700; }
+    html[data-style="neo"] .btn svg, html[data-style="neo"] .mode-toggle button svg { stroke-width: 2.75; }
+
+    html[data-style="neo"] .view-toggle button.active,
+    html[data-style="neo"] .mode-toggle button.active { background: var(--accent); color: #141414; }
+
+    html[data-style="neo"] .tab.active { background: #141414; color: #F3E9D2; border-color: #141414; }
+    html[data-style="neo"][data-theme="dark"] .tab.active { background: #F3E9D2; color: #141414; border-color: #F3E9D2; }
+
+    html[data-style="neo"] .card:nth-child(5n+1) { background: #F6A9C9; }
+    html[data-style="neo"] .card:nth-child(5n+2) { background: #F5C33B; }
+    html[data-style="neo"] .card:nth-child(5n+3) { background: #7FB8A8; }
+    html[data-style="neo"] .card:nth-child(5n+4) { background: #F0964B; }
+    html[data-style="neo"] .card:nth-child(5n+5) { background: #8FA8D8; }
+
+    html[data-style="neo"][data-theme="dark"] .card { background: var(--card); }
+    html[data-style="neo"][data-theme="dark"] .card:nth-child(5n+1) { border-color: #F6A9C9; }
+    html[data-style="neo"][data-theme="dark"] .card:nth-child(5n+2) { border-color: #F5C33B; }
+    html[data-style="neo"][data-theme="dark"] .card:nth-child(5n+3) { border-color: #7FB8A8; }
+    html[data-style="neo"][data-theme="dark"] .card:nth-child(5n+4) { border-color: #F0964B; }
+    html[data-style="neo"][data-theme="dark"] .card:nth-child(5n+5) { border-color: #8FA8D8; }
+
+    html[data-style="neo"] .asset-meta { color: rgba(20, 20, 20, 0.66); }
+    html[data-style="neo"] .asset-meta strong { color: #141414; }
+    html[data-style="neo"] .price-change { background: #FBF3E0; border: 2px solid #141414; }
+    html[data-style="neo"] .price-change.up { color: #178A44; }
+    html[data-style="neo"] .price-change.down { color: #D23B2E; }
+    html[data-style="neo"] .range-bar { background: rgba(20, 20, 20, 0.25); }
+    html[data-style="neo"] .range-fill { background: rgba(20, 20, 20, 0.35); }
+    html[data-style="neo"] .range-dot { background: #141414; }
+
+    html[data-style="neo"] .fav-btn, html[data-style="neo"] .fav-btn:hover,
+    html[data-style="neo"] .fav-btn.active { color: #141414; }
+    html[data-style="neo"][data-theme="dark"] .fav-btn,
+    html[data-style="neo"][data-theme="dark"] .fav-btn:hover,
+    html[data-style="neo"][data-theme="dark"] .fav-btn.active { color: #F3E9D2; }
+
+    html[data-style="neo"][data-theme="dark"] .asset-meta { color: rgba(243, 233, 210, 0.66); }
+    html[data-style="neo"][data-theme="dark"] .asset-meta strong { color: #F3E9D2; }
+    html[data-style="neo"][data-theme="dark"] .price-change { background: #241E17; border-color: #EFE3C8; }
+    html[data-style="neo"][data-theme="dark"] .range-bar { background: rgba(243, 233, 210, 0.25); }
+    html[data-style="neo"][data-theme="dark"] .range-fill { background: rgba(243, 233, 210, 0.35); }
+    html[data-style="neo"][data-theme="dark"] .range-dot { background: #F3E9D2; }
+
+    html[data-style="neo"] .asset-icon { background: #FBF3E0; border: 2px solid #141414; border-radius: 8px; padding: 3px; }
+    html[data-style="neo"][data-theme="dark"] .asset-icon { background: #241E17; border-color: #EFE3C8; }
+
+    html[data-style="neo"] .heatmap-tile.positive { background: #8FD694; border-color: #141414; }
+    html[data-style="neo"] .heatmap-tile.negative { background: #F08A7E; border-color: #141414; }
+    html[data-style="neo"] .heatmap-tile.neutral { background: var(--card); }
+    html[data-style="neo"] .heatmap-change.up { color: #0E5B2A; }
+    html[data-style="neo"] .heatmap-change.down { color: #7E1F16; }
+    html[data-style="neo"][data-theme="dark"] .heatmap-tile.positive { background: rgba(76, 197, 122, 0.2); }
+    html[data-style="neo"][data-theme="dark"] .heatmap-tile.negative { background: rgba(242, 109, 94, 0.2); }
+    html[data-style="neo"][data-theme="dark"] .heatmap-change.up { color: var(--green); }
+    html[data-style="neo"][data-theme="dark"] .heatmap-change.down { color: var(--red); }
+
+    html[data-style="neo"] .data-table thead { background: var(--accent); }
+    html[data-style="neo"] .data-table th { color: #141414; border-color: var(--border); }
+    html[data-style="neo"] .data-table td { border-color: var(--border); }
+    html[data-style="neo"] .data-table tbody tr:hover { background: rgba(20, 20, 20, 0.06); }
+    html[data-style="neo"][data-theme="dark"] .data-table th { color: #141414; }
+    html[data-style="neo"][data-theme="dark"] .data-table tbody tr:hover { background: rgba(243, 233, 210, 0.06); }
+
+    html[data-style="neo"] .date-menu div:hover { background: rgba(20, 20, 20, 0.08); }
+    html[data-style="neo"][data-theme="dark"] .date-menu div:hover { background: rgba(243, 233, 210, 0.08); }
+
+    /* ============================================================
+       STYLE: BRUTALISM (raw, monochrome, concrete, square)
+       ============================================================ */
+    html[data-style="brutal"] {
+      --bg: #D6D3CC; --card: #D6D3CC; --border: #111111;
+      --text: #111111; --muted: #55524B;
+      --accent: #111111; --accent-soft: rgba(17, 17, 17, 0.15);
+      --green: #157F3D; --red: #C1272D; --radius: 0px;
+    }
     html[data-style="brutal"][data-theme="dark"] {
-      --bg: #171310;
-      --card: #241E17;
-      --border: #EFE3C8;
-      --text: #F3E9D2;
-      --muted: #A99C82;
-      --accent: #F5C33B;
-      --accent-soft: rgba(245, 195, 59, 0.3);
-      --green: #4CC57A;
-      --red: #F26D5E;
+      --bg: #141414; --card: #141414; --border: #E5E5E5;
+      --text: #EDEDED; --muted: #9A9A9A;
+      --accent: #EDEDED; --accent-soft: rgba(237, 237, 237, 0.15);
+      --green: #59C98A; --red: #F26D5E;
     }
 
     html[data-style="brutal"] body { font-family: 'Space Grotesk', 'Vazirmatn', system-ui, sans-serif; }
     html[data-style="brutal"][dir="rtl"] body { font-family: 'Vazirmatn', 'Space Grotesk', system-ui, sans-serif; }
 
-    html[data-style="brutal"] h1,
-    html[data-style="brutal"] .card h2,
-    html[data-style="brutal"] .price-current,
-    html[data-style="brutal"] .heatmap-label {
+    html[data-style="brutal"] h1, html[data-style="brutal"] .card h2 {
       font-family: 'Archivo Black', 'Vazirmatn', sans-serif;
-      letter-spacing: 0;
+      text-transform: uppercase; letter-spacing: 0;
     }
 
-    html[data-style="brutal"] .btn,
-    html[data-style="brutal"] .view-toggle,
-    html[data-style="brutal"] .mode-toggle,
-    html[data-style="brutal"] .tab,
-    html[data-style="brutal"] .card,
-    html[data-style="brutal"] .date-menu,
-    html[data-style="brutal"] .search-input,
-    html[data-style="brutal"] .table-container,
-    html[data-style="brutal"] .heatmap-tile,
-    html[data-style="brutal"] .empty-state {
-      border: 3px solid var(--border);
-    }
+    html[data-style="brutal"] .btn, html[data-style="brutal"] .view-toggle, html[data-style="brutal"] .mode-toggle,
+    html[data-style="brutal"] .tab, html[data-style="brutal"] .card, html[data-style="brutal"] .date-menu,
+    html[data-style="brutal"] .search-input, html[data-style="brutal"] .table-container,
+    html[data-style="brutal"] .heatmap-tile, html[data-style="brutal"] .empty-state,
+    html[data-style="brutal"] .price-change, html[data-style="brutal"] .table-change,
+    html[data-style="brutal"] .asset-icon, html[data-style="brutal"] .range-bar,
+    html[data-style="brutal"] .range-dot, html[data-style="brutal"] .range-fill { border-radius: 0; }
 
-    html[data-style="brutal"] .btn,
-    html[data-style="brutal"] .tab,
-    html[data-style="brutal"] .view-toggle button,
-    html[data-style="brutal"] .mode-toggle button { font-weight: 700; }
-
-    html[data-style="brutal"] .btn svg,
-    html[data-style="brutal"] .mode-toggle button svg { stroke-width: 2.75; }
+    html[data-style="brutal"] .card { background: transparent; }
+    html[data-style="brutal"] .card:hover { border-color: var(--text); }
 
     html[data-style="brutal"] .view-toggle button.active,
-    html[data-style="brutal"] .mode-toggle button.active {
-      background: var(--accent);
-      color: #141414;
+    html[data-style="brutal"] .mode-toggle button.active,
+    html[data-style="brutal"] .tab.active { background: var(--text); color: var(--bg); }
+
+    html[data-style="brutal"] .btn:hover { background: rgba(17, 17, 17, 0.08); }
+    html[data-style="brutal"][data-theme="dark"] .btn:hover { background: rgba(237, 237, 237, 0.1); }
+
+    html[data-style="brutal"] .price-change { background: transparent; border: 1px solid currentColor; }
+    html[data-style="brutal"] .price-change.up { color: var(--green); }
+    html[data-style="brutal"] .price-change.down { color: var(--red); }
+
+    html[data-style="brutal"] .range-bar { background: rgba(17, 17, 17, 0.25); }
+    html[data-style="brutal"] .range-fill { background: rgba(17, 17, 17, 0.5); }
+    html[data-style="brutal"] .range-dot { background: var(--text); }
+    html[data-style="brutal"][data-theme="dark"] .range-bar { background: rgba(237, 237, 237, 0.25); }
+    html[data-style="brutal"][data-theme="dark"] .range-fill { background: rgba(237, 237, 237, 0.5); }
+
+    html[data-style="brutal"] .fav-btn, html[data-style="brutal"] .fav-btn:hover,
+    html[data-style="brutal"] .fav-btn.active { color: var(--text); }
+
+    html[data-style="brutal"] .data-table thead { background: var(--text); }
+    html[data-style="brutal"] .data-table th { color: var(--bg); }
+    html[data-style="brutal"] .data-table tbody tr:hover { background: rgba(17, 17, 17, 0.06); }
+    html[data-style="brutal"][data-theme="dark"] .data-table tbody tr:hover { background: rgba(237, 237, 237, 0.08); }
+
+    html[data-style="brutal"] .heatmap-tile.positive { background: rgba(21, 127, 61, 0.12); border: 2px solid var(--green); }
+    html[data-style="brutal"] .heatmap-tile.negative { background: rgba(193, 39, 45, 0.1); border: 2px solid var(--red); }
+    html[data-style="brutal"] .heatmap-tile.neutral { background: transparent; }
+
+    html[data-style="brutal"] .date-menu div:hover { background: rgba(17, 17, 17, 0.08); }
+    html[data-style="brutal"][data-theme="dark"] .date-menu div:hover { background: rgba(237, 237, 237, 0.1); }
+
+    /* ============================================================
+       STYLE: GLASSMORPHISM (frosted, translucent, gradient blobs)
+       ============================================================ */
+    html[data-style="glass"] {
+      --bg: #0B1020; --card: rgba(255, 255, 255, 0.07); --border: rgba(255, 255, 255, 0.14);
+      --text: #F1F5FF; --muted: #9AA7C7;
+      --accent: #7C6BF5; --accent-soft: rgba(124, 107, 245, 0.25);
+      --green: #34D399; --red: #F87171; --radius: 20px;
+    }
+    html[data-style="glass"][data-theme="light"] {
+      --bg: #E8EEF7; --card: rgba(255, 255, 255, 0.45); --border: rgba(255, 255, 255, 0.75);
+      --text: #1B2340; --muted: #5A6785;
+      --accent: #6C5CE7; --accent-soft: rgba(108, 92, 231, 0.18);
+      --green: #0E9F6E; --red: #E02424;
     }
 
-    html[data-style="brutal"] .tab.active {
-      background: #141414;
-      color: #F3E9D2;
-      border-color: #141414;
+    html[data-style="glass"] body {
+      background:
+        radial-gradient(700px 500px at 12% 15%, rgba(124, 107, 245, 0.35), transparent 60%),
+        radial-gradient(800px 600px at 88% 75%, rgba(56, 189, 248, 0.3), transparent 60%),
+        radial-gradient(600px 450px at 55% 5%, rgba(236, 72, 153, 0.22), transparent 60%),
+        var(--bg);
+    }
+    html[data-style="glass"][data-theme="light"] body {
+      background:
+        radial-gradient(700px 500px at 12% 15%, rgba(108, 92, 231, 0.25), transparent 60%),
+        radial-gradient(800px 600px at 88% 75%, rgba(14, 165, 233, 0.22), transparent 60%),
+        radial-gradient(600px 450px at 55% 5%, rgba(236, 72, 153, 0.16), transparent 60%),
+        var(--bg);
     }
 
-    html[data-style="brutal"][data-theme="dark"] .tab.active {
-      background: #F3E9D2;
-      color: #141414;
-      border-color: #F3E9D2;
+    html[data-style="glass"] .card, html[data-style="glass"] .btn, html[data-style="glass"] .view-toggle,
+    html[data-style="glass"] .mode-toggle, html[data-style="glass"] .tab, html[data-style="glass"] .date-menu,
+    html[data-style="glass"] .search-input, html[data-style="glass"] .table-container,
+    html[data-style="glass"] .heatmap-tile {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: var(--card);
+      border: 1px solid var(--border);
     }
 
-    /* Colored cards (light brutal) */
-    html[data-style="brutal"] .card:nth-child(5n+1) { background: #F6A9C9; }
-    html[data-style="brutal"] .card:nth-child(5n+2) { background: #F5C33B; }
-    html[data-style="brutal"] .card:nth-child(5n+3) { background: #7FB8A8; }
-    html[data-style="brutal"] .card:nth-child(5n+4) { background: #F0964B; }
-    html[data-style="brutal"] .card:nth-child(5n+5) { background: #8FA8D8; }
-
-    /* Colored borders (dark brutal) */
-    html[data-style="brutal"][data-theme="dark"] .card { background: var(--card); }
-    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+1) { border-color: #F6A9C9; }
-    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+2) { border-color: #F5C33B; }
-    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+3) { border-color: #7FB8A8; }
-    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+4) { border-color: #F0964B; }
-    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+5) { border-color: #8FA8D8; }
-
-    /* Contrast fixes on colored cards */
-    html[data-style="brutal"] .asset-meta { color: rgba(20, 20, 20, 0.66); }
-    html[data-style="brutal"] .asset-meta strong { color: #141414; }
-    html[data-style="brutal"] .price-change { background: #FBF3E0; border: 2px solid #141414; }
-    html[data-style="brutal"] .price-change.up { color: #178A44; }
-    html[data-style="brutal"] .price-change.down { color: #D23B2E; }
-    html[data-style="brutal"] .range-bar { background: rgba(20, 20, 20, 0.25); }
-    html[data-style="brutal"] .range-fill { background: rgba(20, 20, 20, 0.35); }
-    html[data-style="brutal"] .range-dot { background: #141414; }
-
-    /* Favorite star: solid black on colored cards (cream in dark) */
-    html[data-style="brutal"] .fav-btn,
-    html[data-style="brutal"] .fav-btn:hover,
-    html[data-style="brutal"] .fav-btn.active { color: #141414; }
-
-    html[data-style="brutal"][data-theme="dark"] .fav-btn,
-    html[data-style="brutal"][data-theme="dark"] .fav-btn:hover,
-    html[data-style="brutal"][data-theme="dark"] .fav-btn.active { color: #F3E9D2; }
-
-    html[data-style="brutal"][data-theme="dark"] .asset-meta { color: rgba(243, 233, 210, 0.66); }
-    html[data-style="brutal"][data-theme="dark"] .asset-meta strong { color: #F3E9D2; }
-    html[data-style="brutal"][data-theme="dark"] .price-change { background: #241E17; border-color: #EFE3C8; }
-    html[data-style="brutal"][data-theme="dark"] .range-bar { background: rgba(243, 233, 210, 0.25); }
-    html[data-style="brutal"][data-theme="dark"] .range-fill { background: rgba(243, 233, 210, 0.35); }
-    html[data-style="brutal"][data-theme="dark"] .range-dot { background: #F3E9D2; }
-
-    /* Icons as stickers in brutal */
-    html[data-style="brutal"] .asset-icon {
-      background: #FBF3E0;
-      border: 2px solid #141414;
-      border-radius: 8px;
-      padding: 3px;
+    html[data-style="glass"] .view-toggle button.active,
+    html[data-style="glass"] .mode-toggle button.active,
+    html[data-style="glass"] .tab.active {
+      background: linear-gradient(135deg, #7C6BF5, #38BDF8);
+      color: #ffffff;
+      border-color: transparent;
     }
 
-    html[data-style="brutal"][data-theme="dark"] .asset-icon {
-      background: #241E17;
-      border-color: #EFE3C8;
+    html[data-style="glass"] .price-change { background: rgba(255, 255, 255, 0.08); }
+    html[data-style="glass"][data-theme="light"] .price-change { background: rgba(255, 255, 255, 0.5); }
+    html[data-style="glass"] .price-change.up { color: var(--green); border-color: rgba(52, 211, 153, 0.35); }
+    html[data-style="glass"] .price-change.down { color: var(--red); border-color: rgba(248, 113, 113, 0.35); }
+
+    html[data-style="glass"] .range-bar { background: rgba(255, 255, 255, 0.12); }
+    html[data-style="glass"][data-theme="light"] .range-bar { background: rgba(27, 35, 64, 0.12); }
+    html[data-style="glass"] .range-dot { background: #7C6BF5; }
+
+    html[data-style="glass"] .data-table thead { background: rgba(255, 255, 255, 0.06); }
+    html[data-style="glass"][data-theme="light"] .data-table thead { background: rgba(255, 255, 255, 0.4); }
+    html[data-style="glass"] .data-table tbody tr:hover { background: rgba(255, 255, 255, 0.06); }
+    html[data-style="glass"][data-theme="light"] .data-table tbody tr:hover { background: rgba(255, 255, 255, 0.5); }
+
+    html[data-style="glass"] .heatmap-tile.positive { background: rgba(52, 211, 153, 0.14); border-color: rgba(52, 211, 153, 0.35); }
+    html[data-style="glass"] .heatmap-tile.negative { background: rgba(248, 113, 113, 0.14); border-color: rgba(248, 113, 113, 0.35); }
+
+    html[data-style="glass"] .date-menu div:hover { background: rgba(255, 255, 255, 0.08); }
+    html[data-style="glass"][data-theme="light"] .date-menu div:hover { background: rgba(255, 255, 255, 0.6); }
+
+    html[data-style="glass"] .empty-state { border-style: solid; background: var(--card); }
+
+    /* ============================================================
+       STYLE: NEUMORPHISM (soft extruded, monochrome shadows)
+       ============================================================ */
+    html[data-style="neu"] {
+      --bg: #E4E9F2; --card: #E4E9F2; --border: #E4E9F2;
+      --text: #4A5568; --muted: #8A94A6;
+      --accent: #7F6FF0; --accent-soft: rgba(127, 111, 240, 0.18);
+      --green: #2FA36B; --red: #E5535C; --radius: 18px;
+    }
+    html[data-style="neu"][data-theme="dark"] {
+      --bg: #23272E; --card: #23272E; --border: #23272E;
+      --text: #D7DCE6; --muted: #7C8595;
+      --accent: #8F7FFF; --accent-soft: rgba(143, 127, 255, 0.2);
+      --green: #4CC57A; --red: #F26D5E;
     }
 
-    html[data-style="brutal"] .heatmap-tile.positive { background: #8FD694; border-color: #141414; }
-    html[data-style="brutal"] .heatmap-tile.negative { background: #F08A7E; border-color: #141414; }
-    html[data-style="brutal"] .heatmap-tile.neutral { background: var(--card); }
-    html[data-style="brutal"] .heatmap-change.up { color: #0E5B2A; }
-    html[data-style="brutal"] .heatmap-change.down { color: #7E1F16; }
-    html[data-style="brutal"][data-theme="dark"] .heatmap-tile.positive { background: rgba(76, 197, 122, 0.2); }
-    html[data-style="brutal"][data-theme="dark"] .heatmap-tile.negative { background: rgba(242, 109, 94, 0.2); }
-    html[data-style="brutal"][data-theme="dark"] .heatmap-change.up { color: var(--green); }
-    html[data-style="brutal"][data-theme="dark"] .heatmap-change.down { color: var(--red); }
+    html[data-style="neu"] .card, html[data-style="neu"] .btn, html[data-style="neu"] .view-toggle,
+    html[data-style="neu"] .mode-toggle, html[data-style="neu"] .tab, html[data-style="neu"] .date-menu,
+    html[data-style="neu"] .search-input, html[data-style="neu"] .table-container,
+    html[data-style="neu"] .heatmap-tile, html[data-style="neu"] .empty-state {
+      border: none;
+      background: var(--bg);
+      box-shadow: 8px 8px 16px rgba(163, 177, 198, 0.55), -8px -8px 16px rgba(255, 255, 255, 0.9);
+    }
+    html[data-style="neu"][data-theme="dark"] .card, html[data-style="neu"][data-theme="dark"] .btn,
+    html[data-style="neu"][data-theme="dark"] .view-toggle, html[data-style="neu"][data-theme="dark"] .mode-toggle,
+    html[data-style="neu"][data-theme="dark"] .tab, html[data-style="neu"][data-theme="dark"] .date-menu,
+    html[data-style="neu"][data-theme="dark"] .search-input, html[data-style="neu"][data-theme="dark"] .table-container,
+    html[data-style="neu"][data-theme="dark"] .heatmap-tile, html[data-style="neu"][data-theme="dark"] .empty-state {
+      box-shadow: 8px 8px 16px #191c21, -8px -8px 16px #2d333b;
+    }
 
-    html[data-style="brutal"] .data-table thead { background: var(--accent); }
-    html[data-style="brutal"] .data-table th { color: #141414; border-color: var(--border); }
-    html[data-style="brutal"] .data-table td { border-color: var(--border); }
-    html[data-style="brutal"] .data-table tbody tr:hover { background: rgba(20, 20, 20, 0.06); }
-    html[data-style="brutal"][data-theme="dark"] .data-table th { color: #141414; }
-    html[data-style="brutal"][data-theme="dark"] .data-table tbody tr:hover { background: rgba(243, 233, 210, 0.06); }
+    html[data-style="neu"] .view-toggle, html[data-style="neu"] .mode-toggle {
+      box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+    }
+    html[data-style="neu"] .view-toggle button, html[data-style="neu"] .mode-toggle button { border-radius: 12px; }
+    html[data-style="neu"] .view-toggle button.active, html[data-style="neu"] .mode-toggle button.active {
+      background: transparent; color: var(--accent);
+      box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.5), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    }
+    html[data-style="neu"][data-theme="dark"] .view-toggle, html[data-style="neu"][data-theme="dark"] .mode-toggle {
+      box-shadow: inset 4px 4px 8px #191c21, inset -4px -4px 8px #2d333b;
+    }
+    html[data-style="neu"][data-theme="dark"] .view-toggle button.active,
+    html[data-style="neu"][data-theme="dark"] .mode-toggle button.active {
+      box-shadow: inset 4px 4px 8px #191c21, inset -4px -4px 8px #2d333b;
+    }
 
-    html[data-style="brutal"] .date-menu div:hover { background: rgba(20, 20, 20, 0.08); }
-    html[data-style="brutal"][data-theme="dark"] .date-menu div:hover { background: rgba(243, 233, 210, 0.08); }
+    html[data-style="neu"] .tab.active {
+      background: transparent; color: var(--accent);
+      box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.5), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    }
+    html[data-style="neu"][data-theme="dark"] .tab.active {
+      box-shadow: inset 4px 4px 8px #191c21, inset -4px -4px 8px #2d333b;
+    }
+
+    html[data-style="neu"] .search-input:focus {
+      border: none;
+      box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.5), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    }
+    html[data-style="neu"][data-theme="dark"] .search-input:focus {
+      box-shadow: inset 4px 4px 8px #191c21, inset -4px -4px 8px #2d333b;
+    }
+
+    html[data-style="neu"] .price-change { border: none; box-shadow: 3px 3px 6px rgba(163, 177, 198, 0.5), -3px -3px 6px rgba(255, 255, 255, 0.8); }
+    html[data-style="neu"] .price-change.up { color: var(--green); background: var(--bg); }
+    html[data-style="neu"] .price-change.down { color: var(--red); background: var(--bg); }
+    html[data-style="neu"][data-theme="dark"] .price-change { box-shadow: 3px 3px 6px #191c21, -3px -3px 6px #2d333b; }
+    html[data-style="neu"][data-theme="dark"] .price-change.up, html[data-style="neu"][data-theme="dark"] .price-change.down { background: var(--bg); }
+
+    html[data-style="neu"] .range-bar {
+      background: var(--bg);
+      box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.5), inset -3px -3px 6px rgba(255, 255, 255, 0.8);
+    }
+    html[data-style="neu"] .range-fill { background: rgba(127, 111, 240, 0.35); }
+    html[data-style="neu"] .range-dot { background: var(--accent); box-shadow: 2px 2px 5px rgba(163, 177, 198, 0.6); }
+    html[data-style="neu"][data-theme="dark"] .range-bar { box-shadow: inset 3px 3px 6px #191c21, inset -3px -3px 6px #2d333b; }
+
+    html[data-style="neu"] .fav-btn.active { color: var(--accent); }
+    html[data-style="neu"] .fav-btn:hover { color: var(--accent); }
+
+    html[data-style="neu"] .data-table thead { background: transparent; }
+    html[data-style="neu"] .data-table th { color: var(--muted); }
+    html[data-style="neu"] .data-table td { border-color: rgba(163, 177, 198, 0.3); }
+    html[data-style="neu"] .data-table tbody tr:hover { background: rgba(255, 255, 255, 0.35); }
+    html[data-style="neu"][data-theme="dark"] .data-table td { border-color: rgba(45, 51, 59, 0.6); }
+    html[data-style="neu"][data-theme="dark"] .data-table tbody tr:hover { background: rgba(255, 255, 255, 0.04); }
+
+    html[data-style="neu"] .heatmap-tile.positive { background: var(--bg); border: none; }
+    html[data-style="neu"] .heatmap-tile.negative { background: var(--bg); border: none; }
+    html[data-style="neu"] .heatmap-tile.neutral { background: var(--bg); }
+
+    html[data-style="neu"] .date-menu div:not(:last-child) { border-bottom: 1px solid rgba(163, 177, 198, 0.3); }
+    html[data-style="neu"] .date-menu div:hover { background: rgba(255, 255, 255, 0.5); }
+    html[data-style="neu"][data-theme="dark"] .date-menu div:hover { background: rgba(255, 255, 255, 0.05); }
+
+    html[data-style="neu"] .empty-state { border: none; }
 
     /* ---------- Responsive ---------- */
     @media (max-width: 640px) {
@@ -767,7 +927,6 @@
 </div>
 
 <section class="grid" id="chartGrid"></section>
-
 <section class="heatmap" id="heatmapGrid" style="display:none"></section>
 
 <section class="table-container" id="tableContainer" style="display:none">
@@ -786,17 +945,12 @@
 </section>
 
 <footer id="appFooter">Data updated via GitHub Actions</footer>
-
 <div class="loader" id="loader"></div>
 
 <script>
 // ---------- Safe storage ----------
-function storageGet(key) {
-  try { return localStorage.getItem(key); } catch { return null; }
-}
-function storageSet(key, val) {
-  try { localStorage.setItem(key, val); } catch {}
-}
+function storageGet(key) { try { return localStorage.getItem(key); } catch { return null; } }
+function storageSet(key, val) { try { localStorage.setItem(key, val); } catch {} }
 
 // ---------- Translations ----------
 const translations = {
@@ -823,20 +977,12 @@ const translations = {
 };
 
 let currentLang = storageGet("lang") || "en";
+function t(key) { return translations[currentLang]?.[key] || translations.en[key] || key; }
+function numLocale() { return currentLang === "fa" ? "fa-IR" : "en-US"; }
 
-function t(key) {
-  return translations[currentLang]?.[key] || translations.en[key] || key;
-}
-
-function numLocale() {
-  return currentLang === "fa" ? "fa-IR" : "en-US";
-}
-
-// ---------- Jalali date formatters ----------
+// ---------- Jalali ----------
 let jalaliFullFormatter, jalaliShortFormatter, jalaliMonthFormatter;
-const jalaliMonthKeyFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", {
-  year: "numeric", month: "numeric"
-});
+const jalaliMonthKeyFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", { year: "numeric", month: "numeric" });
 
 function buildDateFormatters() {
   const locale = currentLang === "fa" ? "fa-IR-u-ca-persian" : "en-US-u-ca-persian-nu-latn";
@@ -845,16 +991,15 @@ function buildDateFormatters() {
   jalaliMonthFormatter = new Intl.DateTimeFormat(locale, { year: "numeric", month: "long" });
 }
 
-function parseDate(dateStr) { return new Date(`${dateStr}T12:00:00Z`); }
-function toJalali(dateStr) { return jalaliFullFormatter.format(parseDate(dateStr)); }
-function toJalaliShort(dateStr) { return jalaliShortFormatter.format(parseDate(dateStr)); }
-function getJalaliMonthLabel(dateStr) { return jalaliMonthFormatter.format(parseDate(dateStr)); }
-
-function getJalaliMonthKey(dateStr) {
-  const parts = jalaliMonthKeyFormatter.formatToParts(parseDate(dateStr));
-  const year = parts.find(p => p.type === "year")?.value || "0000";
-  const month = parts.find(p => p.type === "month")?.value || "00";
-  return `${year}-${month.padStart(2, "0")}`;
+function parseDate(d) { return new Date(`${d}T12:00:00Z`); }
+function toJalali(d) { return jalaliFullFormatter.format(parseDate(d)); }
+function toJalaliShort(d) { return jalaliShortFormatter.format(parseDate(d)); }
+function getJalaliMonthLabel(d) { return jalaliMonthFormatter.format(parseDate(d)); }
+function getJalaliMonthKey(d) {
+  const parts = jalaliMonthKeyFormatter.formatToParts(parseDate(d));
+  const y = parts.find(p => p.type === "year")?.value || "0000";
+  const m = parts.find(p => p.type === "month")?.value || "00";
+  return `${y}-${m.padStart(2, "0")}`;
 }
 
 // ---------- Assets ----------
@@ -880,7 +1025,6 @@ const ASSETS = [
   { id: "pamp100", key: 100, label: "PAMP 100g", color: "#a855f7", category: "pamp" }
 ];
 
-// Hardcoded icon fallbacks (from API samples)
 const ICON_FALLBACKS = {
   usd: "https://liara-s3.dastyar.io/Img/icons/finance/dollar.svg",
   eur: "https://liara-s3.dastyar.io/Img/icons/finance/euro.svg",
@@ -898,23 +1042,16 @@ const ICON_FALLBACKS = {
   pamp100: "https://zcoinn.com/wp-content/uploads/2022/08/50blue.png"
 };
 
-// Live meta (icon + fa title), filled from APIs and/or stored data
 const assetMeta = {};
 
 function mergeFinMeta(item) {
   const asset = ASSETS.find(a => String(a.key) === String(item.key));
-  if (asset && (item.icon || item.image)) {
-    assetMeta[asset.id] = { icon: item.icon || item.image, faTitle: item.title || "" };
-  }
+  if (asset && (item.icon || item.image)) assetMeta[asset.id] = { icon: item.icon || item.image, faTitle: item.title || "" };
 }
-
 function mergePampMeta(item) {
   const asset = ASSETS.find(a => Number(a.key) === Number(item.weightGram));
-  if (asset && item.image) {
-    assetMeta[asset.id] = { icon: item.image, faTitle: item.name || "" };
-  }
+  if (asset && item.image) assetMeta[asset.id] = { icon: item.image, faTitle: item.name || "" };
 }
-
 function extractMetaFromEntry(entry) {
   if (!entry) return;
   const fin = Array.isArray(entry.financial) ? entry.financial : (Array.isArray(entry.data) ? entry.data : null);
@@ -934,15 +1071,11 @@ async function loadAssetMetaFromAPI() {
   if (currentEntries.length) renderDashboard();
 }
 
-function getAssetIcon(asset) {
-  return assetMeta[asset.id]?.icon || ICON_FALLBACKS[asset.id] || null;
-}
+function getAssetIcon(asset) { return assetMeta[asset.id]?.icon || ICON_FALLBACKS[asset.id] || null; }
 
 function assetLabel(asset) {
   if (currentLang === "fa") {
-    if (asset.category === "pamp") {
-      return asset.key === 31.1035 ? "پمپ ۱ اونسی" : `پمپ ${asset.key} گرمی`;
-    }
+    if (asset.category === "pamp") return asset.key === 31.1035 ? "پمپ ۱ اونسی" : `پمپ ${asset.key} گرمی`;
     const fa = assetMeta[asset.id]?.faTitle;
     if (fa) return fa;
   }
@@ -997,83 +1130,104 @@ let favorites = [];
 try { favorites = JSON.parse(storageGet("favorites") || "[]"); } catch { favorites = []; }
 
 let currentTheme = storageGet("theme");
-if (!currentTheme) {
-  currentTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}
-let currentStyle = storageGet("style") || "flat";
+if (!currentTheme) currentTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
+// Style migration: old "brutal" (which was neo) -> "neo"
+let currentStyle = storageGet("style");
+if (currentStyle === "brutal" && !storageGet("styleV2")) {
+  currentStyle = "neo";
+  storageSet("style", "neo");
+}
+storageSet("styleV2", "1");
+if (!currentStyle) currentStyle = "flat";
+
+const STYLES = ["flat", "neo", "brutal", "glass", "neu"];
+const STYLE_NAMES = { flat: "Flat", neo: "Neo-Brutalism", brutal: "Brutalism", glass: "Glassmorphism", neu: "Neumorphism" };
 const URL_DEFAULTS = { view: "daily", mode: "charts", category: "all", lang: "en", style: "flat" };
 
-// ---------- URL state ----------
+// ---------- URL ----------
 function parseURLState() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.has("view")) currentView = params.get("view");
-  if (params.has("mode")) currentMode = params.get("mode");
-  if (params.has("category")) activeCategory = params.get("category");
-  if (params.has("lang")) currentLang = params.get("lang");
-  if (params.has("style")) currentStyle = params.get("style");
-  if (params.has("q")) searchQuery = params.get("q");
+  const p = new URLSearchParams(window.location.search);
+  if (p.has("view")) currentView = p.get("view");
+  if (p.has("mode")) currentMode = p.get("mode");
+  if (p.has("category")) activeCategory = p.get("category");
+  if (p.has("lang")) currentLang = p.get("lang");
+  if (p.has("style")) currentStyle = p.get("style");
+  if (p.has("q")) searchQuery = p.get("q");
 }
 
 function updateURLState() {
-  const params = new URLSearchParams();
-  if (currentView !== URL_DEFAULTS.view) params.set("view", currentView);
-  if (currentMode !== URL_DEFAULTS.mode) params.set("mode", currentMode);
-  if (activeCategory !== URL_DEFAULTS.category) params.set("category", activeCategory);
-  if (currentLang !== URL_DEFAULTS.lang) params.set("lang", currentLang);
-  if (currentStyle !== URL_DEFAULTS.style) params.set("style", currentStyle);
-  if (searchQuery) params.set("q", searchQuery);
-
-  const qs = params.toString();
+  const p = new URLSearchParams();
+  if (currentView !== URL_DEFAULTS.view) p.set("view", currentView);
+  if (currentMode !== URL_DEFAULTS.mode) p.set("mode", currentMode);
+  if (activeCategory !== URL_DEFAULTS.category) p.set("category", activeCategory);
+  if (currentLang !== URL_DEFAULTS.lang) p.set("lang", currentLang);
+  if (currentStyle !== URL_DEFAULTS.style) p.set("style", currentStyle);
+  if (searchQuery) p.set("q", searchQuery);
+  const qs = p.toString();
   window.history.replaceState({}, "", window.location.pathname + (qs ? `?${qs}` : ""));
 }
 
 // ---------- Utils ----------
 function debounce(fn, wait = 200) {
   let t;
-  return (...args) => {
-    clearTimeout(t);
-    t = setTimeout(() => fn(...args), wait);
-  };
+  return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), wait); };
 }
-
-function fmt(value) {
-  const n = Number(value);
-  if (value == null || !Number.isFinite(n)) return "—";
+function fmt(v) {
+  const n = Number(v);
+  if (v == null || !Number.isFinite(n)) return "—";
   return n.toLocaleString(numLocale(), { maximumFractionDigits: 2 });
 }
-
-function showLoading(show) { loader.classList.toggle("show", show); }
+function showLoading(s) { loader.classList.toggle("show", s); }
 
 // ---------- Theme & Style ----------
 function getChartColors() {
   const style = document.documentElement.getAttribute("data-style");
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  const flatFont = "'Inter','Vazirmatn',sans-serif";
+  const dispFont = "'Space Grotesk','Vazirmatn',sans-serif";
 
-  if (style === "brutal") {
-    const brutalFont = "'Space Grotesk','Vazirmatn',sans-serif";
-    if (isDark) {
-      return {
-        text: "#F3E9D2", grid: "rgba(243,233,210,0.16)",
-        casing: null, fill: true, fontFamily: brutalFont,
-        tooltipBg: "#241E17", tooltipText: "#F3E9D2", tooltipBorder: "#EFE3C8"
-      };
-    }
-    return {
-      text: "#141414", grid: "rgba(20,20,20,0.22)",
-      casing: "#141414", fill: false, fontFamily: brutalFont,
+  if (style === "neo") {
+    return isDark ? {
+      text: "#F3E9D2", grid: "rgba(243,233,210,0.16)", casing: null, fill: true, fontFamily: dispFont,
+      tooltipBg: "#241E17", tooltipText: "#F3E9D2", tooltipBorder: "#EFE3C8"
+    } : {
+      text: "#141414", grid: "rgba(20,20,20,0.22)", casing: "#141414", fill: false, fontFamily: dispFont,
       tooltipBg: "#FBF3E0", tooltipText: "#141414", tooltipBorder: "#141414"
     };
   }
-
-  const flatFont = "'Inter','Vazirmatn',sans-serif";
+  if (style === "brutal") {
+    return isDark ? {
+      text: "#EDEDED", grid: "rgba(237,237,237,0.2)", casing: null, fill: false, fontFamily: dispFont,
+      tooltipBg: "#141414", tooltipText: "#EDEDED", tooltipBorder: "#EDEDED"
+    } : {
+      text: "#111111", grid: "rgba(17,17,17,0.25)", casing: null, fill: false, fontFamily: dispFont,
+      tooltipBg: "#D6D3CC", tooltipText: "#111111", tooltipBorder: "#111111"
+    };
+  }
+  if (style === "glass") {
+    return isDark ? {
+      text: "#9AA7C7", grid: "rgba(255,255,255,0.08)", casing: null, fill: true, fontFamily: flatFont,
+      tooltipBg: "rgba(20,26,48,0.92)", tooltipText: "#F1F5FF", tooltipBorder: "rgba(255,255,255,0.2)"
+    } : {
+      text: "#5A6785", grid: "rgba(27,35,64,0.08)", casing: null, fill: true, fontFamily: flatFont,
+      tooltipBg: "rgba(255,255,255,0.92)", tooltipText: "#1B2340", tooltipBorder: "rgba(27,35,64,0.2)"
+    };
+  }
+  if (style === "neu") {
+    return isDark ? {
+      text: "#7C8595", grid: "rgba(215,220,230,0.08)", casing: null, fill: true, fontFamily: flatFont,
+      tooltipBg: "#23272E", tooltipText: "#D7DCE6", tooltipBorder: "#3A404B"
+    } : {
+      text: "#8A94A6", grid: "rgba(138,148,166,0.25)", casing: null, fill: true, fontFamily: flatFont,
+      tooltipBg: "#E4E9F2", tooltipText: "#4A5568", tooltipBorder: "#C6CFDD"
+    };
+  }
   return isDark ? {
-    text: "#a1a1aa", grid: "rgba(255,255,255,0.06)",
-    casing: null, fill: true, fontFamily: flatFont,
+    text: "#a1a1aa", grid: "rgba(255,255,255,0.06)", casing: null, fill: true, fontFamily: flatFont,
     tooltipBg: "#18181b", tooltipText: "#fafafa", tooltipBorder: "#27272a"
   } : {
-    text: "#71717a", grid: "rgba(0,0,0,0.06)",
-    casing: null, fill: true, fontFamily: flatFont,
+    text: "#71717a", grid: "rgba(0,0,0,0.06)", casing: null, fill: true, fontFamily: flatFont,
     tooltipBg: "#ffffff", tooltipText: "#18181b", tooltipBorder: "#e4e4e7"
   };
 }
@@ -1091,6 +1245,7 @@ function applyStyle(style) {
   currentStyle = style;
   storageSet("style", style);
   document.documentElement.setAttribute("data-style", style);
+  styleBtn.title = "Style: " + (STYLE_NAMES[style] || style);
   renderDashboard();
   updateURLState();
 }
@@ -1099,21 +1254,12 @@ function applyStyle(style) {
 function applyLanguage(lang) {
   currentLang = lang;
   storageSet("lang", lang);
-
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
-
   buildDateFormatters();
-
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    el.textContent = t(el.getAttribute("data-i18n"));
-  });
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
-    el.placeholder = t(el.getAttribute("data-i18n-placeholder"));
-  });
-
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.getAttribute("data-i18n")); });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.getAttribute("data-i18n-placeholder")); });
   langBtn.textContent = lang === "en" ? "EN" : "فا";
-
   rebuildMonths();
   renderDateMenu();
   refreshDateLabel();
@@ -1125,16 +1271,13 @@ function refreshDateLabel() {
   if (currentView === "daily") {
     dateBtnText.textContent = selectedDate ? toJalali(selectedDate) : t("loading");
   } else {
-    const month = allMonths.find(m => m.key === selectedMonthKey);
-    dateBtnText.textContent = month ? month.label : t("loading");
+    const m = allMonths.find(m => m.key === selectedMonthKey);
+    dateBtnText.textContent = m ? m.label : t("loading");
   }
 }
 
 function renderFooter() {
-  if (!lastFooter) {
-    appFooter.textContent = "Data updated via GitHub Actions";
-    return;
-  }
+  if (!lastFooter) { appFooter.textContent = "Data updated via GitHub Actions"; return; }
   const prefix = lastFooter.view === "daily" ? t("lastUpdated") : t("monthlyView");
   appFooter.textContent = `${prefix}: ${toJalali(lastFooter.dateStr)} — ${lastFooter.time}`;
 }
@@ -1149,13 +1292,10 @@ function toggleFavorite(id) {
 function getVisibleAssets() {
   const q = searchQuery;
   return ASSETS.filter(asset => {
-    const matchesCategory =
-      activeCategory === "all" ||
+    const okCat = activeCategory === "all" ||
       (activeCategory === "favorites" ? favorites.includes(asset.id) : asset.category === activeCategory);
-
-    if (!matchesCategory) return false;
+    if (!okCat) return false;
     if (!q) return true;
-
     const en = asset.label.toLowerCase();
     const fa = (assetMeta[asset.id]?.faTitle || "").toLowerCase();
     const faPamp = asset.category === "pamp" ? assetLabel(asset) : "";
@@ -1165,25 +1305,20 @@ function getVisibleAssets() {
 
 // ---------- Data ----------
 async function fetchDay(date) {
-  const latestDate = allDates[0];
-  const shouldCache = date !== latestDate;
-  if (shouldCache && dataCache.has(date)) return dataCache.get(date);
-
+  const latest = allDates[0];
+  const cache = date !== latest;
+  if (cache && dataCache.has(date)) return dataCache.get(date);
   const res = await fetch(`data/${date}.json`);
   const json = res.ok ? await res.json() : null;
-  if (shouldCache && json) dataCache.set(date, json);
+  if (cache && json) dataCache.set(date, json);
   return json;
 }
 
 function computeDisplayIndices(length, maxPoints) {
   maxPoints = Math.max(2, maxPoints);
   if (!length) { displayIndices = []; displayLabels = []; return; }
-  if (length <= maxPoints) {
-    displayIndices = Array.from({ length }, (_, i) => i);
-  } else {
-    displayIndices = Array.from({ length: maxPoints }, (_, i) =>
-      Math.round(i * (length - 1) / (maxPoints - 1)));
-  }
+  if (length <= maxPoints) displayIndices = Array.from({ length }, (_, i) => i);
+  else displayIndices = Array.from({ length: maxPoints }, (_, i) => Math.round(i * (length - 1) / (maxPoints - 1)));
   displayLabels = displayIndices.map(i => currentLabels[i]);
 }
 
@@ -1192,35 +1327,30 @@ function getAssetValues(asset, entries) {
     if (!entry) return null;
     let price = null;
     if (Array.isArray(entry.data)) {
-      const item = entry.data.find(i => String(i.key) === String(asset.key));
-      if (item) price = Number(item.price);
+      const it = entry.data.find(i => String(i.key) === String(asset.key));
+      if (it) price = Number(it.price);
     }
     if (price == null && Array.isArray(entry.financial)) {
-      const item = entry.financial.find(i => String(i.key) === String(asset.key));
-      if (item) price = Number(item.price);
+      const it = entry.financial.find(i => String(i.key) === String(asset.key));
+      if (it) price = Number(it.price);
     }
     if (price == null && entry.pamp && Array.isArray(entry.pamp.items)) {
-      const item = entry.pamp.items.find(i => Number(i.weightGram) === Number(asset.key));
-      if (item) price = Number(item.price);
+      const it = entry.pamp.items.find(i => Number(i.weightGram) === Number(asset.key));
+      if (it) price = Number(it.price);
     }
     return Number.isFinite(price) && price > 0 ? price : null;
   });
 }
 
-// Change % = latest vs PREVIOUS point
-// (daily: latest snapshot vs previous snapshot,
-//  monthly: latest day's close vs previous day's close)
 function calculateStats(values) {
   const clean = values.filter(v => v != null && v > 0);
   if (!clean.length) return null;
-
   const open = clean[0];
   const close = clean[clean.length - 1];
   const prev = clean.length > 1 ? clean[clean.length - 2] : open;
   const low = Math.min(...clean);
   const high = Math.max(...clean);
   const change = prev > 0 ? ((close - prev) / prev) * 100 : 0;
-
   return { open, prev, close, low, high, change };
 }
 
@@ -1228,52 +1358,38 @@ async function loadData(date) {
   showLoading(true);
   const json = await fetchDay(date);
   const entries = Array.isArray(json) ? json : [];
-
-  selectedDate = date;
-  selectedMonthKey = null;
+  selectedDate = date; selectedMonthKey = null;
   currentEntries = entries;
   currentLabels = entries.map(e => e.time || "");
   computeDisplayIndices(currentLabels.length, 240);
-
   extractMetaFromEntry(entries[entries.length - 1]);
   refreshDateLabel();
   renderDashboard();
-
-  const lastEntry = entries[entries.length - 1];
-  if (lastEntry) {
-    lastFooter = { view: "daily", dateStr: date, time: lastEntry.time };
-    renderFooter();
-  }
+  const last = entries[entries.length - 1];
+  if (last) { lastFooter = { view: "daily", dateStr: date, time: last.time }; renderFooter(); }
   showLoading(false);
 }
 
 async function loadMonthlyData(dates, monthKey) {
   showLoading(true);
   const allData = await Promise.all(dates.map(d => fetchDay(d)));
-
-  const labels = [];
-  const entries = [];
+  const labels = [], entries = [];
   for (let i = dates.length - 1; i >= 0; i--) {
-    const dayData = allData[i];
-    if (Array.isArray(dayData) && dayData.length > 0) {
+    const day = allData[i];
+    if (Array.isArray(day) && day.length > 0) {
       labels.push(toJalaliShort(dates[i]));
-      entries.push(dayData[dayData.length - 1]);
+      entries.push(day[day.length - 1]);
     }
   }
-
-  selectedMonthKey = monthKey;
-  selectedDate = null;
-  currentLabels = labels;
-  currentEntries = entries;
+  selectedMonthKey = monthKey; selectedDate = null;
+  currentLabels = labels; currentEntries = entries;
   computeDisplayIndices(currentLabels.length, 120);
-
   extractMetaFromEntry(entries[entries.length - 1]);
   refreshDateLabel();
   renderDashboard();
-
   if (dates.length && entries.length) {
-    const lastEntry = entries[entries.length - 1];
-    lastFooter = { view: "monthly", dateStr: dates[0], time: lastEntry.time || "" };
+    const last = entries[entries.length - 1];
+    lastFooter = { view: "monthly", dateStr: dates[0], time: last.time || "" };
     renderFooter();
   }
   showLoading(false);
@@ -1281,9 +1397,7 @@ async function loadMonthlyData(dates, monthKey) {
 
 // ---------- Rendering ----------
 function destroyCharts() {
-  Object.keys(charts).forEach(id => {
-    if (charts[id]) { charts[id].destroy(); delete charts[id]; }
-  });
+  Object.keys(charts).forEach(id => { if (charts[id]) { charts[id].destroy(); delete charts[id]; } });
 }
 
 function createCard(asset) {
@@ -1292,7 +1406,6 @@ function createCard(asset) {
   const div = document.createElement("div");
   div.className = "card";
   div.dataset.assetId = asset.id;
-
   div.innerHTML = `
     <div class="card-header">
       <div class="asset-info">
@@ -1318,11 +1431,8 @@ function createCard(asset) {
         <div class="price-change" id="change-${asset.id}">—</div>
       </div>
     </div>
-    <div class="chart-wrap">
-      <canvas id="${asset.id}"></canvas>
-    </div>
+    <div class="chart-wrap"><canvas id="${asset.id}"></canvas></div>
   `;
-
   grid.appendChild(div);
   requestAnimationFrame(() => div.classList.add("visible"));
 }
@@ -1333,46 +1443,27 @@ function createChart(canvasId, labels, data, label, color) {
   if (charts[canvasId]) charts[canvasId].destroy();
 
   const colors = getChartColors();
-
   let lastValidIndex = -1;
-  for (let i = data.length - 1; i >= 0; i--) {
-    if (data[i] != null && data[i] > 0) { lastValidIndex = i; break; }
-  }
+  for (let i = data.length - 1; i >= 0; i--) { if (data[i] != null && data[i] > 0) { lastValidIndex = i; break; } }
 
   const datasets = [];
-
-  // Black "casing" underlay for brutal light mode (contrast on colored cards)
   if (colors.casing) {
     datasets.push({
-      label, data,
-      borderColor: colors.casing,
-      borderWidth: 6,
-      tension: 0.35,
-      spanGaps: true,
-      fill: false,
-      pointRadius: 0,
-      pointHoverRadius: 0
+      label, data, borderColor: colors.casing, borderWidth: 6, tension: 0.35,
+      spanGaps: true, fill: false, pointRadius: 0, pointHoverRadius: 0
     });
   }
-
   datasets.push({
-    label, data,
-    borderColor: color,
-    borderWidth: colors.casing ? 3 : 2,
-    fill: colors.fill,
-    tension: 0.35,
-    spanGaps: true,
+    label, data, borderColor: color, borderWidth: colors.casing ? 3 : 2,
+    fill: colors.fill, tension: 0.35, spanGaps: true,
     backgroundColor: colors.fill ? (ctx => {
       const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 300);
-      g.addColorStop(0, color + "33");
-      g.addColorStop(1, "transparent");
+      g.addColorStop(0, color + "33"); g.addColorStop(1, "transparent");
       return g;
     }) : "transparent",
     pointRadius: ctx => ctx.dataIndex === lastValidIndex ? 4.5 : 0,
-    pointHoverRadius: 6,
-    pointBackgroundColor: color,
-    pointBorderColor: colors.casing || color,
-    pointBorderWidth: colors.casing ? 2 : 0
+    pointHoverRadius: 6, pointBackgroundColor: color,
+    pointBorderColor: colors.casing || color, pointBorderWidth: colors.casing ? 2 : 0
   });
 
   const mainIndex = datasets.length - 1;
@@ -1381,21 +1472,14 @@ function createChart(canvasId, labels, data, label, color) {
     type: "line",
     data: { labels, datasets },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      resizeDelay: 120,
+      responsive: true, maintainAspectRatio: false, resizeDelay: 120,
       animation: { duration: 300, easing: "easeOutQuart" },
       interaction: { intersect: false, mode: "index" },
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: colors.tooltipBg,
-          titleColor: colors.tooltipText,
-          bodyColor: colors.tooltipText,
-          borderColor: colors.tooltipBorder,
-          borderWidth: 1,
-          padding: 12,
-          displayColors: false,
+          backgroundColor: colors.tooltipBg, titleColor: colors.tooltipText, bodyColor: colors.tooltipText,
+          borderColor: colors.tooltipBorder, borderWidth: 1, padding: 12, displayColors: false,
           filter: item => item.datasetIndex === mainIndex,
           callbacks: {
             title: items => items.length ? items[0].label : "",
@@ -1405,20 +1489,12 @@ function createChart(canvasId, labels, data, label, color) {
       },
       scales: {
         x: {
-          ticks: {
-            color: colors.text, maxRotation: 0, autoSkipPadding: 18, maxTicksLimit: 8,
-            font: { family: colors.fontFamily, weight: 600 }
-          },
+          ticks: { color: colors.text, maxRotation: 0, autoSkipPadding: 18, maxTicksLimit: 8, font: { family: colors.fontFamily, weight: 600 } },
           grid: { color: colors.grid }
         },
         y: {
-          beginAtZero: false,
-          grace: "10%",
-          ticks: {
-            color: colors.text, maxTicksLimit: 6,
-            font: { family: colors.fontFamily, weight: 600 },
-            callback: v => Number(v).toLocaleString(numLocale())
-          },
+          beginAtZero: false, grace: "10%",
+          ticks: { color: colors.text, maxTicksLimit: 6, font: { family: colors.fontFamily, weight: 600 }, callback: v => Number(v).toLocaleString(numLocale()) },
           grid: { color: colors.grid }
         }
       }
@@ -1429,7 +1505,6 @@ function createChart(canvasId, labels, data, label, color) {
 function updateAssetStats(assetId, values) {
   const stats = calculateStats(values);
   assetStats[assetId] = stats;
-
   const priceEl = document.getElementById(`price-${assetId}`);
   const changeEl = document.getElementById(`change-${assetId}`);
   const nowEl = document.getElementById(`now-${assetId}`);
@@ -1437,18 +1512,12 @@ function updateAssetStats(assetId, values) {
   const highEl = document.getElementById(`high-${assetId}`);
   const fillEl = document.getElementById(`range-fill-${assetId}`);
   const dotEl = document.getElementById(`range-dot-${assetId}`);
-
   if (!priceEl || !changeEl || !nowEl || !lowEl || !highEl || !fillEl || !dotEl) return;
 
   if (!stats) {
-    priceEl.textContent = "—";
-    changeEl.textContent = "—";
-    changeEl.className = "price-change";
-    nowEl.textContent = "—";
-    lowEl.textContent = "—";
-    highEl.textContent = "—";
-    fillEl.style.width = "0%";
-    dotEl.style.left = "0%";
+    priceEl.textContent = "—"; changeEl.textContent = "—"; changeEl.className = "price-change";
+    nowEl.textContent = "—"; lowEl.textContent = "—"; highEl.textContent = "—";
+    fillEl.style.width = "0%"; dotEl.style.left = "0%";
     return;
   }
 
@@ -1456,10 +1525,8 @@ function updateAssetStats(assetId, values) {
   nowEl.textContent = fmt(stats.close);
   lowEl.textContent = fmt(stats.low);
   highEl.textContent = fmt(stats.high);
-
   changeEl.textContent = `${stats.change >= 0 ? "▲" : "▼"} ${Math.abs(stats.change).toFixed(2)}%`;
   changeEl.className = `price-change ${stats.change >= 0 ? "up" : "down"}`;
-
   const pos = stats.high > stats.low ? ((stats.close - stats.low) / (stats.high - stats.low)) * 100 : 0;
   fillEl.style.width = `${pos}%`;
   dotEl.style.left = `${pos}%`;
@@ -1472,27 +1539,19 @@ function renderCharts() {
   heatmapGrid.style.display = "none";
   tableContainer.style.display = "none";
 
-  if (!currentEntries.length) {
-    grid.innerHTML = `<div class="empty-state">${t("noData")}</div>`;
+  if (!currentEntries.length) { grid.innerHTML = `<div class="empty-state">${t("noData")}</div>`; return; }
+  const visible = getVisibleAssets();
+  if (!visible.length) {
+    grid.innerHTML = `<div class="empty-state">${activeCategory === "favorites" ? t("noFavorites") : t("noAssets")}</div>`;
     return;
   }
-
-  const visibleAssets = getVisibleAssets();
-  if (!visibleAssets.length) {
-    grid.innerHTML = `<div class="empty-state">${
-      activeCategory === "favorites" ? t("noFavorites") : t("noAssets")
-    }</div>`;
-    return;
-  }
-
-  visibleAssets.forEach(asset => {
+  visible.forEach(asset => {
     createCard(asset);
-    const fullValues = getAssetValues(asset, currentEntries);
-    const chartValues = displayIndices.map(i => fullValues[i] ?? null);
-    createChart(asset.id, displayLabels, chartValues, asset.label, asset.color);
-    updateAssetStats(asset.id, fullValues);
+    const full = getAssetValues(asset, currentEntries);
+    const chartVals = displayIndices.map(i => full[i] ?? null);
+    createChart(asset.id, displayLabels, chartVals, asset.label, asset.color);
+    updateAssetStats(asset.id, full);
   });
-
   feather.replace();
 }
 
@@ -1501,42 +1560,25 @@ function renderHeatmap() {
   tableContainer.style.display = "none";
   heatmapGrid.style.display = "";
   heatmapGrid.innerHTML = "";
+  const visible = getVisibleAssets();
+  if (!visible.length) { heatmapGrid.innerHTML = `<div class="empty-state">${t("noAssets")}</div>`; return; }
 
-  const visibleAssets = getVisibleAssets();
-  if (!visibleAssets.length) {
-    heatmapGrid.innerHTML = `<div class="empty-state">${t("noAssets")}</div>`;
-    return;
-  }
-
-  visibleAssets.forEach(asset => {
+  visible.forEach(asset => {
     const stats = calculateStats(getAssetValues(asset, currentEntries));
     const label = assetLabel(asset);
-
     const tile = document.createElement("div");
-    let tileClass = "heatmap-tile neutral";
-    let changeClass = "";
-    let changeText = "—";
-
+    let cls = "heatmap-tile neutral", chCls = "", chTxt = "—";
     if (stats) {
-      if (stats.change > 0) {
-        tileClass = "heatmap-tile positive";
-        changeClass = "heatmap-change up";
-        changeText = `▲ ${stats.change.toFixed(2)}%`;
-      } else if (stats.change < 0) {
-        tileClass = "heatmap-tile negative";
-        changeClass = "heatmap-change down";
-        changeText = `▼ ${Math.abs(stats.change).toFixed(2)}%`;
-      }
+      if (stats.change > 0) { cls = "heatmap-tile positive"; chCls = "heatmap-change up"; chTxt = `▲ ${stats.change.toFixed(2)}%`; }
+      else if (stats.change < 0) { cls = "heatmap-tile negative"; chCls = "heatmap-change down"; chTxt = `▼ ${Math.abs(stats.change).toFixed(2)}%`; }
     }
-
-    tile.className = tileClass;
+    tile.className = cls;
     tile.innerHTML = `
       <div class="heatmap-label">${iconHtml(asset)}<span class="hl-text" title="${label}">${label}</span></div>
       <div>
         <div class="heatmap-price">${stats ? fmt(stats.close) : "—"}</div>
-        <div class="${changeClass}">${changeText}</div>
-      </div>
-    `;
+        <div class="${chCls}">${chTxt}</div>
+      </div>`;
     heatmapGrid.appendChild(tile);
   });
 }
@@ -1546,37 +1588,27 @@ function renderTable() {
   heatmapGrid.style.display = "none";
   tableContainer.style.display = "";
   tableBody.innerHTML = "";
-
-  const visibleAssets = getVisibleAssets();
-  if (!visibleAssets.length) {
+  const visible = getVisibleAssets();
+  if (!visible.length) {
     tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px">${t("noAssets")}</td></tr>`;
     return;
   }
-
-  visibleAssets.forEach(asset => {
+  visible.forEach(asset => {
     const stats = calculateStats(getAssetValues(asset, currentEntries));
     const label = assetLabel(asset);
     const tr = document.createElement("tr");
-
-    let changeHTML = "—";
+    let ch = "—";
     if (stats) {
       const cls = stats.change >= 0 ? "up" : "down";
       const arrow = stats.change >= 0 ? "▲" : "▼";
-      changeHTML = `<span class="table-change ${cls}">${arrow} ${Math.abs(stats.change).toFixed(2)}%</span>`;
+      ch = `<span class="table-change ${cls}">${arrow} ${Math.abs(stats.change).toFixed(2)}%</span>`;
     }
-
     tr.innerHTML = `
-      <td>
-        <div class="table-asset">
-          ${iconHtml(asset)}
-          <span class="table-asset-name">${label}</span>
-        </div>
-      </td>
+      <td><div class="table-asset">${iconHtml(asset)}<span class="table-asset-name">${label}</span></div></td>
       <td>${stats ? fmt(stats.close) : "—"}</td>
       <td>${stats ? fmt(stats.low) : "—"}</td>
       <td>${stats ? fmt(stats.high) : "—"}</td>
-      <td>${changeHTML}</td>
-    `;
+      <td>${ch}</td>`;
     tableBody.appendChild(tr);
   });
 }
@@ -1591,40 +1623,32 @@ function renderDashboard() {
 
 // ---------- Dates ----------
 function rebuildMonths() {
-  const monthMap = {};
+  const map = {};
   allDates.forEach(d => {
-    const key = getJalaliMonthKey(d);
-    if (!monthMap[key]) monthMap[key] = { key, label: getJalaliMonthLabel(d), dates: [] };
-    monthMap[key].dates.push(d);
+    const k = getJalaliMonthKey(d);
+    if (!map[k]) map[k] = { key: k, label: getJalaliMonthLabel(d), dates: [] };
+    map[k].dates.push(d);
   });
-  allMonths = Object.values(monthMap).sort((a, b) => b.key.localeCompare(a.key));
+  allMonths = Object.values(map).sort((a, b) => b.key.localeCompare(a.key));
 }
 
 function renderDateMenu() {
   dateMenu.innerHTML = "";
   const items = currentView === "daily" ? allDates : allMonths;
-
   if (!items.length) {
-    const div = document.createElement("div");
-    div.textContent = "No dates found";
-    dateMenu.appendChild(div);
+    const d = document.createElement("div");
+    d.textContent = "No dates found";
+    dateMenu.appendChild(d);
     return;
   }
-
   items.forEach(item => {
     const div = document.createElement("div");
     if (currentView === "daily") {
       div.textContent = toJalali(item);
-      div.onclick = () => {
-        dateMenu.classList.remove("show");
-        loadData(item);
-      };
+      div.onclick = () => { dateMenu.classList.remove("show"); loadData(item); };
     } else {
       div.textContent = item.label;
-      div.onclick = () => {
-        dateMenu.classList.remove("show");
-        loadMonthlyData(item.dates, item.key);
-      };
+      div.onclick = () => { dateMenu.classList.remove("show"); loadMonthlyData(item.dates, item.key); };
     }
     dateMenu.appendChild(div);
   });
@@ -1634,56 +1658,37 @@ async function loadAvailableDates() {
   const res = await fetch("data/dates.json", { cache: "no-store" });
   allDates = res.ok ? await res.json() : [];
   if (!Array.isArray(allDates)) allDates = [];
-
   rebuildMonths();
   renderDateMenu();
-
-  if (!allDates.length) {
-    dateBtnText.textContent = "No dates";
-    return;
-  }
-
-  if (currentView === "daily") {
-    loadData(allDates[0]);
-  } else {
-    loadMonthlyData(allMonths[0].dates, allMonths[0].key);
-  }
+  if (!allDates.length) { dateBtnText.textContent = "No dates"; return; }
+  if (currentView === "daily") loadData(allDates[0]);
+  else loadMonthlyData(allMonths[0].dates, allMonths[0].key);
 }
 
 // ---------- Events ----------
-themeBtn.addEventListener("click", () => {
-  applyTheme(currentTheme === "dark" ? "light" : "dark");
-});
+themeBtn.addEventListener("click", () => applyTheme(currentTheme === "dark" ? "light" : "dark"));
 
 styleBtn.addEventListener("click", () => {
-  applyStyle(currentStyle === "flat" ? "brutal" : "flat");
+  const idx = STYLES.indexOf(currentStyle);
+  applyStyle(STYLES[(idx + 1) % STYLES.length]);
 });
 
-langBtn.addEventListener("click", () => {
-  applyLanguage(currentLang === "en" ? "fa" : "en");
-});
+langBtn.addEventListener("click", () => applyLanguage(currentLang === "en" ? "fa" : "en"));
 
 viewToggle.addEventListener("click", e => {
   const btn = e.target.closest("button[data-view]");
   if (!btn || btn.classList.contains("active")) return;
-
   document.querySelector("#viewToggle .active")?.classList.remove("active");
   btn.classList.add("active");
   currentView = btn.dataset.view;
   renderDateMenu();
-
-  if (currentView === "daily" && allDates.length) {
-    loadData(allDates[0]);
-  }
-  if (currentView === "monthly" && allMonths.length) {
-    loadMonthlyData(allMonths[0].dates, allMonths[0].key);
-  }
+  if (currentView === "daily" && allDates.length) loadData(allDates[0]);
+  if (currentView === "monthly" && allMonths.length) loadMonthlyData(allMonths[0].dates, allMonths[0].key);
 });
 
 modeToggle.addEventListener("click", e => {
   const btn = e.target.closest("button[data-mode]");
   if (!btn || btn.classList.contains("active")) return;
-
   document.querySelector("#modeToggle .active")?.classList.remove("active");
   btn.classList.add("active");
   currentMode = btn.dataset.mode;
@@ -1694,9 +1699,7 @@ categoryTabs.addEventListener("click", e => {
   const btn = e.target.closest(".tab");
   if (!btn) return;
   activeCategory = btn.dataset.category;
-  document.querySelectorAll("#categoryTabs .tab").forEach(b => {
-    b.classList.toggle("active", b.dataset.category === activeCategory);
-  });
+  document.querySelectorAll("#categoryTabs .tab").forEach(b => b.classList.toggle("active", b.dataset.category === activeCategory));
   renderDashboard();
 });
 
@@ -1708,43 +1711,29 @@ assetSearch.addEventListener("input", debounce(() => {
 grid.addEventListener("click", e => {
   const favBtn = e.target.closest(".fav-btn");
   if (!favBtn) return;
-
   const id = favBtn.dataset.fav;
   toggleFavorite(id);
   const isFav = favorites.includes(id);
-
-  if (activeCategory === "favorites") {
-    renderDashboard();
-    return;
-  }
-
+  if (activeCategory === "favorites") { renderDashboard(); return; }
   favBtn.classList.toggle("active", isFav);
 });
 
 dateBtn.onclick = () => dateMenu.classList.toggle("show");
-
-document.addEventListener("click", e => {
-  if (!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show");
-});
+document.addEventListener("click", e => { if (!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show"); });
 
 // ---------- Init ----------
 parseURLState();
 buildDateFormatters();
 document.documentElement.setAttribute("data-style", currentStyle);
+styleBtn.title = "Style: " + (STYLE_NAMES[currentStyle] || currentStyle);
 applyTheme(currentTheme);
 applyLanguage(currentLang);
 
 if (searchQuery) assetSearch.value = searchQuery;
 
-document.querySelectorAll("#viewToggle button").forEach(btn => {
-  btn.classList.toggle("active", btn.dataset.view === currentView);
-});
-document.querySelectorAll("#modeToggle button").forEach(btn => {
-  btn.classList.toggle("active", btn.dataset.mode === currentMode);
-});
-document.querySelectorAll("#categoryTabs .tab").forEach(btn => {
-  btn.classList.toggle("active", btn.dataset.category === activeCategory);
-});
+document.querySelectorAll("#viewToggle button").forEach(b => b.classList.toggle("active", b.dataset.view === currentView));
+document.querySelectorAll("#modeToggle button").forEach(b => b.classList.toggle("active", b.dataset.mode === currentMode));
+document.querySelectorAll("#categoryTabs .tab").forEach(b => b.classList.toggle("active", b.dataset.category === activeCategory));
 
 feather.replace();
 loadAssetMetaFromAPI();
