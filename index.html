@@ -63,11 +63,7 @@
 
     .title-section { display: flex; align-items: center; gap: 12px; }
 
-    .title-section h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-    }
+    .title-section h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; }
 
     .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
@@ -92,7 +88,6 @@
     .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 
     #dateBtn { padding: 0 14px; min-width: 220px; justify-content: flex-start; }
-    [dir="rtl"] #dateBtn { justify-content: flex-start; }
     #dateBtnText { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     #langBtn { width: 52px; font-weight: 700; }
@@ -238,6 +233,23 @@
     .mode-toggle button svg { width: 14px; height: 14px; }
     .mode-toggle button.active { background: var(--text); color: var(--bg); }
 
+    /* ---------- Icons ---------- */
+    .asset-icon {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .asset-icon-fallback {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
     /* ---------- Charts Grid ---------- */
     .grid {
       display: grid;
@@ -296,6 +308,7 @@
       transition: color 0.2s ease;
       display: flex;
       align-items: center;
+      margin-inline-start: auto;
     }
 
     .fav-btn svg { width: 16px; height: 16px; }
@@ -418,13 +431,22 @@
     .heatmap-tile.neutral { background: var(--card); border: 1px solid var(--border); }
 
     .heatmap-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 0.85rem;
       font-weight: 600;
       color: var(--text);
+      min-width: 0;
+    }
+
+    .heatmap-label .hl-text {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .heatmap-label .asset-icon { width: 20px; height: 20px; }
 
     .heatmap-price { font-size: 0.95rem; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
     .heatmap-change { font-size: 0.8rem; font-weight: 700; }
@@ -460,6 +482,9 @@
     .data-table tbody tr { transition: background 0.15s ease; }
     .data-table tbody tr:hover { background: var(--bg); }
     .data-table tbody tr:last-child td { border-bottom: none; }
+
+    .table-asset { display: flex; align-items: center; gap: 10px; }
+    .table-asset .asset-icon { width: 24px; height: 24px; }
     .table-asset-name { font-weight: 600; }
 
     .table-change {
@@ -539,7 +564,6 @@
     }
 
     html[data-style="brutal"] body { font-family: 'Space Grotesk', 'Vazirmatn', system-ui, sans-serif; }
-    [dir="rtl"] html[data-style="brutal"] body,
     html[data-style="brutal"][dir="rtl"] body { font-family: 'Vazirmatn', 'Space Grotesk', system-ui, sans-serif; }
 
     html[data-style="brutal"] h1,
@@ -604,13 +628,35 @@
     html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+4) { border-color: #F0964B; }
     html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+5) { border-color: #8FA8D8; }
 
-    html[data-style="brutal"] .range-bar { background: rgba(20, 20, 20, 0.2); }
-    html[data-style="brutal"][data-theme="dark"] .range-bar { background: rgba(243, 233, 210, 0.2); }
+    /* Contrast fixes on colored cards */
+    html[data-style="brutal"] .asset-meta { color: rgba(20, 20, 20, 0.66); }
+    html[data-style="brutal"] .asset-meta strong { color: #141414; }
+    html[data-style="brutal"] .price-change { background: #FBF3E0; border: 2px solid #141414; }
+    html[data-style="brutal"] .price-change.up { color: #178A44; }
+    html[data-style="brutal"] .price-change.down { color: #D23B2E; }
+    html[data-style="brutal"] .range-bar { background: rgba(20, 20, 20, 0.25); }
+    html[data-style="brutal"] .range-fill { background: rgba(20, 20, 20, 0.35); }
     html[data-style="brutal"] .range-dot { background: #141414; }
+
+    html[data-style="brutal"][data-theme="dark"] .asset-meta { color: rgba(243, 233, 210, 0.66); }
+    html[data-style="brutal"][data-theme="dark"] .asset-meta strong { color: #F3E9D2; }
+    html[data-style="brutal"][data-theme="dark"] .price-change { background: #241E17; border-color: #EFE3C8; }
+    html[data-style="brutal"][data-theme="dark"] .range-bar { background: rgba(243, 233, 210, 0.25); }
+    html[data-style="brutal"][data-theme="dark"] .range-fill { background: rgba(243, 233, 210, 0.35); }
     html[data-style="brutal"][data-theme="dark"] .range-dot { background: #F3E9D2; }
 
-    html[data-style="brutal"] .price-change.up { background: rgba(23, 138, 68, 0.15); }
-    html[data-style="brutal"] .price-change.down { background: rgba(210, 59, 46, 0.15); }
+    /* Icons as stickers in brutal */
+    html[data-style="brutal"] .asset-icon {
+      background: #FBF3E0;
+      border: 2px solid #141414;
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    html[data-style="brutal"][data-theme="dark"] .asset-icon {
+      background: #241E17;
+      border-color: #EFE3C8;
+    }
 
     html[data-style="brutal"] .heatmap-tile.positive { background: #8FD694; border-color: #141414; }
     html[data-style="brutal"] .heatmap-tile.negative { background: #F08A7E; border-color: #141414; }
@@ -774,7 +820,7 @@ function numLocale() {
   return currentLang === "fa" ? "fa-IR" : "en-US";
 }
 
-// ---------- Jalali date formatters (language aware) ----------
+// ---------- Jalali date formatters ----------
 let jalaliFullFormatter, jalaliShortFormatter, jalaliMonthFormatter;
 const jalaliMonthKeyFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", {
   year: "numeric", month: "numeric"
@@ -821,6 +867,82 @@ const ASSETS = [
   { id: "pamp50", key: 50, label: "PAMP 50g", color: "#8b5cf6", category: "pamp" },
   { id: "pamp100", key: 100, label: "PAMP 100g", color: "#a855f7", category: "pamp" }
 ];
+
+// Hardcoded icon fallbacks (from API samples)
+const ICON_FALLBACKS = {
+  usd: "https://liara-s3.dastyar.io/Img/icons/finance/dollar.svg",
+  eur: "https://liara-s3.dastyar.io/Img/icons/finance/euro.svg",
+  gbp: "https://liara-s3.dastyar.io/Img/icons/finance/pound.svg",
+  aed: "https://liara-s3.dastyar.io/Img/icons/finance/aed.svg",
+  try: "https://liara-s3.dastyar.io/Img/icons/finance/tl.svg",
+  pamp1: "https://zcoinn.com/wp-content/uploads/2022/08/1g-blue-copy.webp",
+  pamp2_5: "https://zcoinn.com/wp-content/uploads/2022/08/2.5-blue-copy.webp",
+  pamp5: "https://zcoinn.com/wp-content/uploads/2022/08/5g-blue-copy.webp",
+  pamp10: "https://zcoinn.com/wp-content/uploads/2022/08/1.2oz-blue-copy.webp",
+  pamp15: "https://zcoinn.com/wp-content/uploads/2022/08/10g-blue-copy.webp",
+  pamp20: "https://zcoinn.com/wp-content/uploads/2022/08/20g-blue-copy.webp",
+  pamp31_1: "https://zcoinn.com/wp-content/uploads/2022/12/1oz-blue-copy.webp",
+  pamp50: "https://zcoinn.com/wp-content/uploads/2022/08/50blue.png",
+  pamp100: "https://zcoinn.com/wp-content/uploads/2022/08/50blue.png"
+};
+
+// Live meta (icon + fa title), filled from APIs and/or stored data
+const assetMeta = {};
+
+function mergeFinMeta(item) {
+  const asset = ASSETS.find(a => String(a.key) === String(item.key));
+  if (asset && (item.icon || item.image)) {
+    assetMeta[asset.id] = { icon: item.icon || item.image, faTitle: item.title || "" };
+  }
+}
+
+function mergePampMeta(item) {
+  const asset = ASSETS.find(a => Number(a.key) === Number(item.weightGram));
+  if (asset && item.image) {
+    assetMeta[asset.id] = { icon: item.image, faTitle: item.name || "" };
+  }
+}
+
+function extractMetaFromEntry(entry) {
+  if (!entry) return;
+  const fin = Array.isArray(entry.financial) ? entry.financial : (Array.isArray(entry.data) ? entry.data : null);
+  if (fin) fin.forEach(mergeFinMeta);
+  if (entry.pamp && Array.isArray(entry.pamp.items)) entry.pamp.items.forEach(mergePampMeta);
+}
+
+async function loadAssetMetaFromAPI() {
+  try {
+    const [fin, pamp] = await Promise.allSettled([
+      fetch("https://api.dastyar.io/express/financial-item").then(r => r.json()),
+      fetch("https://amirmasoud.netlify.app/api/v1/pamp").then(r => r.json())
+    ]);
+    if (fin.status === "fulfilled" && Array.isArray(fin.value)) fin.value.forEach(mergeFinMeta);
+    if (pamp.status === "fulfilled" && pamp.value && Array.isArray(pamp.value.items)) pamp.value.items.forEach(mergePampMeta);
+  } catch {}
+  if (currentEntries.length) renderDashboard();
+}
+
+function getAssetIcon(asset) {
+  return assetMeta[asset.id]?.icon || ICON_FALLBACKS[asset.id] || null;
+}
+
+function assetLabel(asset) {
+  if (currentLang === "fa") {
+    if (asset.category === "pamp") {
+      return asset.key === 31.1035 ? "پمپ ۱ اونسی" : `پمپ ${asset.key} گرمی`;
+    }
+    const fa = assetMeta[asset.id]?.faTitle;
+    if (fa) return fa;
+  }
+  return asset.label;
+}
+
+function iconHtml(asset) {
+  const src = getAssetIcon(asset);
+  const dot = `<span class="asset-icon-fallback" style="background:${asset.color};display:${src ? "none" : "inline-block"}"></span>`;
+  if (!src) return dot;
+  return `<img class="asset-icon" src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';">${dot}`;
+}
 
 // ---------- Elements ----------
 const charts = {};
@@ -870,7 +992,7 @@ let currentStyle = storageGet("style") || "flat";
 
 const URL_DEFAULTS = { view: "daily", mode: "charts", category: "all", lang: "en", style: "flat" };
 
-// ---------- URL state (clean: only non-defaults) ----------
+// ---------- URL state ----------
 function parseURLState() {
   const params = new URLSearchParams(window.location.search);
   if (params.has("view")) currentView = params.get("view");
@@ -917,39 +1039,31 @@ function getChartColors() {
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
 
   if (style === "brutal") {
-    return isDark ? {
-      text: "#A99C82", grid: "rgba(243,233,210,0.15)",
-      tooltipBg: "#241E17", tooltipText: "#F3E9D2", tooltipBorder: "#EFE3C8"
-    } : {
-      text: "#6E6552", grid: "rgba(20,20,20,0.15)",
+    const brutalFont = "'Space Grotesk','Vazirmatn',sans-serif";
+    if (isDark) {
+      return {
+        text: "#F3E9D2", grid: "rgba(243,233,210,0.16)",
+        casing: null, fill: true, fontFamily: brutalFont,
+        tooltipBg: "#241E17", tooltipText: "#F3E9D2", tooltipBorder: "#EFE3C8"
+      };
+    }
+    return {
+      text: "#141414", grid: "rgba(20,20,20,0.22)",
+      casing: "#141414", fill: false, fontFamily: brutalFont,
       tooltipBg: "#FBF3E0", tooltipText: "#141414", tooltipBorder: "#141414"
     };
   }
 
+  const flatFont = "'Inter','Vazirmatn',sans-serif";
   return isDark ? {
     text: "#a1a1aa", grid: "rgba(255,255,255,0.06)",
+    casing: null, fill: true, fontFamily: flatFont,
     tooltipBg: "#18181b", tooltipText: "#fafafa", tooltipBorder: "#27272a"
   } : {
     text: "#71717a", grid: "rgba(0,0,0,0.06)",
+    casing: null, fill: true, fontFamily: flatFont,
     tooltipBg: "#ffffff", tooltipText: "#18181b", tooltipBorder: "#e4e4e7"
   };
-}
-
-function updateChartsTheme() {
-  const colors = getChartColors();
-  Object.values(charts).forEach(chart => {
-    chart.options.scales.x.ticks.color = colors.text;
-    chart.options.scales.x.grid.color = colors.grid;
-    chart.options.scales.y.ticks.color = colors.text;
-    chart.options.scales.y.grid.color = colors.grid;
-    if (chart.options.plugins.tooltip) {
-      chart.options.plugins.tooltip.backgroundColor = colors.tooltipBg;
-      chart.options.plugins.tooltip.titleColor = colors.tooltipText;
-      chart.options.plugins.tooltip.bodyColor = colors.tooltipText;
-      chart.options.plugins.tooltip.borderColor = colors.tooltipBorder;
-    }
-    chart.update("none");
-  });
 }
 
 function applyTheme(theme) {
@@ -958,14 +1072,14 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   themeBtn.innerHTML = theme === "dark" ? '<i data-feather="moon"></i>' : '<i data-feather="sun"></i>';
   feather.replace();
-  updateChartsTheme();
+  renderDashboard();
 }
 
 function applyStyle(style) {
   currentStyle = style;
   storageSet("style", style);
   document.documentElement.setAttribute("data-style", style);
-  updateChartsTheme();
+  renderDashboard();
   updateURLState();
 }
 
@@ -1021,12 +1135,19 @@ function toggleFavorite(id) {
 
 // ---------- Filtering ----------
 function getVisibleAssets() {
+  const q = searchQuery;
   return ASSETS.filter(asset => {
     const matchesCategory =
       activeCategory === "all" ||
       (activeCategory === "favorites" ? favorites.includes(asset.id) : asset.category === activeCategory);
-    const matchesSearch = !searchQuery || asset.label.toLowerCase().includes(searchQuery);
-    return matchesCategory && matchesSearch;
+
+    if (!matchesCategory) return false;
+    if (!q) return true;
+
+    const en = asset.label.toLowerCase();
+    const fa = (assetMeta[asset.id]?.faTitle || "").toLowerCase();
+    const faPamp = asset.category === "pamp" ? assetLabel(asset) : "";
+    return en.includes(q) || fa.includes(q) || faPamp.includes(q);
   });
 }
 
@@ -1096,6 +1217,7 @@ async function loadData(date) {
   currentLabels = entries.map(e => e.time || "");
   computeDisplayIndices(currentLabels.length, 240);
 
+  extractMetaFromEntry(entries[entries.length - 1]);
   refreshDateLabel();
   renderDashboard();
 
@@ -1127,6 +1249,7 @@ async function loadMonthlyData(dates, monthKey) {
   currentEntries = entries;
   computeDisplayIndices(currentLabels.length, 120);
 
+  extractMetaFromEntry(entries[entries.length - 1]);
   refreshDateLabel();
   renderDashboard();
 
@@ -1147,6 +1270,7 @@ function destroyCharts() {
 
 function createCard(asset) {
   const isFav = favorites.includes(asset.id);
+  const label = assetLabel(asset);
   const div = document.createElement("div");
   div.className = "card";
   div.dataset.assetId = asset.id;
@@ -1155,7 +1279,8 @@ function createCard(asset) {
     <div class="card-header">
       <div class="asset-info">
         <div class="asset-title">
-          <h2>${asset.label}</h2>
+          ${iconHtml(asset)}
+          <h2 title="${label}">${label}</h2>
           <button type="button" class="fav-btn ${isFav ? "active" : ""}" data-fav="${asset.id}" title="Favorite">
             <i data-feather="star"></i>
           </button>
@@ -1190,29 +1315,53 @@ function createChart(canvasId, labels, data, label, color) {
   if (charts[canvasId]) charts[canvasId].destroy();
 
   const colors = getChartColors();
+
   let lastValidIndex = -1;
   for (let i = data.length - 1; i >= 0; i--) {
     if (data[i] != null && data[i] > 0) { lastValidIndex = i; break; }
   }
 
+  const datasets = [];
+
+  // Black "casing" underlay for brutal light mode (contrast on colored cards)
+  if (colors.casing) {
+    datasets.push({
+      label, data,
+      borderColor: colors.casing,
+      borderWidth: 6,
+      tension: 0.35,
+      spanGaps: true,
+      fill: false,
+      pointRadius: 0,
+      pointHoverRadius: 0
+    });
+  }
+
+  datasets.push({
+    label, data,
+    borderColor: color,
+    borderWidth: colors.casing ? 3 : 2,
+    fill: colors.fill,
+    tension: 0.35,
+    spanGaps: true,
+    backgroundColor: colors.fill ? (ctx => {
+      const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 300);
+      g.addColorStop(0, color + "33");
+      g.addColorStop(1, "transparent");
+      return g;
+    }) : "transparent",
+    pointRadius: ctx => ctx.dataIndex === lastValidIndex ? 4.5 : 0,
+    pointHoverRadius: 6,
+    pointBackgroundColor: color,
+    pointBorderColor: colors.casing || color,
+    pointBorderWidth: colors.casing ? 2 : 0
+  });
+
+  const mainIndex = datasets.length - 1;
+
   charts[canvasId] = new Chart(canvas.getContext("2d"), {
     type: "line",
-    data: {
-      labels,
-      datasets: [{
-        label, data, borderColor: color, borderWidth: 2, fill: true, tension: 0.35, spanGaps: true,
-        backgroundColor: ctx => {
-          const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 300);
-          g.addColorStop(0, color + "33");
-          g.addColorStop(1, "transparent");
-          return g;
-        },
-        pointRadius: ctx => ctx.dataIndex === lastValidIndex ? 4 : 0,
-        pointHoverRadius: 6,
-        pointBackgroundColor: color,
-        pointBorderWidth: 0
-      }]
-    },
+    data: { labels, datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -1229,6 +1378,7 @@ function createChart(canvasId, labels, data, label, color) {
           borderWidth: 1,
           padding: 12,
           displayColors: false,
+          filter: item => item.datasetIndex === mainIndex,
           callbacks: {
             title: items => items.length ? items[0].label : "",
             label: ctx => ctx.parsed.y == null ? "No data" : fmt(ctx.parsed.y)
@@ -1237,13 +1387,20 @@ function createChart(canvasId, labels, data, label, color) {
       },
       scales: {
         x: {
-          ticks: { color: colors.text, maxRotation: 0, autoSkipPadding: 18, maxTicksLimit: 8 },
+          ticks: {
+            color: colors.text, maxRotation: 0, autoSkipPadding: 18, maxTicksLimit: 8,
+            font: { family: colors.fontFamily, weight: 600 }
+          },
           grid: { color: colors.grid }
         },
         y: {
           beginAtZero: false,
           grace: "10%",
-          ticks: { color: colors.text, maxTicksLimit: 6, callback: v => Number(v).toLocaleString(numLocale()) },
+          ticks: {
+            color: colors.text, maxTicksLimit: 6,
+            font: { family: colors.fontFamily, weight: 600 },
+            callback: v => Number(v).toLocaleString(numLocale())
+          },
           grid: { color: colors.grid }
         }
       }
@@ -1335,6 +1492,7 @@ function renderHeatmap() {
 
   visibleAssets.forEach(asset => {
     const stats = calculateStats(getAssetValues(asset, currentEntries));
+    const label = assetLabel(asset);
 
     const tile = document.createElement("div");
     let tileClass = "heatmap-tile neutral";
@@ -1355,7 +1513,7 @@ function renderHeatmap() {
 
     tile.className = tileClass;
     tile.innerHTML = `
-      <div class="heatmap-label">${asset.label}</div>
+      <div class="heatmap-label">${iconHtml(asset)}<span class="hl-text" title="${label}">${label}</span></div>
       <div>
         <div class="heatmap-price">${stats ? fmt(stats.close) : "—"}</div>
         <div class="${changeClass}">${changeText}</div>
@@ -1379,6 +1537,7 @@ function renderTable() {
 
   visibleAssets.forEach(asset => {
     const stats = calculateStats(getAssetValues(asset, currentEntries));
+    const label = assetLabel(asset);
     const tr = document.createElement("tr");
 
     let changeHTML = "—";
@@ -1389,7 +1548,12 @@ function renderTable() {
     }
 
     tr.innerHTML = `
-      <td><span class="table-asset-name">${asset.label}</span></td>
+      <td>
+        <div class="table-asset">
+          ${iconHtml(asset)}
+          <span class="table-asset-name">${label}</span>
+        </div>
+      </td>
       <td>${stats ? fmt(stats.close) : "—"}</td>
       <td>${stats ? fmt(stats.low) : "—"}</td>
       <td>${stats ? fmt(stats.high) : "—"}</td>
@@ -1548,8 +1712,8 @@ document.addEventListener("click", e => {
 // ---------- Init ----------
 parseURLState();
 buildDateFormatters();
-applyTheme(currentTheme);
 document.documentElement.setAttribute("data-style", currentStyle);
+applyTheme(currentTheme);
 applyLanguage(currentLang);
 
 if (searchQuery) assetSearch.value = searchQuery;
@@ -1565,6 +1729,7 @@ document.querySelectorAll("#categoryTabs .tab").forEach(btn => {
 });
 
 feather.replace();
+loadAssetMetaFromAPI();
 loadAvailableDates();
 </script>
 
