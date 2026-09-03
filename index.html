@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" dir="ltr">
+<html lang="en" data-theme="dark" dir="ltr" data-style="flat">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://unpkg.com/feather-icons"></script>
 
@@ -22,7 +23,6 @@
       --green: #22c55e;
       --red: #ef4444;
       --radius: 16px;
-      --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
       --font: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
@@ -34,31 +34,23 @@
       --muted: #71717a;
       --accent: #2563eb;
       --accent-soft: rgba(37, 99, 235, 0.14);
-      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     }
 
-    [dir="rtl"] {
-      --font: 'Vazirmatn', 'Inter', system-ui, sans-serif;
-    }
+    [dir="rtl"] { --font: 'Vazirmatn', 'Inter', system-ui, sans-serif; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
       color: var(--text);
       font-family: var(--font);
-      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
       -webkit-font-smoothing: antialiased;
       padding: 40px 28px;
       transition: background-color 0.3s ease, color 0.3s ease;
       min-height: 100vh;
     }
 
-    /* Header */
+    /* ---------- Header ---------- */
     header {
       max-width: 1440px;
       margin: 0 auto 28px auto;
@@ -69,12 +61,7 @@
       gap: 20px;
     }
 
-    .title-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 180px;
-    }
+    .title-section { display: flex; align-items: center; gap: 12px; }
 
     .title-section h1 {
       font-size: 1.8rem;
@@ -82,45 +69,34 @@
       letter-spacing: -0.03em;
     }
 
-    .controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+    .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
     .btn {
       background: var(--card);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 9px 14px;
       border-radius: 10px;
       font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: border-color 0.2s ease, background 0.2s ease;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      box-shadow: var(--shadow);
       font-family: inherit;
-      min-width: fit-content;
+      height: 40px;
     }
 
-    .btn:hover {
-      border-color: var(--muted);
-      transform: translateY(-1px);
-    }
+    .btn:hover { border-color: var(--muted); }
+    .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-    .btn svg {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-    }
+    #dateBtn { padding: 0 14px; min-width: 220px; justify-content: flex-start; }
+    [dir="rtl"] #dateBtn { justify-content: flex-start; }
+    #dateBtnText { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .btn-icon {
-      padding: 9px;
-    }
+    #langBtn { width: 52px; font-weight: 700; }
+    #themeBtn, #styleBtn { width: 40px; }
 
     .view-toggle {
       display: flex;
@@ -128,14 +104,14 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 3px;
-      box-shadow: var(--shadow);
     }
 
     .view-toggle button {
       background: transparent;
       border: none;
       color: var(--muted);
-      padding: 7px 14px;
+      width: 92px;
+      height: 34px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 0.82rem;
@@ -144,14 +120,9 @@
       font-family: inherit;
     }
 
-    .view-toggle button.active {
-      background: var(--text);
-      color: var(--bg);
-    }
+    .view-toggle button.active { background: var(--text); color: var(--bg); }
 
-    .date-dropdown {
-      position: relative;
-    }
+    .date-dropdown { position: relative; }
 
     .date-menu {
       position: absolute;
@@ -168,19 +139,10 @@
       pointer-events: none;
       transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 50;
-      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     }
 
-    [dir="rtl"] .date-menu {
-      right: auto;
-      left: 0;
-    }
-
-    .date-menu.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
+    [dir="rtl"] .date-menu { right: auto; left: 0; }
+    .date-menu.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
     .date-menu div {
       padding: 12px 14px;
@@ -190,24 +152,13 @@
       color: var(--text);
     }
 
-    .date-menu div:hover {
-      background: var(--border);
-    }
+    .date-menu div:hover { background: var(--border); }
+    .date-menu div:not(:last-child) { border-bottom: 1px solid var(--border); }
 
-    .date-menu div:not(:last-child) {
-      border-bottom: 1px solid var(--border);
-    }
+    .date-menu::-webkit-scrollbar { width: 8px; }
+    .date-menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
 
-    .date-menu::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .date-menu::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 999px;
-    }
-
-    /* Toolbar */
+    /* ---------- Toolbar ---------- */
     .toolbar {
       max-width: 1440px;
       margin: 0 auto 34px auto;
@@ -218,103 +169,76 @@
       flex-wrap: wrap;
     }
 
-    .toolbar-left {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .tab {
       background: var(--card);
       border: 1px solid var(--border);
       color: var(--muted);
-      padding: 8px 13px;
+      padding: 0 14px;
+      height: 34px;
       border-radius: 999px;
       cursor: pointer;
       font-size: 0.8rem;
       font-weight: 600;
       transition: all 0.2s ease;
-      box-shadow: var(--shadow);
       font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .tab:hover {
-      border-color: var(--muted);
-      color: var(--text);
-    }
-
-    .tab.active {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-    }
+    .tab:hover { border-color: var(--muted); color: var(--text); }
+    .tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .tab svg { width: 12px; height: 12px; }
 
     .search-input {
       background: var(--card);
       border: 1px solid var(--border);
       color: var(--text);
       border-radius: 10px;
-      padding: 10px 14px;
+      padding: 0 14px;
+      height: 40px;
       min-width: 200px;
       outline: none;
       font: inherit;
       font-size: 0.875rem;
       transition: border-color 0.2s ease;
-      box-shadow: var(--shadow);
     }
 
-    .search-input::placeholder {
-      color: var(--muted);
-    }
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus { border-color: var(--accent); }
 
-    .search-input:focus {
-      border-color: var(--accent);
-    }
-
-    /* Mode Toggle */
     .mode-toggle {
       display: flex;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 3px;
-      box-shadow: var(--shadow);
     }
 
     .mode-toggle button {
       background: transparent;
       border: none;
       color: var(--muted);
-      padding: 7px 12px;
+      width: 110px;
+      height: 34px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 0.8rem;
       font-weight: 600;
       transition: all 0.2s ease;
       font-family: inherit;
-      display: flex;
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
     }
 
-    .mode-toggle button svg {
-      width: 14px;
-      height: 14px;
-    }
+    .mode-toggle button svg { width: 14px; height: 14px; }
+    .mode-toggle button.active { background: var(--text); color: var(--bg); }
 
-    .mode-toggle button.active {
-      background: var(--text);
-      color: var(--bg);
-    }
-
-    /* Charts Grid */
+    /* ---------- Charts Grid ---------- */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
@@ -336,18 +260,11 @@
       opacity: 0;
       transform: translateY(12px);
       height: 500px;
-      transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.2s ease;
+      transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.2s ease, background 0.3s ease;
     }
 
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card:hover {
-      border-color: var(--muted);
-      transform: translateY(-2px);
-    }
+    .card.visible { opacity: 1; transform: translateY(0); }
+    .card:hover { border-color: var(--muted); }
 
     .card-header {
       display: grid;
@@ -357,16 +274,9 @@
       margin-bottom: 18px;
     }
 
-    .asset-info {
-      min-width: 0;
-    }
+    .asset-info { min-width: 0; }
 
-    .asset-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 9px;
-    }
+    .asset-title { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
 
     .asset-title h2 {
       font-size: 0.95rem;
@@ -383,24 +293,15 @@
       cursor: pointer;
       border-radius: 6px;
       padding: 2px;
-      transition: color 0.2s ease, transform 0.2s ease;
+      transition: color 0.2s ease;
       display: flex;
       align-items: center;
     }
 
-    .fav-btn svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    .fav-btn:hover {
-      transform: scale(1.1);
-      color: #eab308;
-    }
-
-    .fav-btn.active {
-      color: #eab308;
-    }
+    .fav-btn svg { width: 16px; height: 16px; }
+    .fav-btn:hover { color: #eab308; }
+    .fav-btn.active { color: #eab308; }
+    .fav-btn.active svg { fill: currentColor; }
 
     .asset-meta {
       display: flex;
@@ -411,11 +312,8 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .asset-meta strong {
-      color: var(--text);
-      font-weight: 600;
-      margin-left: 4px;
-    }
+    .asset-meta strong { color: var(--text); font-weight: 600; margin-left: 4px; }
+    [dir="rtl"] .asset-meta strong { margin-left: 0; margin-right: 4px; }
 
     .range-bar {
       position: relative;
@@ -429,9 +327,7 @@
 
     .range-fill {
       position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
+      left: 0; top: 0; bottom: 0;
       width: 0%;
       border-radius: 999px;
       background: var(--accent-soft);
@@ -439,14 +335,11 @@
 
     .range-dot {
       position: absolute;
-      top: 50%;
-      left: 0%;
-      width: 10px;
-      height: 10px;
+      top: 50%; left: 0%;
+      width: 10px; height: 10px;
       border-radius: 50%;
       background: var(--accent);
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 0 4px var(--accent-soft);
     }
 
     .price-info {
@@ -458,10 +351,7 @@
       min-width: 0;
     }
 
-    [dir="rtl"] .price-info {
-      text-align: left;
-      align-items: flex-start;
-    }
+    [dir="rtl"] .price-info { text-align: left; align-items: flex-start; }
 
     .price-current {
       font-size: clamp(1.25rem, 2vw, 1.75rem);
@@ -483,77 +373,17 @@
       color: var(--muted);
       border: 1px solid var(--border);
       background: transparent;
-    }
-
-    .price-change.up {
-      color: var(--green);
-      background: rgba(34, 197, 94, 0.12);
-      border-color: rgba(34, 197, 94, 0.18);
-    }
-
-    .price-change.down {
-      color: var(--red);
-      background: rgba(239, 68, 68, 0.12);
-      border-color: rgba(239, 68, 68, 0.18);
-    }
-
-    .chart-wrap {
-      position: relative;
-      flex: 1;
-      min-height: 0;
-    }
-
-    .chart-wrap canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .card-actions {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      display: flex;
-      gap: 6px;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-
-    [dir="rtl"] .card-actions {
-      right: auto;
-      left: 16px;
-    }
-
-    .card:hover .card-actions {
-      opacity: 1;
-    }
-
-    .card-action-btn {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
+      min-width: 76px;
       justify-content: center;
-      transition: all 0.2s ease;
     }
 
-    .card-action-btn:hover {
-      color: var(--text);
-      border-color: var(--muted);
-    }
+    .price-change.up { color: var(--green); background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.18); }
+    .price-change.down { color: var(--red); background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.18); }
 
-    .card-action-btn svg {
-      width: 14px;
-      height: 14px;
-    }
+    .chart-wrap { position: relative; flex: 1; min-height: 0; }
+    .chart-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
-    /* Heatmap */
+    /* ---------- Heatmap ---------- */
     .heatmap {
       max-width: 1440px;
       margin: 0 auto;
@@ -569,16 +399,11 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
+      transition: border-color 0.2s ease;
       overflow: hidden;
     }
 
-    .heatmap-tile:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
+    .heatmap-tile:hover { border-color: var(--text); }
 
     .heatmap-tile.positive {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05));
@@ -590,10 +415,7 @@
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
 
-    .heatmap-tile.neutral {
-      background: var(--card);
-      border: 1px solid var(--border);
-    }
+    .heatmap-tile.neutral { background: var(--card); border: 1px solid var(--border); }
 
     .heatmap-label {
       font-size: 0.85rem;
@@ -604,27 +426,12 @@
       text-overflow: ellipsis;
     }
 
-    .heatmap-price {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      font-variant-numeric: tabular-nums;
-    }
+    .heatmap-price { font-size: 0.95rem; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+    .heatmap-change { font-size: 0.8rem; font-weight: 700; }
+    .heatmap-change.up { color: var(--green); }
+    .heatmap-change.down { color: var(--red); }
 
-    .heatmap-change {
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    .heatmap-change.up {
-      color: var(--green);
-    }
-
-    .heatmap-change.down {
-      color: var(--red);
-    }
-
-    /* Table */
+    /* ---------- Table ---------- */
     .table-container {
       max-width: 1440px;
       margin: 0 auto;
@@ -634,15 +441,8 @@
       overflow: hidden;
     }
 
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.875rem;
-    }
-
-    .data-table thead {
-      background: var(--bg);
-    }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .data-table thead { background: var(--bg); }
 
     .data-table th {
       padding: 14px 16px;
@@ -655,37 +455,12 @@
       border-bottom: 1px solid var(--border);
     }
 
-    [dir="rtl"] .data-table th {
-      text-align: right;
-    }
-
-    .data-table td {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .data-table tbody tr {
-      transition: background 0.15s ease;
-    }
-
-    .data-table tbody tr:hover {
-      background: var(--bg);
-    }
-
-    .data-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    .table-asset {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .table-asset-name {
-      font-weight: 600;
-    }
+    [dir="rtl"] .data-table th { text-align: right; }
+    .data-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+    .data-table tbody tr { transition: background 0.15s ease; }
+    .data-table tbody tr:hover { background: var(--bg); }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .table-asset-name { font-weight: 600; }
 
     .table-change {
       display: inline-flex;
@@ -697,15 +472,8 @@
       font-size: 0.8rem;
     }
 
-    .table-change.up {
-      color: var(--green);
-      background: rgba(34, 197, 94, 0.1);
-    }
-
-    .table-change.down {
-      color: var(--red);
-      background: rgba(239, 68, 68, 0.1);
-    }
+    .table-change.up { color: var(--green); background: rgba(34, 197, 94, 0.1); }
+    .table-change.down { color: var(--red); background: rgba(239, 68, 68, 0.1); }
 
     .empty-state {
       grid-column: 1 / -1;
@@ -727,11 +495,9 @@
 
     .loader {
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 42px;
-      height: 42px;
+      width: 42px; height: 42px;
       border: 3px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
@@ -740,91 +506,145 @@
       z-index: 100;
     }
 
-    .loader.show {
-      display: block;
+    .loader.show { display: block; }
+
+    @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    /* ============================================================
+       NEO-BRUTALISM STYLE
+       ============================================================ */
+    html[data-style="brutal"] {
+      --bg: #F3E9D2;
+      --card: #FBF3E0;
+      --border: #141414;
+      --text: #141414;
+      --muted: #6E6552;
+      --accent: #F07818;
+      --accent-soft: rgba(240, 120, 24, 0.3);
+      --green: #178A44;
+      --red: #D23B2E;
+      --radius: 14px;
     }
 
-    @keyframes spin {
-      to {
-        transform: translate(-50%, -50%) rotate(360deg);
-      }
+    html[data-style="brutal"][data-theme="dark"] {
+      --bg: #171310;
+      --card: #241E17;
+      --border: #EFE3C8;
+      --text: #F3E9D2;
+      --muted: #A99C82;
+      --accent: #F5C33B;
+      --accent-soft: rgba(245, 195, 59, 0.3);
+      --green: #4CC57A;
+      --red: #F26D5E;
     }
 
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    html[data-style="brutal"] body { font-family: 'Space Grotesk', 'Vazirmatn', system-ui, sans-serif; }
+    [dir="rtl"] html[data-style="brutal"] body,
+    html[data-style="brutal"][dir="rtl"] body { font-family: 'Vazirmatn', 'Space Grotesk', system-ui, sans-serif; }
+
+    html[data-style="brutal"] h1,
+    html[data-style="brutal"] .card h2,
+    html[data-style="brutal"] .price-current,
+    html[data-style="brutal"] .heatmap-label {
+      font-family: 'Archivo Black', 'Vazirmatn', sans-serif;
+      letter-spacing: 0;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    html[data-style="brutal"] .btn,
+    html[data-style="brutal"] .view-toggle,
+    html[data-style="brutal"] .mode-toggle,
+    html[data-style="brutal"] .tab,
+    html[data-style="brutal"] .card,
+    html[data-style="brutal"] .date-menu,
+    html[data-style="brutal"] .search-input,
+    html[data-style="brutal"] .table-container,
+    html[data-style="brutal"] .heatmap-tile,
+    html[data-style="brutal"] .empty-state {
+      border: 3px solid var(--border);
     }
 
-    .toast svg {
-      width: 16px;
-      height: 16px;
-      color: var(--green);
+    html[data-style="brutal"] .btn,
+    html[data-style="brutal"] .tab,
+    html[data-style="brutal"] .view-toggle button,
+    html[data-style="brutal"] .mode-toggle button { font-weight: 700; }
+
+    html[data-style="brutal"] .btn svg,
+    html[data-style="brutal"] .mode-toggle button svg { stroke-width: 2.75; }
+
+    html[data-style="brutal"] .view-toggle button.active,
+    html[data-style="brutal"] .mode-toggle button.active {
+      background: var(--accent);
+      color: #141414;
     }
 
+    html[data-style="brutal"] .tab.active {
+      background: #141414;
+      color: #F3E9D2;
+      border-color: #141414;
+    }
+
+    html[data-style="brutal"][data-theme="dark"] .tab.active {
+      background: #F3E9D2;
+      color: #141414;
+      border-color: #F3E9D2;
+    }
+
+    /* Colored cards (light brutal) */
+    html[data-style="brutal"] .card:nth-child(5n+1) { background: #F6A9C9; }
+    html[data-style="brutal"] .card:nth-child(5n+2) { background: #F5C33B; }
+    html[data-style="brutal"] .card:nth-child(5n+3) { background: #7FB8A8; }
+    html[data-style="brutal"] .card:nth-child(5n+4) { background: #F0964B; }
+    html[data-style="brutal"] .card:nth-child(5n+5) { background: #8FA8D8; }
+
+    /* Colored borders (dark brutal) */
+    html[data-style="brutal"][data-theme="dark"] .card { background: var(--card); }
+    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+1) { border-color: #F6A9C9; }
+    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+2) { border-color: #F5C33B; }
+    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+3) { border-color: #7FB8A8; }
+    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+4) { border-color: #F0964B; }
+    html[data-style="brutal"][data-theme="dark"] .card:nth-child(5n+5) { border-color: #8FA8D8; }
+
+    html[data-style="brutal"] .range-bar { background: rgba(20, 20, 20, 0.2); }
+    html[data-style="brutal"][data-theme="dark"] .range-bar { background: rgba(243, 233, 210, 0.2); }
+    html[data-style="brutal"] .range-dot { background: #141414; }
+    html[data-style="brutal"][data-theme="dark"] .range-dot { background: #F3E9D2; }
+
+    html[data-style="brutal"] .price-change.up { background: rgba(23, 138, 68, 0.15); }
+    html[data-style="brutal"] .price-change.down { background: rgba(210, 59, 46, 0.15); }
+
+    html[data-style="brutal"] .heatmap-tile.positive { background: #8FD694; border-color: #141414; }
+    html[data-style="brutal"] .heatmap-tile.negative { background: #F08A7E; border-color: #141414; }
+    html[data-style="brutal"] .heatmap-tile.neutral { background: var(--card); }
+    html[data-style="brutal"] .heatmap-change.up { color: #0E5B2A; }
+    html[data-style="brutal"] .heatmap-change.down { color: #7E1F16; }
+    html[data-style="brutal"][data-theme="dark"] .heatmap-tile.positive { background: rgba(76, 197, 122, 0.2); }
+    html[data-style="brutal"][data-theme="dark"] .heatmap-tile.negative { background: rgba(242, 109, 94, 0.2); }
+    html[data-style="brutal"][data-theme="dark"] .heatmap-change.up { color: var(--green); }
+    html[data-style="brutal"][data-theme="dark"] .heatmap-change.down { color: var(--red); }
+
+    html[data-style="brutal"] .data-table thead { background: var(--accent); }
+    html[data-style="brutal"] .data-table th { color: #141414; border-color: var(--border); }
+    html[data-style="brutal"] .data-table td { border-color: var(--border); }
+    html[data-style="brutal"] .data-table tbody tr:hover { background: rgba(20, 20, 20, 0.06); }
+    html[data-style="brutal"][data-theme="dark"] .data-table th { color: #141414; }
+    html[data-style="brutal"][data-theme="dark"] .data-table tbody tr:hover { background: rgba(243, 233, 210, 0.06); }
+
+    html[data-style="brutal"] .date-menu div:hover { background: rgba(20, 20, 20, 0.08); }
+    html[data-style="brutal"][data-theme="dark"] .date-menu div:hover { background: rgba(243, 233, 210, 0.08); }
+
+    /* ---------- Responsive ---------- */
     @media (max-width: 640px) {
-      body {
-        padding: 22px 14px;
-      }
-
-      header {
-        margin-bottom: 22px;
-      }
-
-      .toolbar {
-        margin-bottom: 26px;
-      }
-
-      .search-input {
-        width: 100%;
-      }
-
-      .grid {
-        row-gap: 38px;
-      }
-
-      .card {
-        height: 460px;
-        padding: 18px;
-      }
-
-      .card-header {
-        gap: 14px;
-      }
-
-      .heatmap {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      }
-
-      .data-table {
-        font-size: 0.75rem;
-      }
-
-      .data-table th,
-      .data-table td {
-        padding: 10px 8px;
-      }
+      body { padding: 22px 14px; }
+      header { margin-bottom: 22px; }
+      .toolbar { margin-bottom: 26px; }
+      .search-input { width: 100%; }
+      .grid { row-gap: 38px; }
+      .card { height: 460px; padding: 18px; }
+      .card-header { gap: 14px; }
+      .heatmap { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .data-table { font-size: 0.75rem; }
+      .data-table th, .data-table td { padding: 10px 8px; }
+      #dateBtn { min-width: 170px; }
     }
   </style>
 </head>
@@ -845,31 +665,28 @@
     <div class="date-dropdown">
       <button class="btn" id="dateBtn">
         <i data-feather="calendar"></i>
-        <span id="dateBtnText" data-i18n="loading">Loading...</span>
+        <span id="dateBtnText">Loading...</span>
       </button>
       <div id="dateMenu" class="date-menu"></div>
     </div>
 
-    <button class="btn btn-icon" id="langBtn" title="Language">EN</button>
-    <button class="btn btn-icon" id="themeBtn" title="Theme">
-      <i data-feather="moon"></i>
-    </button>
+    <button class="btn" id="langBtn" title="Language">EN</button>
+    <button class="btn" id="styleBtn" title="UI Style"><i data-feather="layout"></i></button>
+    <button class="btn" id="themeBtn" title="Theme"><i data-feather="moon"></i></button>
   </div>
 </header>
 
 <div class="toolbar">
-  <div class="toolbar-left">
-    <div class="tabs" id="categoryTabs">
-      <button class="tab active" data-category="all" data-i18n="all">All</button>
-      <button class="tab" data-category="currency" data-i18n="currencies">Currencies</button>
-      <button class="tab" data-category="gold" data-i18n="gold">Gold</button>
-      <button class="tab" data-category="crypto" data-i18n="crypto">Crypto</button>
-      <button class="tab" data-category="pamp">PAMP</button>
-      <button class="tab" data-category="favorites">
-        <i data-feather="star" style="width:12px;height:12px;vertical-align:middle"></i>
-        <span data-i18n="favorites">Favorites</span>
-      </button>
-    </div>
+  <div class="tabs" id="categoryTabs">
+    <button class="tab active" data-category="all" data-i18n="all">All</button>
+    <button class="tab" data-category="currency" data-i18n="currencies">Currencies</button>
+    <button class="tab" data-category="gold" data-i18n="gold">Gold</button>
+    <button class="tab" data-category="crypto" data-i18n="crypto">Crypto</button>
+    <button class="tab" data-category="pamp">PAMP</button>
+    <button class="tab" data-category="favorites">
+      <i data-feather="star"></i>
+      <span data-i18n="favorites">Favorites</span>
+    </button>
   </div>
 
   <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -892,14 +709,15 @@
 </div>
 
 <section class="grid" id="chartGrid"></section>
+
 <section class="heatmap" id="heatmapGrid" style="display:none"></section>
+
 <section class="table-container" id="tableContainer" style="display:none">
   <table class="data-table" id="dataTable">
     <thead>
       <tr>
         <th data-i18n="asset">Asset</th>
-        <th data-i18n="price">Price</th>
-        <th data-i18n="open">Open</th>
+        <th data-i18n="now">Now</th>
         <th data-i18n="low">Low</th>
         <th data-i18n="high">High</th>
         <th data-i18n="change">Change</th>
@@ -912,94 +730,73 @@
 <footer id="appFooter">Data updated via GitHub Actions</footer>
 
 <div class="loader" id="loader"></div>
-<div class="toast" id="toast">
-  <i data-feather="check-circle"></i>
-  <span id="toastText"></span>
-</div>
 
 <script>
+// ---------- Safe storage ----------
+function storageGet(key) {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+function storageSet(key, val) {
+  try { localStorage.setItem(key, val); } catch {}
+}
+
 // ---------- Translations ----------
 const translations = {
   en: {
-    title: "Markets",
-    daily: "Daily",
-    monthly: "Monthly",
-    loading: "Loading...",
-    all: "All",
-    currencies: "Currencies",
-    gold: "Gold",
-    crypto: "Crypto",
-    favorites: "Favorites",
-    charts: "Charts",
-    heatmap: "Heatmap",
-    table: "Table",
-    search: "Search assets...",
-    asset: "Asset",
-    price: "Price",
-    open: "Open",
-    low: "Low",
-    high: "High",
-    change: "Change",
+    title: "Markets", daily: "Daily", monthly: "Monthly", loading: "Loading...",
+    all: "All", currencies: "Currencies", gold: "Gold", crypto: "Crypto", favorites: "Favorites",
+    charts: "Charts", heatmap: "Heatmap", table: "Table", search: "Search assets...",
+    asset: "Asset", now: "Now", low: "Low", high: "High", change: "Change",
     noData: "No data loaded.",
     noFavorites: "No favorite assets yet. Click the star on a card to add one.",
     noAssets: "No assets found.",
-    exported: "Chart exported successfully",
-    lastUpdated: "Last updated",
-    monthlyView: "Monthly view"
+    lastUpdated: "Last updated", monthlyView: "Monthly view"
   },
   fa: {
-    title: "بازارها",
-    daily: "روزانه",
-    monthly: "ماهانه",
-    loading: "در حال بارگذاری...",
-    all: "همه",
-    currencies: "ارزها",
-    gold: "طلا",
-    crypto: "کریپتو",
-    favorites: "علاقه‌مندی‌ها",
-    charts: "نمودار",
-    heatmap: "نقشه حرارتی",
-    table: "جدول",
-    search: "جستجوی دارایی‌ها...",
-    asset: "دارایی",
-    price: "قیمت",
-    open: "باز شدن",
-    low: "کمترین",
-    high: "بیشترین",
-    change: "تغییر",
+    title: "بازارها", daily: "روزانه", monthly: "ماهانه", loading: "در حال بارگذاری...",
+    all: "همه", currencies: "ارزها", gold: "طلا", crypto: "کریپتو", favorites: "علاقه‌مندی‌ها",
+    charts: "نمودار", heatmap: "نقشه حرارتی", table: "جدول", search: "جستجوی دارایی‌ها...",
+    asset: "دارایی", now: "اکنون", low: "کمترین", high: "بیشترین", change: "تغییر",
     noData: "داده‌ای بارگذاری نشده است.",
     noFavorites: "هنوز علاقه‌مندی ندارید. روی ستاره کارت کلیک کنید.",
     noAssets: "دارایی یافت نشد.",
-    exported: "نمودار با موفقیت صادر شد",
-    lastUpdated: "آخرین به‌روزرسانی",
-    monthlyView: "نمای ماهانه"
+    lastUpdated: "آخرین به‌روزرسانی", monthlyView: "نمای ماهانه"
   }
 };
 
-let currentLang = localStorage.getItem("lang") || "en";
+let currentLang = storageGet("lang") || "en";
 
 function t(key) {
   return translations[currentLang]?.[key] || translations.en[key] || key;
 }
 
-function applyLanguage(lang) {
-  currentLang = lang;
-  localStorage.setItem("lang", lang);
-  
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
-  
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    el.textContent = t(key);
-  });
-  
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
-    const key = el.getAttribute("data-i18n-placeholder");
-    el.placeholder = t(key);
-  });
-  
-  document.getElementById("langBtn").textContent = lang === "en" ? "EN" : "فا";
+function numLocale() {
+  return currentLang === "fa" ? "fa-IR" : "en-US";
+}
+
+// ---------- Jalali date formatters (language aware) ----------
+let jalaliFullFormatter, jalaliShortFormatter, jalaliMonthFormatter;
+const jalaliMonthKeyFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", {
+  year: "numeric", month: "numeric"
+});
+
+function buildDateFormatters() {
+  const locale = currentLang === "fa" ? "fa-IR-u-ca-persian" : "en-US-u-ca-persian-nu-latn";
+  jalaliFullFormatter = new Intl.DateTimeFormat(locale, { year: "numeric", month: "long", day: "numeric" });
+  jalaliShortFormatter = new Intl.DateTimeFormat(locale, { year: "numeric", month: "2-digit", day: "2-digit" });
+  jalaliMonthFormatter = new Intl.DateTimeFormat(locale, { year: "numeric", month: "long" });
+}
+
+function parseDate(dateStr) { return new Date(`${dateStr}T12:00:00Z`); }
+function toJalali(dateStr) { return jalaliFullFormatter.format(parseDate(dateStr)); }
+function toJalaliShort(dateStr) { return jalaliShortFormatter.format(parseDate(dateStr)); }
+function getJalaliMonthLabel(dateStr) { return jalaliMonthFormatter.format(parseDate(dateStr)); }
+
+function getJalaliMonthKey(dateStr) {
+  const parts = jalaliMonthKeyFormatter.formatToParts(parseDate(dateStr));
+  const year = parts.find(p => p.type === "year")?.value || "0000";
+  const month = parts.find(p => p.type === "month")?.value || "00";
+  return `${year}-${month.padStart(2, "0")}`;
 }
 
 // ---------- Assets ----------
@@ -1025,7 +822,7 @@ const ASSETS = [
   { id: "pamp100", key: 100, label: "PAMP 100g", color: "#a855f7", category: "pamp" }
 ];
 
-// ---------- State ----------
+// ---------- Elements ----------
 const charts = {};
 const dataCache = new Map();
 let assetStats = {};
@@ -1045,9 +842,9 @@ const viewToggle = document.getElementById("viewToggle");
 const modeToggle = document.getElementById("modeToggle");
 const themeBtn = document.getElementById("themeBtn");
 const langBtn = document.getElementById("langBtn");
-const toast = document.getElementById("toast");
-const toastText = document.getElementById("toastText");
+const styleBtn = document.getElementById("styleBtn");
 
+// ---------- State ----------
 let currentView = "daily";
 let currentMode = "charts";
 let activeCategory = "all";
@@ -1058,42 +855,43 @@ let currentEntries = [];
 let currentLabels = [];
 let displayLabels = [];
 let displayIndices = [];
+let selectedDate = null;
+let selectedMonthKey = null;
+let lastFooter = null;
 
 let favorites = [];
-try {
-  favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-} catch {
-  favorites = [];
-}
+try { favorites = JSON.parse(storageGet("favorites") || "[]"); } catch { favorites = []; }
 
-let currentTheme = localStorage.getItem("theme");
+let currentTheme = storageGet("theme");
 if (!currentTheme) {
   currentTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
+let currentStyle = storageGet("style") || "flat";
 
-// ---------- URL State ----------
+const URL_DEFAULTS = { view: "daily", mode: "charts", category: "all", lang: "en", style: "flat" };
+
+// ---------- URL state (clean: only non-defaults) ----------
 function parseURLState() {
   const params = new URLSearchParams(window.location.search);
-  
   if (params.has("view")) currentView = params.get("view");
   if (params.has("mode")) currentMode = params.get("mode");
   if (params.has("category")) activeCategory = params.get("category");
-  if (params.has("theme")) currentTheme = params.get("theme");
   if (params.has("lang")) currentLang = params.get("lang");
-  if (params.has("search")) searchQuery = params.get("search");
+  if (params.has("style")) currentStyle = params.get("style");
+  if (params.has("q")) searchQuery = params.get("q");
 }
 
 function updateURLState() {
   const params = new URLSearchParams();
-  params.set("view", currentView);
-  params.set("mode", currentMode);
-  params.set("category", activeCategory);
-  params.set("theme", currentTheme);
-  params.set("lang", currentLang);
-  if (searchQuery) params.set("search", searchQuery);
-  
-  const newURL = `${window.location.pathname}?${params.toString()}`;
-  window.history.replaceState({}, "", newURL);
+  if (currentView !== URL_DEFAULTS.view) params.set("view", currentView);
+  if (currentMode !== URL_DEFAULTS.mode) params.set("mode", currentMode);
+  if (activeCategory !== URL_DEFAULTS.category) params.set("category", activeCategory);
+  if (currentLang !== URL_DEFAULTS.lang) params.set("lang", currentLang);
+  if (currentStyle !== URL_DEFAULTS.style) params.set("style", currentStyle);
+  if (searchQuery) params.set("q", searchQuery);
+
+  const qs = params.toString();
+  window.history.replaceState({}, "", window.location.pathname + (qs ? `?${qs}` : ""));
 }
 
 // ---------- Utils ----------
@@ -1108,68 +906,32 @@ function debounce(fn, wait = 200) {
 function fmt(value) {
   const n = Number(value);
   if (value == null || !Number.isFinite(n)) return "—";
-  return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  return n.toLocaleString(numLocale(), { maximumFractionDigits: 2 });
 }
 
-function parseDate(dateStr) {
-  return new Date(`${dateStr}T12:00:00Z`);
-}
+function showLoading(show) { loader.classList.toggle("show", show); }
 
-const jalaliFullFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", {
-  year: "numeric", month: "long", day: "numeric"
-});
-
-const jalaliShortFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", {
-  year: "numeric", month: "2-digit", day: "2-digit"
-});
-
-const jalaliMonthFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", {
-  year: "numeric", month: "long"
-});
-
-const jalaliMonthKeyFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", {
-  year: "numeric", month: "numeric"
-});
-
-function toJalali(dateStr) {
-  return jalaliFullFormatter.format(parseDate(dateStr));
-}
-
-function toJalaliShort(dateStr) {
-  return jalaliShortFormatter.format(parseDate(dateStr));
-}
-
-function getJalaliMonthLabel(dateStr) {
-  return jalaliMonthFormatter.format(parseDate(dateStr));
-}
-
-function getJalaliMonthKey(dateStr) {
-  const parts = jalaliMonthKeyFormatter.formatToParts(parseDate(dateStr));
-  const year = parts.find(p => p.type === "year")?.value || "0000";
-  const month = parts.find(p => p.type === "month")?.value || "00";
-  return `${year}-${month.padStart(2, "0")}`;
-}
-
-function showLoading(show) {
-  loader.classList.toggle("show", show);
-}
-
-function showToast(message) {
-  toastText.textContent = message;
-  toast.classList.add("show");
-  feather.replace();
-  setTimeout(() => toast.classList.remove("show"), 3000);
-}
-
-// ---------- Theme ----------
+// ---------- Theme & Style ----------
 function getChartColors() {
+  const style = document.documentElement.getAttribute("data-style");
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-  return {
-    text: isDark ? "#a1a1aa" : "#71717a",
-    grid: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
-    tooltipBg: isDark ? "#18181b" : "#ffffff",
-    tooltipText: isDark ? "#fafafa" : "#18181b",
-    tooltipBorder: isDark ? "#27272a" : "#e4e4e7"
+
+  if (style === "brutal") {
+    return isDark ? {
+      text: "#A99C82", grid: "rgba(243,233,210,0.15)",
+      tooltipBg: "#241E17", tooltipText: "#F3E9D2", tooltipBorder: "#EFE3C8"
+    } : {
+      text: "#6E6552", grid: "rgba(20,20,20,0.15)",
+      tooltipBg: "#FBF3E0", tooltipText: "#141414", tooltipBorder: "#141414"
+    };
+  }
+
+  return isDark ? {
+    text: "#a1a1aa", grid: "rgba(255,255,255,0.06)",
+    tooltipBg: "#18181b", tooltipText: "#fafafa", tooltipBorder: "#27272a"
+  } : {
+    text: "#71717a", grid: "rgba(0,0,0,0.06)",
+    tooltipBg: "#ffffff", tooltipText: "#18181b", tooltipBorder: "#e4e4e7"
   };
 }
 
@@ -1192,21 +954,69 @@ function updateChartsTheme() {
 
 function applyTheme(theme) {
   currentTheme = theme;
-  localStorage.setItem("theme", theme);
+  storageSet("theme", theme);
   document.documentElement.setAttribute("data-theme", theme);
   themeBtn.innerHTML = theme === "dark" ? '<i data-feather="moon"></i>' : '<i data-feather="sun"></i>';
   feather.replace();
   updateChartsTheme();
 }
 
+function applyStyle(style) {
+  currentStyle = style;
+  storageSet("style", style);
+  document.documentElement.setAttribute("data-style", style);
+  updateChartsTheme();
+  updateURLState();
+}
+
+// ---------- Language ----------
+function applyLanguage(lang) {
+  currentLang = lang;
+  storageSet("lang", lang);
+
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
+
+  buildDateFormatters();
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.getAttribute("data-i18n"));
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = t(el.getAttribute("data-i18n-placeholder"));
+  });
+
+  langBtn.textContent = lang === "en" ? "EN" : "فا";
+
+  rebuildMonths();
+  renderDateMenu();
+  refreshDateLabel();
+  renderFooter();
+  renderDashboard();
+}
+
+function refreshDateLabel() {
+  if (currentView === "daily") {
+    dateBtnText.textContent = selectedDate ? toJalali(selectedDate) : t("loading");
+  } else {
+    const month = allMonths.find(m => m.key === selectedMonthKey);
+    dateBtnText.textContent = month ? month.label : t("loading");
+  }
+}
+
+function renderFooter() {
+  if (!lastFooter) {
+    appFooter.textContent = "Data updated via GitHub Actions";
+    return;
+  }
+  const prefix = lastFooter.view === "daily" ? t("lastUpdated") : t("monthlyView");
+  appFooter.textContent = `${prefix}: ${toJalali(lastFooter.dateStr)} — ${lastFooter.time}`;
+}
+
 // ---------- Favorites ----------
 function toggleFavorite(id) {
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(f => f !== id);
-  } else {
-    favorites = [...favorites, id];
-  }
-  localStorage.setItem("favorites", JSON.stringify(favorites));
+  favorites = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id];
+  storageSet("favorites", JSON.stringify(favorites));
 }
 
 // ---------- Filtering ----------
@@ -1225,7 +1035,7 @@ async function fetchDay(date) {
   const latestDate = allDates[0];
   const shouldCache = date !== latestDate;
   if (shouldCache && dataCache.has(date)) return dataCache.get(date);
-  
+
   const res = await fetch(`data/${date}.json`);
   const json = res.ok ? await res.json() : null;
   if (shouldCache && json) dataCache.set(date, json);
@@ -1234,17 +1044,12 @@ async function fetchDay(date) {
 
 function computeDisplayIndices(length, maxPoints) {
   maxPoints = Math.max(2, maxPoints);
-  if (!length) {
-    displayIndices = [];
-    displayLabels = [];
-    return;
-  }
+  if (!length) { displayIndices = []; displayLabels = []; return; }
   if (length <= maxPoints) {
     displayIndices = Array.from({ length }, (_, i) => i);
   } else {
     displayIndices = Array.from({ length: maxPoints }, (_, i) =>
-      Math.round(i * (length - 1) / (maxPoints - 1))
-    );
+      Math.round(i * (length - 1) / (maxPoints - 1)));
   }
   displayLabels = displayIndices.map(i => currentLabels[i]);
 }
@@ -1269,16 +1074,14 @@ function getAssetValues(asset, entries) {
   });
 }
 
-function calculateStats(assetId, values) {
+function calculateStats(values) {
   const clean = values.filter(v => v != null && v > 0);
   if (!clean.length) return null;
-  
   const open = clean[0];
   const close = clean[clean.length - 1];
   const low = Math.min(...clean);
   const high = Math.max(...clean);
   const change = open > 0 ? ((close - open) / open) * 100 : 0;
-  
   return { open, close, low, high, change };
 }
 
@@ -1286,25 +1089,28 @@ async function loadData(date) {
   showLoading(true);
   const json = await fetchDay(date);
   const entries = Array.isArray(json) ? json : [];
-  
+
+  selectedDate = date;
+  selectedMonthKey = null;
   currentEntries = entries;
   currentLabels = entries.map(e => e.time || "");
   computeDisplayIndices(currentLabels.length, 240);
-  
+
+  refreshDateLabel();
   renderDashboard();
-  
+
   const lastEntry = entries[entries.length - 1];
   if (lastEntry) {
-    appFooter.textContent = `${t("lastUpdated")}: ${toJalali(date)} at ${lastEntry.time}`;
+    lastFooter = { view: "daily", dateStr: date, time: lastEntry.time };
+    renderFooter();
   }
-  
   showLoading(false);
 }
 
-async function loadMonthlyData(dates) {
+async function loadMonthlyData(dates, monthKey) {
   showLoading(true);
   const allData = await Promise.all(dates.map(d => fetchDay(d)));
-  
+
   const labels = [];
   const entries = [];
   for (let i = dates.length - 1; i >= 0; i--) {
@@ -1314,27 +1120,28 @@ async function loadMonthlyData(dates) {
       entries.push(dayData[dayData.length - 1]);
     }
   }
-  
+
+  selectedMonthKey = monthKey;
+  selectedDate = null;
   currentLabels = labels;
   currentEntries = entries;
   computeDisplayIndices(currentLabels.length, 120);
+
+  refreshDateLabel();
   renderDashboard();
-  
+
   if (dates.length && entries.length) {
     const lastEntry = entries[entries.length - 1];
-    appFooter.textContent = `${t("monthlyView")}: ending ${toJalali(dates[0])} at ${lastEntry.time || ""}`;
+    lastFooter = { view: "monthly", dateStr: dates[0], time: lastEntry.time || "" };
+    renderFooter();
   }
-  
   showLoading(false);
 }
 
 // ---------- Rendering ----------
 function destroyCharts() {
   Object.keys(charts).forEach(id => {
-    if (charts[id]) {
-      charts[id].destroy();
-      delete charts[id];
-    }
+    if (charts[id]) { charts[id].destroy(); delete charts[id]; }
   });
 }
 
@@ -1343,23 +1150,18 @@ function createCard(asset) {
   const div = document.createElement("div");
   div.className = "card";
   div.dataset.assetId = asset.id;
-  
+
   div.innerHTML = `
-    <div class="card-actions">
-      <button class="card-action-btn" data-export="${asset.id}" title="Export">
-        <i data-feather="image"></i>
-      </button>
-    </div>
     <div class="card-header">
       <div class="asset-info">
         <div class="asset-title">
           <h2>${asset.label}</h2>
-          <button type="button" class="fav-btn ${isFav ? "active" : ""}" data-fav="${asset.id}" title="Toggle favorite">
-            <i data-feather="star" ${isFav ? 'fill="currentColor"' : ''}></i>
+          <button type="button" class="fav-btn ${isFav ? "active" : ""}" data-fav="${asset.id}" title="Favorite">
+            <i data-feather="star"></i>
           </button>
         </div>
         <div class="asset-meta">
-          <span>${t("open")} <strong id="open-${asset.id}">—</strong></span>
+          <span>${t("now")} <strong id="now-${asset.id}">—</strong></span>
           <span>${t("low")} <strong id="low-${asset.id}">—</strong></span>
           <span>${t("high")} <strong id="high-${asset.id}">—</strong></span>
         </div>
@@ -1377,7 +1179,7 @@ function createCard(asset) {
       <canvas id="${asset.id}"></canvas>
     </div>
   `;
-  
+
   grid.appendChild(div);
   requestAnimationFrame(() => div.classList.add("visible"));
 }
@@ -1386,16 +1188,13 @@ function createChart(canvasId, labels, data, label, color) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   if (charts[canvasId]) charts[canvasId].destroy();
-  
+
   const colors = getChartColors();
   let lastValidIndex = -1;
   for (let i = data.length - 1; i >= 0; i--) {
-    if (data[i] != null && data[i] > 0) {
-      lastValidIndex = i;
-      break;
-    }
+    if (data[i] != null && data[i] > 0) { lastValidIndex = i; break; }
   }
-  
+
   charts[canvasId] = new Chart(canvas.getContext("2d"), {
     type: "line",
     data: {
@@ -1444,7 +1243,7 @@ function createChart(canvasId, labels, data, label, color) {
         y: {
           beginAtZero: false,
           grace: "10%",
-          ticks: { color: colors.text, maxTicksLimit: 6, callback: v => Number(v).toLocaleString() },
+          ticks: { color: colors.text, maxTicksLimit: 6, callback: v => Number(v).toLocaleString(numLocale()) },
           grid: { color: colors.grid }
         }
       }
@@ -1453,43 +1252,42 @@ function createChart(canvasId, labels, data, label, color) {
 }
 
 function updateAssetStats(assetId, values) {
-  const stats = calculateStats(assetId, values);
+  const stats = calculateStats(values);
+  assetStats[assetId] = stats;
+
   const priceEl = document.getElementById(`price-${assetId}`);
   const changeEl = document.getElementById(`change-${assetId}`);
-  const openEl = document.getElementById(`open-${assetId}`);
+  const nowEl = document.getElementById(`now-${assetId}`);
   const lowEl = document.getElementById(`low-${assetId}`);
   const highEl = document.getElementById(`high-${assetId}`);
   const fillEl = document.getElementById(`range-fill-${assetId}`);
   const dotEl = document.getElementById(`range-dot-${assetId}`);
-  
-  if (!priceEl || !changeEl || !openEl || !lowEl || !highEl || !fillEl || !dotEl) return;
-  
+
+  if (!priceEl || !changeEl || !nowEl || !lowEl || !highEl || !fillEl || !dotEl) return;
+
   if (!stats) {
     priceEl.textContent = "—";
     changeEl.textContent = "—";
     changeEl.className = "price-change";
-    openEl.textContent = "—";
+    nowEl.textContent = "—";
     lowEl.textContent = "—";
     highEl.textContent = "—";
     fillEl.style.width = "0%";
     dotEl.style.left = "0%";
-    assetStats[assetId] = null;
     return;
   }
-  
-  assetStats[assetId] = stats;
-  
+
   priceEl.textContent = fmt(stats.close);
-  openEl.textContent = fmt(stats.open);
+  nowEl.textContent = fmt(stats.close);
   lowEl.textContent = fmt(stats.low);
   highEl.textContent = fmt(stats.high);
-  
+
   changeEl.textContent = `${stats.change >= 0 ? "▲" : "▼"} ${Math.abs(stats.change).toFixed(2)}%`;
   changeEl.className = `price-change ${stats.change >= 0 ? "up" : "down"}`;
-  
-  const rangePosition = stats.high > stats.low ? ((stats.close - stats.low) / (stats.high - stats.low)) * 100 : 0;
-  fillEl.style.width = `${rangePosition}%`;
-  dotEl.style.left = `${rangePosition}%`;
+
+  const pos = stats.high > stats.low ? ((stats.close - stats.low) / (stats.high - stats.low)) * 100 : 0;
+  fillEl.style.width = `${pos}%`;
+  dotEl.style.left = `${pos}%`;
 }
 
 function renderCharts() {
@@ -1498,12 +1296,12 @@ function renderCharts() {
   grid.style.display = "";
   heatmapGrid.style.display = "none";
   tableContainer.style.display = "none";
-  
+
   if (!currentEntries.length) {
     grid.innerHTML = `<div class="empty-state">${t("noData")}</div>`;
     return;
   }
-  
+
   const visibleAssets = getVisibleAssets();
   if (!visibleAssets.length) {
     grid.innerHTML = `<div class="empty-state">${
@@ -1511,7 +1309,7 @@ function renderCharts() {
     }</div>`;
     return;
   }
-  
+
   visibleAssets.forEach(asset => {
     createCard(asset);
     const fullValues = getAssetValues(asset, currentEntries);
@@ -1519,7 +1317,7 @@ function renderCharts() {
     createChart(asset.id, displayLabels, chartValues, asset.label, asset.color);
     updateAssetStats(asset.id, fullValues);
   });
-  
+
   feather.replace();
 }
 
@@ -1528,22 +1326,21 @@ function renderHeatmap() {
   tableContainer.style.display = "none";
   heatmapGrid.style.display = "";
   heatmapGrid.innerHTML = "";
-  
+
   const visibleAssets = getVisibleAssets();
   if (!visibleAssets.length) {
     heatmapGrid.innerHTML = `<div class="empty-state">${t("noAssets")}</div>`;
     return;
   }
-  
+
   visibleAssets.forEach(asset => {
-    const fullValues = getAssetValues(asset, currentEntries);
-    const stats = calculateStats(asset.id, fullValues);
-    
+    const stats = calculateStats(getAssetValues(asset, currentEntries));
+
     const tile = document.createElement("div");
     let tileClass = "heatmap-tile neutral";
     let changeClass = "";
     let changeText = "—";
-    
+
     if (stats) {
       if (stats.change > 0) {
         tileClass = "heatmap-tile positive";
@@ -1555,7 +1352,7 @@ function renderHeatmap() {
         changeText = `▼ ${Math.abs(stats.change).toFixed(2)}%`;
       }
     }
-    
+
     tile.className = tileClass;
     tile.innerHTML = `
       <div class="heatmap-label">${asset.label}</div>
@@ -1564,7 +1361,6 @@ function renderHeatmap() {
         <div class="${changeClass}">${changeText}</div>
       </div>
     `;
-    
     heatmapGrid.appendChild(tile);
   });
 }
@@ -1574,152 +1370,78 @@ function renderTable() {
   heatmapGrid.style.display = "none";
   tableContainer.style.display = "";
   tableBody.innerHTML = "";
-  
+
   const visibleAssets = getVisibleAssets();
   if (!visibleAssets.length) {
-    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px">${t("noAssets")}</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px">${t("noAssets")}</td></tr>`;
     return;
   }
-  
+
   visibleAssets.forEach(asset => {
-    const fullValues = getAssetValues(asset, currentEntries);
-    const stats = calculateStats(asset.id, fullValues);
-    
+    const stats = calculateStats(getAssetValues(asset, currentEntries));
     const tr = document.createElement("tr");
+
     let changeHTML = "—";
-    
     if (stats) {
-      const changeClass = stats.change >= 0 ? "up" : "down";
+      const cls = stats.change >= 0 ? "up" : "down";
       const arrow = stats.change >= 0 ? "▲" : "▼";
-      changeHTML = `<span class="table-change ${changeClass}">${arrow} ${Math.abs(stats.change).toFixed(2)}%</span>`;
+      changeHTML = `<span class="table-change ${cls}">${arrow} ${Math.abs(stats.change).toFixed(2)}%</span>`;
     }
-    
+
     tr.innerHTML = `
-      <td><div class="table-asset"><span class="table-asset-name">${asset.label}</span></div></td>
+      <td><span class="table-asset-name">${asset.label}</span></td>
       <td>${stats ? fmt(stats.close) : "—"}</td>
-      <td>${stats ? fmt(stats.open) : "—"}</td>
       <td>${stats ? fmt(stats.low) : "—"}</td>
       <td>${stats ? fmt(stats.high) : "—"}</td>
       <td>${changeHTML}</td>
     `;
-    
     tableBody.appendChild(tr);
   });
 }
 
 function renderDashboard() {
   assetStats = {};
-  
-  if (currentMode === "charts") {
-    renderCharts();
-  } else if (currentMode === "heatmap") {
-    renderHeatmap();
-  } else if (currentMode === "table") {
-    renderTable();
-  }
-  
+  if (currentMode === "charts") renderCharts();
+  else if (currentMode === "heatmap") renderHeatmap();
+  else if (currentMode === "table") renderTable();
   updateURLState();
 }
 
-// ---------- Export ----------
-async function exportChart(assetId) {
-  const chart = charts[assetId];
-  if (!chart) return;
-  
-  const asset = ASSETS.find(a => a.id === assetId);
-  if (!asset) return;
-  
-  const stats = assetStats[assetId];
-  if (!stats) return;
-  
-  // Create export canvas
-  const exportCanvas = document.createElement("canvas");
-  const exportWidth = 1200;
-  const exportHeight = 675;
-  exportCanvas.width = exportWidth;
-  exportCanvas.height = exportHeight;
-  
-  const ctx = exportCanvas.getContext("2d");
-  const isDark = currentTheme === "dark";
-  
-  // Background
-  ctx.fillStyle = isDark ? "#09090b" : "#ffffff";
-  ctx.fillRect(0, 0, exportWidth, exportHeight);
-  
-  // Header area
-  ctx.fillStyle = isDark ? "#18181b" : "#f4f4f5";
-  ctx.fillRect(0, 0, exportWidth, 100);
-  
-  // Title
-  ctx.fillStyle = isDark ? "#fafafa" : "#18181b";
-  ctx.font = "bold 32px Inter, system-ui";
-  ctx.textAlign = "left";
-  ctx.fillText(asset.label, 40, 60);
-  
-  // Price
-  ctx.font = "600 24px Inter, system-ui";
-  ctx.fillText(fmt(stats.close), 40, 90);
-  
-  // Change
-  const changeColor = stats.change >= 0 ? "#22c55e" : "#ef4444";
-  ctx.fillStyle = changeColor;
-  ctx.font = "600 20px Inter, system-ui";
-  const arrow = stats.change >= 0 ? "▲" : "▼";
-  ctx.fillText(`${arrow} ${Math.abs(stats.change).toFixed(2)}%`, 200, 90);
-  
-  // Chart area
-  const chartImage = new Image();
-  chartImage.src = chart.toBase64Image();
-  
-  await new Promise(resolve => {
-    chartImage.onload = () => {
-      ctx.drawImage(chartImage, 40, 130, exportWidth - 80, exportHeight - 180);
-      resolve();
-    };
+// ---------- Dates ----------
+function rebuildMonths() {
+  const monthMap = {};
+  allDates.forEach(d => {
+    const key = getJalaliMonthKey(d);
+    if (!monthMap[key]) monthMap[key] = { key, label: getJalaliMonthLabel(d), dates: [] };
+    monthMap[key].dates.push(d);
   });
-  
-  // Footer
-  ctx.fillStyle = isDark ? "#a1a1aa" : "#71717a";
-  ctx.font = "400 14px Inter, system-ui";
-  ctx.textAlign = "center";
-  ctx.fillText(`Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`, exportWidth / 2, exportHeight - 20);
-  
-  // Download
-  const link = document.createElement("a");
-  link.download = `${asset.label.toLowerCase()}-${Date.now()}.png`;
-  link.href = exportCanvas.toDataURL("image/png");
-  link.click();
-  
-  showToast(t("exported"));
+  allMonths = Object.values(monthMap).sort((a, b) => b.key.localeCompare(a.key));
 }
 
-// ---------- Dates ----------
 function renderDateMenu() {
   dateMenu.innerHTML = "";
   const items = currentView === "daily" ? allDates : allMonths;
-  
+
   if (!items.length) {
     const div = document.createElement("div");
     div.textContent = "No dates found";
     dateMenu.appendChild(div);
     return;
   }
-  
+
   items.forEach(item => {
     const div = document.createElement("div");
     if (currentView === "daily") {
       div.textContent = toJalali(item);
       div.onclick = () => {
-        dateBtnText.textContent = toJalali(item);
         dateMenu.classList.remove("show");
         loadData(item);
       };
     } else {
       div.textContent = item.label;
       div.onclick = () => {
-        dateBtnText.textContent = item.label;
         dateMenu.classList.remove("show");
-        loadMonthlyData(item.dates);
+        loadMonthlyData(item.dates, item.key);
       };
     }
     dateMenu.appendChild(div);
@@ -1730,68 +1452,56 @@ async function loadAvailableDates() {
   const res = await fetch("data/dates.json", { cache: "no-store" });
   allDates = res.ok ? await res.json() : [];
   if (!Array.isArray(allDates)) allDates = [];
-  
-  const monthMap = {};
-  allDates.forEach(d => {
-    const key = getJalaliMonthKey(d);
-    if (!monthMap[key]) {
-      monthMap[key] = { key, label: getJalaliMonthLabel(d), dates: [] };
-    }
-    monthMap[key].dates.push(d);
-  });
-  
-  allMonths = Object.values(monthMap).sort((a, b) => b.key.localeCompare(a.key));
+
+  rebuildMonths();
   renderDateMenu();
-  
+
   if (!allDates.length) {
     dateBtnText.textContent = "No dates";
     return;
   }
-  
+
   if (currentView === "daily") {
-    dateBtnText.textContent = toJalali(allDates[0]);
     loadData(allDates[0]);
   } else {
-    dateBtnText.textContent = allMonths[0].label;
-    loadMonthlyData(allMonths[0].dates);
+    loadMonthlyData(allMonths[0].dates, allMonths[0].key);
   }
 }
 
 // ---------- Events ----------
 themeBtn.addEventListener("click", () => {
   applyTheme(currentTheme === "dark" ? "light" : "dark");
-  updateURLState();
+});
+
+styleBtn.addEventListener("click", () => {
+  applyStyle(currentStyle === "flat" ? "brutal" : "flat");
 });
 
 langBtn.addEventListener("click", () => {
   applyLanguage(currentLang === "en" ? "fa" : "en");
-  renderDashboard();
-  updateURLState();
 });
 
 viewToggle.addEventListener("click", e => {
   const btn = e.target.closest("button[data-view]");
   if (!btn || btn.classList.contains("active")) return;
-  
+
   document.querySelector("#viewToggle .active")?.classList.remove("active");
   btn.classList.add("active");
   currentView = btn.dataset.view;
   renderDateMenu();
-  
+
   if (currentView === "daily" && allDates.length) {
-    dateBtnText.textContent = toJalali(allDates[0]);
     loadData(allDates[0]);
   }
   if (currentView === "monthly" && allMonths.length) {
-    dateBtnText.textContent = allMonths[0].label;
-    loadMonthlyData(allMonths[0].dates);
+    loadMonthlyData(allMonths[0].dates, allMonths[0].key);
   }
 });
 
 modeToggle.addEventListener("click", e => {
   const btn = e.target.closest("button[data-mode]");
   if (!btn || btn.classList.contains("active")) return;
-  
+
   document.querySelector("#modeToggle .active")?.classList.remove("active");
   btn.classList.add("active");
   currentMode = btn.dataset.mode;
@@ -1801,7 +1511,6 @@ modeToggle.addEventListener("click", e => {
 categoryTabs.addEventListener("click", e => {
   const btn = e.target.closest(".tab");
   if (!btn) return;
-  
   activeCategory = btn.dataset.category;
   document.querySelectorAll("#categoryTabs .tab").forEach(b => {
     b.classList.toggle("active", b.dataset.category === activeCategory);
@@ -1816,50 +1525,41 @@ assetSearch.addEventListener("input", debounce(() => {
 
 grid.addEventListener("click", e => {
   const favBtn = e.target.closest(".fav-btn");
-  if (favBtn) {
-    const id = favBtn.dataset.fav;
-    toggleFavorite(id);
-    const isFav = favorites.includes(id);
-    
-    if (activeCategory === "favorites") {
-      renderDashboard();
-      return;
-    }
-    
-    favBtn.classList.toggle("active", isFav);
-    const icon = favBtn.querySelector("i");
-    if (icon) icon.setAttribute("fill", isFav ? "currentColor" : "");
-    feather.replace();
+  if (!favBtn) return;
+
+  const id = favBtn.dataset.fav;
+  toggleFavorite(id);
+  const isFav = favorites.includes(id);
+
+  if (activeCategory === "favorites") {
+    renderDashboard();
+    return;
   }
-  
-  const exportBtn = e.target.closest("[data-export]");
-  if (exportBtn) {
-    exportChart(exportBtn.dataset.export);
-  }
+
+  favBtn.classList.toggle("active", isFav);
 });
 
 dateBtn.onclick = () => dateMenu.classList.toggle("show");
 
 document.addEventListener("click", e => {
-  if (!e.target.closest(".date-dropdown")) {
-    dateMenu.classList.remove("show");
-  }
+  if (!e.target.closest(".date-dropdown")) dateMenu.classList.remove("show");
 });
 
 // ---------- Init ----------
 parseURLState();
+buildDateFormatters();
 applyTheme(currentTheme);
+document.documentElement.setAttribute("data-style", currentStyle);
 applyLanguage(currentLang);
+
 if (searchQuery) assetSearch.value = searchQuery;
 
 document.querySelectorAll("#viewToggle button").forEach(btn => {
   btn.classList.toggle("active", btn.dataset.view === currentView);
 });
-
 document.querySelectorAll("#modeToggle button").forEach(btn => {
   btn.classList.toggle("active", btn.dataset.mode === currentMode);
 });
-
 document.querySelectorAll("#categoryTabs .tab").forEach(btn => {
   btn.classList.toggle("active", btn.dataset.category === activeCategory);
 });
