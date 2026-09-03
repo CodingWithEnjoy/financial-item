@@ -162,17 +162,19 @@
       padding: 24px;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s, border-color 0.2s;
+      transition: transform 0.2s, border-color 0.2s, opacity 0.5s ease;
       position: relative;
       overflow: hidden;
       opacity: 0;
       transform: translateY(10px);
+      height: 480px;
     }
+    
     .card.visible {
       opacity: 1;
       transform: translateY(0);
-      transition: opacity 0.5s ease, transform 0.5s ease;
     }
+    
     .card:hover {
       border-color: var(--muted);
       transform: translateY(-2px);
@@ -237,9 +239,17 @@
       background: rgba(239, 68, 68, 0.12);
     }
 
-    canvas { 
-      flex: 1; 
-      min-height: 260px; 
+    .chart-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+    }
+    
+    .chart-wrap canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
     }
 
     /* Loading */
@@ -415,7 +425,9 @@ function createCard(asset) {
         <div class="price-change" id="change-${asset.id}">—</div>
       </div>
     </div>
-    <canvas id="${asset.id}"></canvas>
+    <div class="chart-wrap">
+      <canvas id="${asset.id}"></canvas>
+    </div>
   `;
   grid.appendChild(div);
   setTimeout(() => div.classList.add('visible'), 50);
