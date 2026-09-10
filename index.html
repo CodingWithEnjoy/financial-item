@@ -48,6 +48,7 @@
       padding: 40px 28px;
       transition: background-color 0.3s ease, color 0.3s ease;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     /* ---------- Header ---------- */
@@ -421,6 +422,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 12px;
+      overflow-x: hidden;
     }
 
     .heatmap-tile {
@@ -472,7 +474,8 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
     }
 
     .data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
@@ -542,7 +545,8 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
     }
 
     .wallet-empty { padding: 60px 20px; text-align: center; color: var(--muted); }
@@ -571,6 +575,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(18px, 1fr));
       gap: 3px;
+      overflow-x: hidden;
     }
 
     .calendar-cell {
@@ -591,6 +596,13 @@
     .calendar-cell.negative.stronger { opacity: 1; }
 
     .calendar-cell.neutral { background: var(--border); }
+
+    .calendar-loading {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
 
     .cal-tooltip {
       position: fixed;
@@ -638,6 +650,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 14px;
+      overflow-x: hidden;
     }
 
     .afford-tile {
@@ -727,22 +740,6 @@
       color: var(--muted);
       font-size: 0.875rem;
     }
-
-    .loader {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 42px; height: 42px;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      display: none;
-      z-index: 100;
-    }
-
-    .loader.show { display: block; }
-    @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
     /* ============================================================
        STYLE: NEO-BRUTALISM
@@ -1161,7 +1158,11 @@
       .grid { row-gap: 38px; }
       .card { height: 440px; padding: 18px; }
       .card-header { gap: 12px; }
-      .heatmap { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+      
+      .heatmap { 
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+      }
+      
       .data-table { font-size: 0.7rem; }
       .data-table th, .data-table td { padding: 10px 8px; }
       .sparkline-canvas { width: 56px; height: 24px; }
@@ -1169,9 +1170,15 @@
       .wallet-summary { grid-template-columns: 1fr; gap: 16px; }
       .wallet-stat-value { font-size: 1.25rem; }
 
-      .calendar-grid { grid-template-columns: repeat(auto-fill, minmax(14px, 1fr)); gap: 2px; padding: 14px; }
+      .calendar-grid { 
+        grid-template-columns: repeat(auto-fill, minmax(14px, 1fr)); 
+        gap: 2px; 
+        padding: 14px; 
+      }
 
-      .afford-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      .afford-grid { 
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+      }
       .afford-header { flex-direction: column; align-items: stretch; }
       #affordAmount { width: 100%; }
 
@@ -1299,7 +1306,6 @@
 </section>
 
 <footer id="appFooter">Data updated via GitHub Actions</footer>
-<div class="loader" id="loader"></div>
 <div class="cal-tooltip" id="calTooltip"></div>
 
 <div class="command-palette" id="commandPalette">
@@ -1331,7 +1337,8 @@ const translations = {
     walletEmpty: "No holdings yet. Click 'Add Holding' to start tracking your portfolio.",
     selectAsset: "Select Asset", enterQuantity: "Enter Quantity", add: "Add", cancel: "Cancel",
     dayChange: "Day change", start: "Start", end: "End",
-    affordHave: "I have (Toman)", perUnit: "Price per unit", units: "units"
+    affordHave: "I have (Toman)", perUnit: "Price per unit", units: "units",
+    loadingCalendar: "Loading calendar data..."
   },
   fa: {
     title: "بازارها", daily: "روزانه", monthly: "ماهانه", loading: "در حال بارگذاری...",
@@ -1348,7 +1355,8 @@ const translations = {
     walletEmpty: "هنوز دارایی ندارید. روی 'افزودن دارایی' کلیک کنید.",
     selectAsset: "انتخاب دارایی", enterQuantity: "مقدار را وارد کنید", add: "افزودن", cancel: "انصراف",
     dayChange: "تغییر روز", start: "ابتدا", end: "پایان",
-    affordHave: "مبلغ من (تومان)", perUnit: "قیمت هر واحد", units: "واحد"
+    affordHave: "مبلغ من (تومان)", perUnit: "قیمت هر واحد", units: "واحد",
+    loadingCalendar: "در حال بارگذاری داده‌های تقویم..."
   }
 };
 
@@ -1468,6 +1476,7 @@ function iconHtml(asset) {
 // ---------- Elements ----------
 const charts = {};
 const dataCache = new Map();
+const calendarCache = new Map(); // Cache for calendar data
 let assetStats = {};
 
 const grid = document.getElementById("chartGrid");
@@ -1488,7 +1497,6 @@ const affordAmountInput = document.getElementById("affordAmount");
 const dateBtn = document.getElementById("dateBtn");
 const dateBtnText = document.getElementById("dateBtnText");
 const dateMenu = document.getElementById("dateMenu");
-const loader = document.getElementById("loader");
 const appFooter = document.getElementById("appFooter");
 const categoryTabs = document.getElementById("categoryTabs");
 const assetSearch = document.getElementById("assetSearch");
@@ -1565,18 +1573,25 @@ function debounce(fn, wait = 200) {
   let t;
   return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), wait); };
 }
+
 function fmt(v) {
   const n = Number(v);
   if (v == null || !Number.isFinite(n)) return "—";
   return n.toLocaleString(numLocale(), { maximumFractionDigits: 2 });
 }
+
 function fmtQty(q) {
   if (q == null || !Number.isFinite(q)) return "—";
-  if (q >= 1000) return fmt(q);
-  if (q >= 1) return q.toLocaleString(numLocale(), { maximumFractionDigits: 2 });
+  // Always use thousand separators for better UX
+  if (q >= 1000) {
+    return q.toLocaleString(numLocale(), { maximumFractionDigits: 2 });
+  }
+  if (q >= 1) {
+    return q.toLocaleString(numLocale(), { maximumFractionDigits: 2 });
+  }
+  // For very small numbers, show more decimals
   return q.toLocaleString(numLocale(), { maximumFractionDigits: 6 });
 }
-function showLoading(s) { loader.classList.toggle("show", s); }
 
 // ---------- Skeleton Loading ----------
 function renderSkeletonCards() {
@@ -1917,36 +1932,61 @@ async function renderCalendar() {
   await loadCalendarData();
 }
 
+// Optimized calendar loading with parallel fetching and caching
 async function loadCalendarData() {
   const assetId = document.getElementById("calendarAsset")?.value || ASSETS[0].id;
   const asset = ASSETS.find(a => a.id === assetId);
   if (!asset) return;
 
-  calendarGrid.innerHTML = "";
+  // Show loading state
+  calendarGrid.innerHTML = `<div class="calendar-loading">${t("loadingCalendar")}</div>`;
+
+  const cacheKey = assetId;
+  if (calendarCache.has(cacheKey)) {
+    renderCalendarCells(calendarCache.get(cacheKey));
+    return;
+  }
 
   const datesToLoad = allDates.slice(0, Math.min(365, allDates.length));
+  
+  // Fetch in parallel batches of 20 for better performance
+  const batchSize = 20;
   const dayChanges = [];
+  
+  for (let i = 0; i < datesToLoad.length; i += batchSize) {
+    const batch = datesToLoad.slice(i, i + batchSize);
+    const batchPromises = batch.map(async (date) => {
+      const json = await fetchDay(date);
+      if (!json || !Array.isArray(json) || json.length < 2) {
+        return { date, change: 0, open: null, close: null };
+      }
 
-  for (const date of datesToLoad) {
-    const json = await fetchDay(date);
-    if (!json || !Array.isArray(json) || json.length < 2) {
-      dayChanges.push({ date, change: 0, open: null, close: null });
-      continue;
-    }
+      const values = getAssetValues(asset, json);
+      const clean = values.filter(v => v != null && v > 0);
+      const first = clean[0] ?? null;
+      const last = clean.length ? clean[clean.length - 1] : null;
 
-    const values = getAssetValues(asset, json);
-    const clean = values.filter(v => v != null && v > 0);
-    const first = clean[0] ?? null;
-    const last = clean.length ? clean[clean.length - 1] : null;
+      let change = 0;
+      if (first && last && first > 0) change = ((last - first) / first) * 100;
 
-    let change = 0;
-    if (first && last && first > 0) change = ((last - first) / first) * 100;
+      return { date, change, open: first, close: last };
+    });
 
-    dayChanges.push({ date, change, open: first, close: last });
+    const batchResults = await Promise.all(batchPromises);
+    dayChanges.push(...batchResults);
   }
 
   dayChanges.reverse();
+  
+  // Cache the results
+  calendarCache.set(cacheKey, dayChanges);
+  
+  renderCalendarCells(dayChanges);
+}
 
+function renderCalendarCells(dayChanges) {
+  calendarGrid.innerHTML = "";
+  
   dayChanges.forEach(day => {
     const cell = document.createElement("div");
     cell.className = "calendar-cell neutral";
@@ -2162,7 +2202,6 @@ function calculateStats(values) {
 }
 
 async function loadData(date) {
-  showLoading(true);
   renderSkeletonCards();
   const json = await fetchDay(date);
   const entries = Array.isArray(json) ? json : [];
@@ -2175,11 +2214,9 @@ async function loadData(date) {
   renderDashboard();
   const last = entries[entries.length - 1];
   if (last) { lastFooter = { view: "daily", dateStr: date, time: last.time }; renderFooter(); }
-  showLoading(false);
 }
 
 async function loadMonthlyData(dates, monthKey) {
-  showLoading(true);
   renderSkeletonCards();
   const allData = await Promise.all(dates.map(d => fetchDay(d)));
   const labels = [], entries = [];
@@ -2201,7 +2238,6 @@ async function loadMonthlyData(dates, monthKey) {
     lastFooter = { view: "monthly", dateStr: dates[0], time: last.time || "" };
     renderFooter();
   }
-  showLoading(false);
 }
 
 // ---------- Rendering ----------
