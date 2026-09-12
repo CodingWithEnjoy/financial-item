@@ -3484,5 +3484,102 @@
         }
       ]
     }
+  },
+  {
+    "time": "20:03:30",
+    "financial": [],
+    "pamp": {
+      "meta": {
+        "source": "zcoinn.com",
+        "category": "gold-bar",
+        "brand": "PAMP",
+        "fetchedAt": "2026-09-12T16:33:41.079Z",
+        "count": 9,
+        "type": "scraped"
+      },
+      "items": [
+        {
+          "name": "شمش طلا 1 گرمی سوئیسی پمپ",
+          "weightGram": 1,
+          "price": 38300000,
+          "currency": "IRR_TOMAN",
+          "priceText": "38,300,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/1g-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 2.5 گرمی سوئیسی پمپ",
+          "weightGram": 2.5,
+          "price": 90950000,
+          "currency": "IRR_TOMAN",
+          "priceText": "90,950,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/2.5-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 5 گرمی سوئیسی پمپ",
+          "weightGram": 5,
+          "price": 173920000,
+          "currency": "IRR_TOMAN",
+          "priceText": "173,920,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/5g-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 10 گرمی سوئیسی پمپ",
+          "weightGram": 10,
+          "price": 344650000,
+          "currency": "IRR_TOMAN",
+          "priceText": "344,650,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/1.2oz-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا نیم اونسی سوئیسی پمپ",
+          "weightGram": 15.55175,
+          "price": 530970000,
+          "currency": "IRR_TOMAN",
+          "priceText": "530,970,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/10g-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 20 گرمی سوئیسی پمپ",
+          "weightGram": 20,
+          "price": 679730000,
+          "currency": "IRR_TOMAN",
+          "priceText": "679,730,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/20g-blue-copy.webp"
+        },
+        {
+          "name": "شمش طلا 1 اونسی سوئیسی پمپ (1oz)",
+          "weightGram": 31.1035,
+          "price": 1032160000,
+          "currency": "IRR_TOMAN",
+          "priceText": "1,032,160,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/12/1oz-blue-copy.webp"
+        },
+        {
+          "name": "شمش 50 گرمی سوئیسی PAMP",
+          "weightGram": 50,
+          "price": 1675380000,
+          "currency": "IRR_TOMAN",
+          "priceText": "1,675,380,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/50blue.png"
+        },
+        {
+          "name": "شمش 100 گرمی سوئیسی pamp",
+          "weightGram": 100,
+          "price": 3286940000,
+          "currency": "IRR_TOMAN",
+          "priceText": "3,286,940,000 تومان",
+          "link": "https://zcoinn.com/bullion_order/",
+          "image": "https://zcoinn.com/wp-content/uploads/2022/08/50blue.png"
+        }
+      ]
+    }
   }
 ]
