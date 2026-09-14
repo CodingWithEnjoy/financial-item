@@ -536,7 +536,7 @@
         <button data-mode="charts" class="active"><i data-feather="bar-chart-2"></i><span data-i18n="charts">Charts</span></button>
         <button data-mode="heatmap"><i data-feather="grid"></i><span data-i18n="heatmap">Heatmap</span></button>
         <button data-mode="table"><i data-feather="list"></i><span data-i18n="table">Table</span></button>
-        <button data-mode="compare"><i data-feather="git-compare"></i><span data-i18n="compare">Compare</span></button>
+        <button data-mode="compare"><i data-feather="code"></i><span data-i18n="compare">Compare</span></button>
         <button data-mode="wallet"><i data-feather="briefcase"></i><span data-i18n="wallet">Wallet</span></button>
         <button data-mode="calendar"><i data-feather="calendar"></i><span data-i18n="calendar">Calendar</span></button>
         <button data-mode="afford"><i data-feather="shopping-cart"></i><span data-i18n="afford">Afford</span></button>
@@ -1052,7 +1052,7 @@ function compareKey(){ return compareAssets.slice().sort().join(",")+"|"+allDate
 function renderCompare(){
   compareSection.innerHTML=`
     <div class="compare-head">
-      <div class="compare-head-icon"><i data-feather="git-compare"></i></div>
+      <div class="compare-head-icon"><i data-feather="code"></i></div>
       <div class="compare-head-text">
         <h3>${t("compareTitle")}</h3>
         <p>${t("comparePick")} · ${t("compareBaseline")}</p>
