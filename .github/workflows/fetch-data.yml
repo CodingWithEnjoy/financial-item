@@ -1,0 +1,86 @@
+name: Fetch Financial Data
+
+on:
+  workflow_dispatch:  # Triggered by cron-job.org
+  push:
+    branches: ["main"]  # Also run on push for testing
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-save:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch and append data
+        run: |
+          set -e
+          
+          # Tehran time (UTC+3:30)
+          DATE=$(date -u -d "+3 hours 30 minutes" +"%Y-%m-%d")
+          TIME=$(date -u -d "+3 hours 30 minutes" +"%H:%M:%S")
+          
+          mkdir -p data
+          FILE="data/${DATE}.json"
+          
+          # Fetch financial data
+          FIN_API="https://api.dastyar.io/express/financial-item"
+          FIN_RESPONSE=$(curl -s "$FIN_API")
+          
+          # Validate JSON
+          if ! echo "$FIN_RESPONSE" | jq empty 2>/dev/null; then
+            echo "❌ Invalid financial API response"
+            exit 1
+          fi
+          
+          # Fetch PAMP data
+          PAMP_API="https://amirmasoud.netlify.app/api/v1/pamp"
+          PAMP_RESPONSE=$(curl -s "$PAMP_API")
+          
+          if ! echo "$PAMP_RESPONSE" | jq empty 2>/dev/null; then
+            echo "❌ Invalid PAMP API response"
+            exit 1
+          fi
+          
+          # Create file if it doesn't exist
+          if [ ! -f "$FILE" ]; then
+            echo "[]" > "$FILE"
+          fi
+          
+          # Append snapshot
+          jq --arg time "$TIME" \
+             --argjson financial "$FIN_RESPONSE" \
+             --argjson pamp "$PAMP_RESPONSE" \
+             '. += [{"time": $time, "financial": $financial, "pamp": $pamp}]' \
+             "$FILE" > tmp.json && mv tmp.json "$FILE"
+          
+          echo "✅ Saved snapshot for $DATE $TIME"
+
+      - name: Generate dates.json
+        run: |
+          cd data
+          # List all .json files (except dates.json), extract dates, sort descending
+          ls -1 *.json 2>/dev/null | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}\.json$' | sed 's/\.json$//' | sort -r > dates.txt
+          jq -R -s 'split("\n") | map(select(length > 0))' dates.txt > dates.json
+          rm dates.txt
+          echo "✅ Generated dates.json"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add data/
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Data snapshot $(date -u -d '+3 hours 30 minutes' +'%Y-%m-%d %H:%M')"
+            git push
+          fi
